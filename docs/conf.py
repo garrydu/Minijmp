@@ -1,6 +1,6 @@
-project = 'Your Project Name'
-copyright = '2023, Your Name'
-author = 'Your Name'
+project = 'Minijmp'
+copyright = '2024-, Garry Du'
+author = 'Garry Du'
 
 extensions = [
     'sphinx.ext.autodoc',

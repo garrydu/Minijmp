@@ -1168,7 +1168,7 @@ class DataExplore(Frame):
     def online_documentation(self, event=None):
         """Open the online documentation"""
         import webbrowser
-        link = 'https://google.com'
+        link = 'https://minijmp.readthedocs.io/en/latest/'
         webbrowser.open(link, autoraise=1)
         return
 
