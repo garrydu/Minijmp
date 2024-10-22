@@ -23,7 +23,7 @@ class txt_viewer(plot_viewer):
             self.master = self.main
             self.main.title('Output')
             self.main.protocol("WM_DELETE_WINDOW", self.close)
-            g = '520x700'
+            g = '720x700'
             self.main.geometry(g)
         self.orient = VERTICAL
         self.style = None
