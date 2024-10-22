@@ -4,7 +4,7 @@
 Minijmp is an open-source alternative to Minitab Express, also offering additional features typically found only in JMP or Minitab. As of early 2024, there weren't any free statistical alternatives to JMP and Minitab available, which led me to develop this while writing Python code for statistical analysis. This project was a learning experience in understanding the underlying math too.
 
 ## Current Features
-The software was developed based on [PandasTable (by D. Farrell)](https://github.com/dmnfarrell/pandastable), ), utilizing its spreadsheet UI and DataFrame backend. Minijmp replicates approximately 70% of Minitab Express's statistical functions (Ver. 0.1) and includes features like orthogonal fit, GRR, and Cpk calculations. It also has JMP features I like, such as the comparison of means under JMP ANOVA.
+The software was developed based on [PandasTable (by D. Farrell)](https://github.com/dmnfarrell/pandastable), utilizing its spreadsheet UI and DataFrame backend. Minijmp replicates approximately 70% of Minitab Express's statistical functions (Ver. 0.1) and includes features like orthogonal fit, GRR, and Cpk calculations. It also has JMP features I like, such as the comparison of means under JMP ANOVA.
 
 All mathematical calculations have been calibrated against both Minitab and JMP. Since these software packages sometimes produce different results (e.g., in variance tests), Minijmp either:
 - Provides options to choose between different algorithms, or
@@ -37,7 +37,7 @@ Run the software.
 cd Minijmp
 python3 start.py
 ```
-
+
 ### Dependencies
 
 PandasTable is already included in the source code. Due to significant modifications to the original PandasTable class, it's maintained within the package to avoid code complexity. For all other dependencies, please refer to the requirements.txt file.
