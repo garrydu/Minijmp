@@ -21,4 +21,4 @@ new_dir = os.path.join(script_dir, 'code')
 
 # Use the context manager
 with change_dir(new_dir):
-    subprocess.run(['python', 'MiniJMP.py'])
+    subprocess.run(['python3', 'MiniJMP.py'])
