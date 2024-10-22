@@ -18,6 +18,10 @@ A quick overview of available functions (as of version 0.1) is shown below. More
 
 For installation instructions, see below. For usage guidelines, please refer to [the manual](https://minijmp.readthedocs.io/en/latest/) (under construction).
 
+Much more information available at [https://minijmp.readthedocs.io](https://minijmp.readthedocs.io)
+
+![Read the docs](docs/images/readthedocs.png)
+
 ## Installation
 
 Currently, the only available method is to download the source code and run it using Python 3.8+. This approach works across all major platforms (**Linux, Windows, and MacOS**). Compiled releases will be available in the future.
