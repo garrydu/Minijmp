@@ -6,4 +6,11 @@ Welcome to Minijmp's documentation!
    :caption: Contents:
 
    introduction
+   usage/index
 
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
