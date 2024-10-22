@@ -150,6 +150,10 @@ class DescribeDialog(Dialogs):
                  percentiles=pct)
         return
 
+    def help(self):
+        self.app.online_documentation(key="DescribeDialog")
+        return
+
 
 class NormTestDialog(Dialogs):
     def createWidgets(self, m):

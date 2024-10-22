@@ -10,6 +10,8 @@ import platform
 ##############
 from pandastable_local.app import DataExplore
 from pandastable_local.dialogs import getParentGeometry
+#### Own Modules ####
+from help_link import help_link
 
 
 def get_tkver():
@@ -29,6 +31,14 @@ def get_tkver():
 
 
 class Minijmp_pre(DataExplore):
+    def online_documentation(self, event=None, key=""):
+        """Open the online documentation"""
+        import webbrowser
+        link = help_link(key)
+        print("Open help link by browser:", link)
+        webbrowser.open(link, autoraise=1)
+        return
+
     def about(self):
         """About dialog"""
 
@@ -64,11 +74,11 @@ class Minijmp_pre(DataExplore):
             + 'of the License, or (at your option) any later version.\n'\
             + """
 This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied 
-warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR 
+but WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
 PURPOSE. See the GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public 
+You should have received a copy of the GNU General Public
 License along with this program. If not, write to
 
    The Free Software Foundation, Inc.
@@ -81,7 +91,7 @@ License along with this program. If not, write to
             + 'pandas v%s, matplotlib v%s\n' % (pandasver, mplver) \
             + 'Scipy v%s, Statsmodels v%s\n' % (scipyver, smver)\
             + 'PrettyTable v%s, Seaborn v%s\n' % (ptver, sbver)\
-+"""
+            + """
 Calibration:
 All stats calucaltion give either same results to JMP 17, Minitab
 20, or both. (Correct, they do not always agree with each other.)
