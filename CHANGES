@@ -7,3 +7,4 @@ CHANGES
 0.1.0
 ------
 
+Moved the code from a large repo and cleaned the unnecessary files. The current version has basically all the math and functions done. Next steps are to write readme, optimize interface and add help. While with the new stand alone repo a doc read was connceted to the repo too. 
