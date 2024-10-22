@@ -6,5 +6,4 @@ Welcome to Minijmp's documentation!
    :caption: Contents:
 
    introduction
-   usage
 
