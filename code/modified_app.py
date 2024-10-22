@@ -11,7 +11,7 @@ import platform
 from pandastable_local.app import DataExplore
 from pandastable_local.dialogs import getParentGeometry
 #### Own Modules ####
-from help_link import help_link
+from help_link import help_link, help_window
 
 
 def get_tkver():
@@ -38,6 +38,11 @@ class Minijmp_pre(DataExplore):
         print("Open help link by browser:", link)
         webbrowser.open(link, autoraise=1)
         return
+
+    def dialog_help_msg(self, event=None, key=""):
+        txt = help_window(key)
+        #  print("App got txt", txt)
+        return txt
 
     def about(self):
         """About dialog"""

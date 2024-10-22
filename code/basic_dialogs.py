@@ -118,6 +118,7 @@ class MultiDescribeDialog(Dialogs):
 
 class DescribeDialog(Dialogs):
     def createWidgets(self, m):
+
         f = tk.LabelFrame(m, text='Stats Summary')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
@@ -148,10 +149,6 @@ class DescribeDialog(Dialogs):
             pct = [100, 99.5, 97.5, 90, 75, 50, 25, 10, 2.5, 0.5, 0]
         describe(x, print_out=True, print_port=self.app.print,
                  percentiles=pct)
-        return
-
-    def help(self):
-        self.app.online_documentation(key="DescribeDialog")
         return
 
 

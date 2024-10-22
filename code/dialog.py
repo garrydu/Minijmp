@@ -73,8 +73,32 @@ class Dialogs(BaseDialog):
                     np.int32,
                     np.int64]))
         #  self.vars = OrderedDict()
+        self.title = title
+        self.add_window_help(m)
         self.createWidgets(m)
         self.buttonsFrame()
+        print("Gen new dialog", self.title)
+        return
+
+    def add_window_help(self, m):
+        f = tk.LabelFrame(m, text='')
+        f.pack(side=TOP, fill=BOTH, padx=2)
+        txt = self.app.dialog_help_msg(key=self.title)
+        #  print("Receive txt", txt)
+        if len(txt) == 0:
+            return
+        txt = txt + " [Click HELP for more info.]"
+        w = tk.Label(
+            f,
+            anchor="w",
+            justify=LEFT,
+            wraplength=400,
+            text=txt)
+        w.pack(side=TOP, fill=BOTH, padx=3, pady=3)
+        return
+
+    def help(self):
+        self.app.online_documentation(key=self.title)
         return
 
     def buttonsFrame(self):

@@ -380,7 +380,7 @@ class Minijmp(Minijmp_pre):
         _ = MultiDescribeDialog(
             self.table, app=self,
             df=self.table.model.df,
-            title='Stats Summary')
+            title='Stats Summary Multi Datasets')
         return
 
     def norm_test(self):
