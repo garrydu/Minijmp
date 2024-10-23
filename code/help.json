@@ -12,5 +12,9 @@
     "Normality Test": {
         "link": "https://minijmp.readthedocs.io/en/latest/usage/stats.html#normality",
         "window": "Perform normality test to one column of data. Shapiro-Wilk and Anderson-Darling tests will be performed." 
+    },
+    "Confidence Intervals": {
+        "link": "https://minijmp.readthedocs.io/en/latest/usage/stats.html#confidence-intervals",
+        "window": "Calculate and display the confidence intervals for the population mean and standard deviation using the sampling dataset, assuming the underlying population follows a normal distribution."
     }
 }
