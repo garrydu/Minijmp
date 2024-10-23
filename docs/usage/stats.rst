@@ -176,6 +176,7 @@ A sample output:
   - σ (sigma) is the standard deviation of the distribution 
 
 - **Student's t:** The probability density function of the Student's t-distribution is :math:`f(x) = \frac{\Gamma(\frac{\nu+1}{2})}{\Gamma(\frac{\nu}{2}) \sigma\sqrt{\nu\pi}} \left[1 + \frac{1}{\nu}\left(\frac{x-\mu}{\sigma}\right)^2\right]^{-\frac{\nu+1}{2}}`.
+  
   - When μ = 0 and σ = 1, this reduces to the standard Student's t-distribution.
   - The location parameter μ shifts the distribution along the x-axis.
   - The scale parameter σ stretches or shrinks the distribution.
@@ -184,20 +185,23 @@ A sample output:
   - The t-distribution is symmetric about its location parameter μ.
 
 - **Gamma:** The probability density function of the Student's t-distribution is :math:`f(x) = \frac{\Gamma(\frac{\nu+1}{2})}{\Gamma(\frac{\nu}{2}) \sigma\sqrt{\nu\pi}} \left[1 + \frac{1}{\nu}\left(\frac{x-\mu}{\sigma}\right)^2\right]^{-\frac{\nu+1}{2}}`.
+  
   - α (Shape Parameter): Determines the shape of the distribution. Larger values of α result in a distribution that is more symmetric and less skewed.
   - σ (Scale Parameter): Stretches or compresses the distribution along the x-axis. Larger values of σ spread out the distribution.
 
 .. image:: images/fit_dist3.png
-   :align:center
+   :align: center
 
 - **Lognormal:** If X is lognormally distributed, then Y = ln(X) has a normal distribution with mean μ (scale mu) and variance σ^2 (shape sigma). The probability density function of the lognormal distribution is :math:`f(x; \mu, \sigma) = \frac{1}{x\sigma\sqrt{2\pi}} \exp\left(-\frac{(\ln x - \mu)^2}{2\sigma^2}\right) \quad \text{for } x > 0`.
 
 - **Exponential:** The exponential distribution models the time between events in a Poisson process, where events occur continuously and independently at a constant average rate. σ (sigma) is the scale parameter, which is equal to 1/λ, which is usually called rate parameter. The probability density function of the exponential distribution is :math:`f(x; \sigma) = \frac{1}{\sigma} \exp\left(-\frac{x}{\sigma}\right) \quad \text{for } x \geq 0, \, \sigma > 0`.
 
 - **Weibull:** The Weibull distribution is a flexible continuous probability distribution used to model a wide variety of data, especially in reliability engineering and life data analysis. `WIKI <https://en.wikipedia.org/wiki/Weibull_distribution>` The probability density function of the Weibull distribution is :math:`f(x; \beta, \eta) = \frac{\beta}{\eta} \left(\frac{x}{\eta}\right)^{\beta-1} \exp\left(-\left(\frac{x}{\eta}\right)^\beta\right) \quad \text{for } x \geq 0, \, \beta > 0, \, \eta > 0`.
+  
   - β (beta) is the shape parameter
   - η (eta) is the scale parameter
   - The Weibull distribution can take on the characteristics of other distributions based on its shape parameter:
+    
     - β < 1: Decreasing failure rate (similar to exponential)
     - β = 1: Constant failure rate (becomes exponential distribution)
     - β > 1: Increasing failure rate
@@ -205,7 +209,7 @@ A sample output:
 
 
 .. image:: images/fit_dist4.png
-   :align:center
+   :align: center
 
 When comparing distribution fits, several criteria are commonly used to evaluate and select the best model. Here's an explanation of AICc, BIC, AICc Weight, and -2*loglikelihood:
 
@@ -252,9 +256,10 @@ When comparing distribution fits, several criteria are commonly used to evaluate
 
    This is simply -2 times the natural logarithm of the likelihood function. It's used in calculating both AIC and BIC. Lower values indicate better fit.
 
-   :math:`-2\cdot\loglikelihood = -2\ln(L)`
+   :math:`-2\cdot loglikelihood = -2\ln(L)`
 
 When comparing models:
+
 - AICc and BIC balance goodness of fit with model complexity.
 - AICc Weight provides a relative measure of model support.
 - -2*loglikelihood focuses solely on goodness of fit without penalizing complexity.
