@@ -183,7 +183,12 @@ A sample output:
   - When μ = 0 and σ = 1, this reduces to the standard Student's t-distribution.
   - The location parameter μ shifts the distribution along the x-axis.
   - The scale parameter σ stretches or shrinks the distribution.
-  - As DF (degrees of freedom) approaches infinity, the t-distribution approaches a normal distribution. When DF > 30, the distribution will approach a normal distribution. In the demonstrated case, the very large DF indicates that normal distribution may fit better to the samples. The sample data file "dists.pickle" in "sample_data" directory contains student's t sample data, which is good for testing this fit.
+  - As DF (degrees of freedom) approaches infinity, the t-distribution approaches a normal distribution. 
+    
+    - When DF > 30, the distribution will approach a normal distribution. 
+    - A very large DF indicates that normal distribution may fit better to the samples. 
+    - The sample data file "dists.pickle" in "sample_data" directory contains student's t sample data, which is good for testing this fit.
+      
   - For small DF, the t-distribution has heavier tails than the normal distribution.
   - The t-distribution is symmetric about its location parameter μ.
 
