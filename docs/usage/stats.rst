@@ -89,23 +89,28 @@ A normality test is a statistical procedure used to determine whether a dataset 
 
 - **The Anderson-Darling test:** is another robust normality test that builds on the Kolmogorov-Smirnov test by giving more weight to the tails of the distribution. This makes it particularly sensitive to deviations in the tails of the data distribution. It calculates an A² statistic, with larger values indicating greater deviation from normality.
 
-+-------------------+------------------------------------------------+---------------------------------------------------+
-| Aspect            | Shapiro-Wilk Test                              | Anderson-Darling Test                              |
-+===================+================================================+===================================================+
-| **Sensitivity**   | Effective for small to moderate sample sizes   | Sensitive to deviations in the tails of the        |
-|                   |                                                | distribution                                       |
-+-------------------+------------------------------------------------+---------------------------------------------------+
-| **Statistic Used**| W statistic                                    | A² statistic                                       |
-+-------------------+------------------------------------------------+---------------------------------------------------+
-| **Power**         | Generally exhibits higher statistical power    | Also powerful but slightly less so than            |
-|                   | overall                                        | Shapiro-Wilk                                       |
-+-------------------+------------------------------------------------+---------------------------------------------------+
-| **Weighting**     | Does not specifically emphasize tails          | Places more weight on the tails of the             |
-|                   |                                                | distribution                                       |
-+-------------------+------------------------------------------------+---------------------------------------------------+
-| **Use Case**      | Preferred for general use with smaller         | Useful when tail behavior is critical              |
-|                   | datasets                                       |                                                    |
-+-------------------+------------------------------------------------+---------------------------------------------------+
+.. list-table:: Differences Between Shapiro-Wilk and Anderson-Darling Tests
+   :widths: 20 40 40
+   :header-rows: 1
+
+   * - Aspect
+     - Shapiro-Wilk Test
+     - Anderson-Darling Test
+   * - Sensitivity
+     - Effective for small to moderate sample sizes
+     - Sensitive to deviations in the tails of the distribution
+   * - Statistic Used
+     - W statistic
+     - A² statistic
+   * - Power
+     - Generally exhibits higher statistical power overall
+     - Also powerful but slightly less so than Shapiro-Wilk
+   * - Weighting
+     - Does not specifically emphasize tails
+     - Places more weight on the tails of the distribution
+   * - Use Case
+     - Preferred for general use with smaller datasets
+     - Useful when tail behavior is critical
 
 A sample output.
 
