@@ -183,6 +183,10 @@ def compare_dist(
             res.append([name, r["ABL"], r])
             aiccs.append(r["ABL"][1])
         except BaseException:
+            if print_out:
+                print = print_port
+                print("---- " + name + " ----")
+                print("Error: Check input values.")
             pass
     delta_AICc = [i - min(aiccs) for i in aiccs]
     rel_likelihood = [exp(-.5 * i) for i in delta_AICc]

@@ -1,6 +1,6 @@
 from tkinter import ttk
 import tkinter as tk
-from tkinter import TOP, LEFT, BOTH, X
+from tkinter import TOP, LEFT, BOTH, X, W
 from scipy.stats import probplot
 from prettytable import PrettyTable as PT
 ########### Own Modules ###########
@@ -29,13 +29,19 @@ class FitDistDialog(Dialogs):
             "Weibull"]
         self.picks = dict()
 
+        notes = ["", "",
+                 ": Input values > 0",
+                 ": Input values > 0",
+                 ": Input values >=0",
+                 ": Input values > 0"]
+
         f = tk.LabelFrame(m, text='Models')
         f.pack(side=TOP, fill=BOTH, padx=2)
         for i, name in enumerate(self.dists):
             self.picks[name] = tk.BooleanVar(value=False)
-            w = tk.Checkbutton(f, text=name,
+            w = tk.Checkbutton(f, text=name + " " + notes[i],
                                variable=self.picks[name])
-            w.pack(side=LEFT)
+            w.pack(side=TOP, anchor=W)
         return
 
     def apply(self):

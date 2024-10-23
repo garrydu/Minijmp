@@ -16,5 +16,9 @@
     "Confidence Intervals": {
         "link": "https://minijmp.readthedocs.io/en/latest/usage/stats.html#confidence-intervals",
         "window": "Calculate and display the confidence intervals for the population mean and standard deviation using the sampling dataset, assuming the underlying population follows a normal distribution."
+    },
+    "Fit Distributions": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/stats.html#fit-distributions",
+        "window": "A fitted distribution is a theoretical distribution calculated using parameter estimates derived from a sample that you enter. This dialog can help to find the most suitable distribution to the sample. If plotting required, please use Plots>Histogram & Dist. Fit, however which can't compare across distributions."
     }
 }
