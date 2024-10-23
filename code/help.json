@@ -1,13 +1,16 @@
 {
-	"__comment":"link is the weblink for HELP button. Window is for the brief description for each dialog.",
-	"Main Help Menu": {
-		"link":"https://minijmp.readthedocs.io/en/latest/",
-		"window":""},
+    "__comment": "link is the weblink for HELP button. Window is for the brief description for each dialog.",
+    "Main Help Menu": {
+        "link": "https://minijmp.readthedocs.io/en/latest/",
+        "window": ""},
     "Stats Summary": {
-				"link":"https://minijmp.readthedocs.io/en/latest/usage/stats.html#describe",
-		"window":"Generate statistical summaries such as Mean and Median for a single dataset, i.e. one column of data. The statistical measures are set by default, while percentile positions can be customized."},
-	"Stats Summary Multi Datasets":{
-		    				"link":"https://minijmp.readthedocs.io/en/latest/usage/stats.html#describe-multivar",
-		"window":"Generate statistical summaries, including measures such as Mean and Median, for multiple datasets (several columns of data). Users can select which statistical measures to include in the final output table."}
-
+        "link": "https://minijmp.readthedocs.io/en/latest/usage/stats.html#describe",
+        "window": "Generate statistical summaries such as Mean and Median for a single dataset, i.e. one column of data. The statistical measures are set by default, while percentile positions can be customized."},
+    "Stats Summary Multi Datasets": {
+        "link": "https://minijmp.readthedocs.io/en/latest/usage/stats.html#describe-multivar",
+        "window": "Generate statistical summaries, including measures such as Mean and Median, for multiple datasets (several columns of data). Users can select which statistical measures to include in the final output table."},
+    "Normality Test": {
+        "link": "https://minijmp.readthedocs.io/en/latest/usage/stats.html#normality",
+        "window": "Perform normality test to one column of data. Shapiro-Wilk and Anderson-Darling tests will be performed." 
+    }
 }
