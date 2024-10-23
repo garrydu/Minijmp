@@ -158,7 +158,7 @@ Choose Stats>Fit Distributions.
 
 A fitted distribution is a theoretical distribution calculated using parameter estimates derived from a sample that you enter. This dialog can help to find the most suitable distribution to the sample. If plotting required, please use Plots>Histogram & Dist. Fit, however which can't compare across distributions.
 
-- **Data Col. Select:** Select the sampled dataset, i.e. a column of data. The population who was sampled from should be normally distributed. 
+- **Data Col. Select:** Select the sampled dataset, i.e. a column of data. 
 - **Models:** Select the distributions to test with. Please note some distributions require input values all positive or non-negative.
 
 The backend of the fitting is scipy. It provides very close results to JMP 17, in 3 to 4 significant digits. The output format and parameter selection follow JMP. The output doesn't inlcude CI and standard errors.
@@ -166,9 +166,10 @@ The backend of the fitting is scipy. It provides very close results to JMP 17, i
 A sample output:
 
 .. image:: images/fit_dist2.png
-   :align:center
+   :align: center
 
 - **Normal:** The location mu is the mean of the normal distribution, while dispersion sigma is standard deviation. The terminology aligns with JMP, same as below. The probability density function of the normal distribution is :math:`f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}`.
+
   - f(x) is the probability density function
   - x is the variable (the value on the x-axis)
   - μ (mu) is the mean of the distribution
