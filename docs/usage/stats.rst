@@ -183,7 +183,7 @@ A sample output:
   - When μ = 0 and σ = 1, this reduces to the standard Student's t-distribution.
   - The location parameter μ shifts the distribution along the x-axis.
   - The scale parameter σ stretches or shrinks the distribution.
-  - As DF (degrees of freedom) approaches infinity, the t-distribution approaches a normal distribution. 
+  - As DF :math:`\nu` (degrees of freedom) approaches infinity, the t-distribution approaches a normal distribution. 
     
     - When DF > 30, the distribution will approach a normal distribution. 
     - A very large DF indicates that normal distribution may fit better to the samples. 
@@ -195,7 +195,7 @@ A sample output:
 .. image:: images/fit_dist_gamma.png
    :align: center
 
-- **Gamma:** The probability density function of the Student's t-distribution is :math:`f(x) = \frac{\Gamma(\frac{\nu+1}{2})}{\Gamma(\frac{\nu}{2}) \sigma\sqrt{\nu\pi}} \left[1 + \frac{1}{\nu}\left(\frac{x-\mu}{\sigma}\right)^2\right]^{-\frac{\nu+1}{2}}`.
+- **Gamma:** The probability density function of the Gamma distribution is :math:`f(x; \alpha, \sigma) = \frac{x^{\alpha - 1} e^{-x/\sigma}}{\sigma^{\alpha} \Gamma(\alpha)} \quad \text{for } x > 0, \, \alpha > 0, \, \sigma > 0`.
   
   - α (Shape Parameter): Determines the shape of the distribution. Larger values of α result in a distribution that is more symmetric and less skewed.
   - σ (Scale Parameter): Stretches or compresses the distribution along the x-axis. Larger values of σ spread out the distribution.
