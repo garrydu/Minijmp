@@ -12,7 +12,7 @@ from dist_fit import compare_dist
 
 class FitDistDialog(Dialogs):
     def createWidgets(self, m):
-        f = tk.LabelFrame(m, text='Data')
+        f = tk.LabelFrame(m, text='Data Col. Select')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
         w = ttk.Combobox(

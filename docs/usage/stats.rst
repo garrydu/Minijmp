@@ -142,9 +142,8 @@ A sample output:
 
 Interpretation:
 
-- **Two-sided CI:** A 95% two-sided CI of (-0.119, 0.852) for a population mean can be interpreted as:
-"We are 95% confident that the true population mean falls between -0.119 and 0.852."
-This means that if we were to repeat the sampling process many times and calculate the CI each time, about 95% of these intervals would contain the true population mean.
+- **Two-sided CI:** A 95% two-sided CI of (-0.119, 0.852) for a population mean can be interpreted as: "We are 95% confident that the true population mean falls between -0.119 and 0.852." This means that if we were to repeat the sampling process many times and calculate the CI each time, about 95% of these intervals would contain the true population mean.
+
 - **One-sided CI:** A 95% one-sided upper CI of (-, 0.767) can be interpreted as: "We are 95% confident that the true population mean is less than or equal to 0.767." A 95% one-sided lower CI of (-0.035, +) can be interpreted as: "We are 95% confident that the true population mean is greater than or equal to -0.035."
 
 The Interpretation of CI of standard deviation is same to the mean CI above. 
