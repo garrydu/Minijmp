@@ -41,7 +41,7 @@ def fit_plot(x, y, alpha=0.05, print_out=False,
         ax.scatter(x, y, color='blue', alpha=1 / (len(x))**.2,
                    label='Data points', s=dot_size)
 
-    if ellipse:
+    if ellipse or red_ellipse:
         ax.set_box_aspect(1)
         correlation = pearson_correlation(x, y, alpha=alpha, print_port=print,
                                           print_out=print_out)
@@ -57,7 +57,8 @@ def fit_plot(x, y, alpha=0.05, print_out=False,
             b * np.sin(theta) * np.sin(t)
         y_line = np.mean(y) + a * np.cos(theta) * np.sin(t) + \
             b * np.sin(theta) * np.cos(t)
-        ax.fill(x_line, y_line, alpha=0.1, facecolor='blue', edgecolor='none')
+        if ellipse:
+            ax.fill(x_line, y_line, alpha=0.1, facecolor='blue', edgecolor='none')
         if red_ellipse:
             ax.plot(x_line, y_line, color='red', linewidth=1)
 
