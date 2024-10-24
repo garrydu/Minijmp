@@ -15,3 +15,6 @@ A sample output:
 
 .. image:: images/multides2.png
    :align: center
+
+**Please check previous page of DESCRIBE for more information on the statistical items.**
+
