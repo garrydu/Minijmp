@@ -8,5 +8,8 @@ Stats Menu
    :maxdepth: 2
 
    describe
-   stats
+   describe_multivar
+   normality
+   ci
+   fit_dist
 
