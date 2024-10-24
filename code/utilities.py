@@ -427,7 +427,7 @@ def quantiles(input_data,
 
 def norm_test(data, print_out=False, print_port=print):
     s1, p1 = shapiro(data)
-    s2, p2 = normal_ad(np.array(data))
+    s2, p2 = normal_ad(np.array(data, dtype=float))
     if print_out:
         print = print_port
         print("\n---- Normality Test ----")
