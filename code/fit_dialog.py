@@ -92,6 +92,11 @@ class LinearFitDialog(Dialogs):
         pf.ax = pf.fig.add_subplot(111)
 
         self.get_plot_settings()
+        xlabel = self.xvar.get() if self.xlabel is None else self.xlabel
+        ylabel = self.yvar.get() if self.ylabel is None else self.ylabel
+        #  xlabel = self.xlabel if self.xlabel != "" or self.xlabel is not None else self.xvar.get()
+        #  ylabel = self.ylabel if self.ylabel != "" or self.ylabel is not None else self.yvar.get()
+        print("xlabel", xlabel, "y", ylabel)
 
         fit_plot(
             x,
@@ -106,8 +111,8 @@ class LinearFitDialog(Dialogs):
             show_CI=self.show_CI.get(),
             ortho=self.ortho.get(),
             show_PI=self.show_PI.get(),
-            xlabel=self.xlabel if self.xlabel != "" else self.xvar.get(),
-            ylabel=self.ylabel if self.ylabel != "" else self.yvar.get(),
+            xlabel=xlabel,  # self.xlabel if self.xlabel != "" or self.xlabel is None else self.xvar.get(),
+            ylabel=ylabel,  # self.ylabel if self.ylabel != "" or self.ylabel is None else self.yvar.get(),
             x_min=self.x_min,
             y_min=self.y_min,
             x_max=self.x_max,
@@ -230,7 +235,7 @@ class MCorDialog(Dialogs):
         #      axs.append(r)
         # Adjust the spacing between subplots using the Figure object
         #  pf.fig.subplots_adjust(hspace=0)
-        master_ax = pf.fig.add_subplot(1,1,1)
+        master_ax = pf.fig.add_subplot(1, 1, 1)
 
         multi_fit(
             data,
