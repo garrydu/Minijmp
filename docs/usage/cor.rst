@@ -223,4 +223,31 @@ Though Spearman's rho is claimed to handle non-linear relationship better than P
 
 Even though it's not strictly correct in null hypothesis, Spearman's rho doesn't work better than Pearson in distinguish if two variables having non-linear monotonic relationship. 
 
-However, Pearson's correlation and Spearman's rho will both handle outliers occure in the dataset poorly. 
+However, Pearson's correlation and Spearman's rho both handle outliers occure in the dataset poorly. Kendall's tau stands out in this perspective. Tested with non-linear related data I have and those with ourliers, Kendall's tau did a better job in telling the potential correlation between the varialbes. For example, in the `sampmle_data` folder `correlation.pickle`, the column `X` and column `Outlier` have non-linear relationship with outliers. Only Kendall's tau gives small p-value, while all the three methods' coefficients are similar. 
+
+
+.. list-table::
+   :widths: 33 67
+   :class: tight-table
+
+   * - .. image:: images/cor_outlier.png
+     - .. code-block:: none
+
+            ---- Pearson correlation alpha = 0.050 ----
+            Correlation coefficient: -0.255
+            Confidence Interval (-0.550, 0.097)
+            Covariance: -360.564
+            p-value = 0.152 N = 33
+
+            ---- Spearman's rho Correlation ----
+            Spearman correlation: -0.229
+            Spearman p-value: 0.200
+
+            ---- Kendall's tau Correlation ----
+            Kendall's tau: -0.282
+            Kendall's p-value: 0.021
+
+Hoeffding's D
+~~~~~~~~~~~~~
+
+

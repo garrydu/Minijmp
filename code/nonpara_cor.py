@@ -10,8 +10,8 @@ def spearman(x, y, print_out=False, print_port=print):
     if print_out:
         print = print_port
         print("\n---- Spearman's rho Correlation ----")
-        print("Spearman correlation: " + "%.3f" % spearman_result.correlation)
-        print("Spearman p-value: " + "%.3f" % spearman_result.pvalue)
+        print("Spearman's rho correlation: " + "%.3f" % spearman_result.correlation)
+        print("Spearman's rho p-value: " + "%.3f" % spearman_result.pvalue)
         print("H0: The population Spearman's rho = 0, which means no monotonic relationship between the two variables.")
     return {"cor": spearman_result.correlation, "p": spearman_result.pvalue}
 
@@ -25,7 +25,7 @@ def kendall(x, y, print_out=False, print_port=print):
         print = print_port
         print("\n---- Kendall's tau Correlation ----")
         print("Kendall's tau: " + "%.3f" % kendall_result.correlation)
-        print("Kendall's p-value: " + "%.3f" % kendall_result.pvalue)
+        print("Kendall's tau p-value: " + "%.3f" % kendall_result.pvalue)
         print("H0: The population Kendall's tau = 0, which means no monotonic association between the two variables.")
     return {"cor": kendall_result.correlation, "p": kendall_result.pvalue}
 
@@ -149,7 +149,7 @@ def hoeffding(x, y, print_out=False, print_port=print):
         print = print_port
         print("\n---- Hoeffding's D Correlation ----")
         print("Hoeffding's D: " + "%.3f" % D)
-        print("Hoeffding's p-value: " + "%.3f" % p)
+        print("Hoeffding's D p-value: " + "%.3f" % p)
         print("H0: The two variables are independent.")
         #  print("
     return {"cor": D, "p": p}
