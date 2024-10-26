@@ -159,6 +159,7 @@ Both Spearman's and Kendall's coefficients were originally developed for continu
    :header-rows: 1
    :widths: 20 40 40
    :class: tight-table
+   :align: left
 
    * - Aspect
      - Spearman
