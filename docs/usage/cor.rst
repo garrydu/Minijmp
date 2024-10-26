@@ -20,7 +20,7 @@ Correlation is a statistical measure that describes the strength and direction o
 - **Correlation Select:**  There are two main types of correlation analyses: parametric (like Pearson's correlation) and nonparametric (such as Spearman's and Kendall's correlations). Their difference will be discussed, however select Pearson's Correlation by default if you are not sure.
 - **Scatter Plot Setting:** A scatter plot of data will be displayed, all the settings below are about this plot. 
 
-  - **Correlation Ellipse:** Display a light blue filled ellipse for Bivariate Normal Distribution, which is only available with Pearson's correlation.
+  - **Correlation Ellipse:** Display a light blue filled ellipse for Bivariate Normal Distribution, which is only available with Pearson's correlation. The ellipse will be always drawn unless Pearson's Correlation is unselected. 
   - **Ellipse Outline:** Display a red outline of the ellipse above. Either of these two settings can work alone, but also together.
   - **Alpha:** It determines the contour level of the ellipse. If alpha is 0.05, the ellipse of 95% Probability Contour will be displayed; while 0.3 for 70% of Probability Contour. Leave it by default if you are not sure. This alpha also determines the confidence intervals range of the Pearson's correlation coefficient. 
   - **Axis Settings:**
@@ -139,13 +139,13 @@ A Bivariate Normal Distribution has two independent variables. For example, when
 
 .. raw:: html
 
-<div style="text-align: center;">
+    <div style="text-align: center;">
 
 |img1| |img2|
 
 .. raw:: html
 
-</div>
+    </div>
 
 The ellipse is the contour line of the Bivariate Normal Distribution of the two datasets in the correlation. The commonly used 95% ellipse boundary is the two dimentional form of red line in the univariate distribution, which contains 95% integrated probability under the bell curve. The integrated volume under the bell dorm within the boundary is 95%.
 
@@ -223,7 +223,7 @@ Though Spearman's rho is claimed to handle non-linear relationship better than P
 
 Even though it's not strictly correct in null hypothesis, Spearman's rho doesn't work better than Pearson in distinguish if two variables having non-linear monotonic relationship. 
 
-However, Pearson's correlation and Spearman's rho both handle outliers occure in the dataset poorly. Kendall's tau stands out in this perspective. Tested with non-linear related data I have and those with ourliers, Kendall's tau did a better job in telling the potential correlation between the varialbes. For example, in the `sampmle_data` folder `correlation.pickle`, the column `X` and column `Outlier` have non-linear relationship with outliers. Only Kendall's tau gives small p-value, while all the three methods' coefficients are similar. 
+However, Pearson's correlation and Spearman's rho both handle outliers poorly. Kendall's tau stands out in this perspective. Tested with non-linear related data I have and those with ourliers, Kendall's tau did a better job in telling the potential correlation between the varialbes. For example, in the `sampmle_data` folder `correlation.pickle`, the column `X` and column `Outlier` have non-linear relationship with outliers. Only Kendall's tau gives small p-value, while all the three methods' coefficients are similar. 
 
 
 .. list-table::
@@ -250,4 +250,67 @@ However, Pearson's correlation and Spearman's rho both handle outliers occure in
 Hoeffding's D
 ~~~~~~~~~~~~~
 
+Unlike Spearman's rho, Kendall's tau, and Pearsons's Correlation, Hoeffding's D can be used to detect a wide variety of dependence structures beyond monotonic association. For example the distributions below, except for the first one which is a random distribution, Hoeffding's D will reject the H0 for all datasets, wihch is that the two varialbes are independent.
 
+.. image:: images/cor_heoffd1.png
+   :align: center
+
+Like the other two non-parametric methods, Hoeffding's D can handle both continuous and ordinal data. This algorithm can handle problems much broader than this software offering. Here is a good article discussing this algorithm. `LINK <https://github.com/Dicklesworthstone/hoeffdings_d_explainer/blob/main/README.md>`_
+
+If we testing the data set above with Hoeffding's D, it will give a definite rejection to the null hypothesis. 
+
+
+.. list-table::
+   :widths: 33 67
+   :class: tight-table
+
+   * - .. image:: images/cor_outlier.png
+     - .. code-block:: none
+
+            ---- Hoeffding's D Correlation ----
+            Hoeffding's D: 0.196
+            Hoeffding's p-value: 0.000
+            H0: The two variables are independent.
+
+While there is another dataset we can test in the `correlation.pickle` sample sets, the first and second column show two linear relationships who go in different directions with random errors. Testing with the four correlations, only Hoeffding's D gave a p-value less than 0.05 and rejected the null hypothesis.
+
+
+.. list-table::
+   :widths: 33 67
+   :class: tight-table
+
+   * - .. image:: images/cor_heoffd2.png
+     - .. code-block:: none
+
+            ---- Spearman's rho Correlation ----
+            Spearman's rho correlation: 0.103
+            Spearman's rho p-value: 0.570
+            H0: The population Spearman's rho = 0, which means no monotonic relationship between the two variables.
+
+            ---- Kendall's tau Correlation ----
+            Kendall's tau: 0.102
+            Kendall's tau p-value: 0.415
+            H0: The population Kendall's tau = 0, which means no monotonic association between the two variables.
+
+            ---- Hoeffding's D Correlation ----
+            Hoeffding's D: 0.043
+            Hoeffding's D p-value: 0.019
+            H0: The two variables are independent.
+
+            ---- Pearson correlation alpha = 0.050 ----
+            Correlation coefficient: 0.204
+            Confidence Interval (-0.150, 0.512)
+            Covariance: 571.448
+            p-value = 0.254 N = 33
+            P-value is the probability of there is no linear relationship betweent the two populations.
+
+There is also a dataset without any random errors added, Hoeffding's D gives a higher D value and a much smaller p-value. 
+
+In general, Pearson's Correlation is good enough for most of the cases. Hoeffding's D is a great choice when complicated relationship involved, and to determine the random error amount inside the datasets. Hoeffding's D value generally increases monotonically with stronger relationships between variables, which can be used as the measure of randomness. 
+
+- Hoeffding's D ranges from -0.5 to 1.
+- A value of 0 indicates no association between the variables.
+- As the strength of the association between two variables increases, the D value tends to increase as well.
+- Positive values indicate a positive association.
+- Negative values are rare and may indicate some form of negative association.
+- Values closer to 1 suggest stronger associations.

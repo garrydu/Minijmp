@@ -20,5 +20,9 @@
     "Fit Distributions": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/fit_dist.html",
         "window": "A fitted distribution is a theoretical distribution calculated using parameter estimates derived from a sample that you enter. This dialog can help to find the most suitable distribution to the sample. If plotting required, please use Plots>Histogram & Dist. Fit, however which can't compare across distributions."
+    },
+    "Correlation": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/cor.html",
+        "window":"Calculate correlation between two data columns and draw a scatter plot. Correlation ellipse can be drawn when Pearson's Correlation is selected."
     }
 }

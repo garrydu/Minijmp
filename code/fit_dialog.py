@@ -158,14 +158,27 @@ class CorrelationDialog(LinearFitDialog):
         #      master, values=stat_list, textvariable=self.stat,
         #      width=5)
         #  w.pack(side=LEFT, padx=2)
-        self.cor = tk.IntVar(value=4)
-        w = tk.Radiobutton(master, text="Pearson: linear relationship", variable=self.cor, value=4)
+        #  self.cor = tk.IntVar(value=4)
+        #  w = tk.Radiobutton(master, text="Pearson: linear relationship", variable=self.cor, value=4)
+        #  w.pack(side=TOP, anchor=W)
+        #  w = tk.Radiobutton(master, text="Spearman's rho: monotonic relationship", variable=self.cor, value=0)
+        #  w.pack(side=TOP, anchor=W)
+        #  w = tk.Radiobutton(master, text="Kendall's tau: monotonic relationship", variable=self.cor, value=1)
+        #  w.pack(side=TOP, anchor=W)
+        #  w = tk.Radiobutton(master, text="Hoeffding's D: independent or not", variable=self.cor, value=2)
+        #  w.pack(side=TOP, anchor=W)
+
+        self.cor_p = tk.BooleanVar(value=True)
+        self.cor_s = tk.BooleanVar(value=False)
+        self.cor_k = tk.BooleanVar(value=False)
+        self.cor_h = tk.BooleanVar(value=False)
+        w = tk.Checkbutton(master, text="Pearson: linear relationship", variable=self.cor_p)
         w.pack(side=TOP, anchor=W)
-        w = tk.Radiobutton(master, text="Spearman's rho: monotonic relationship", variable=self.cor, value=0)
+        w = tk.Checkbutton(master, text="Spearman's rho: monotonic relationship", variable=self.cor_s)
         w.pack(side=TOP, anchor=W)
-        w = tk.Radiobutton(master, text="Kendall's tau: monotonic relationship", variable=self.cor, value=1)
+        w = tk.Checkbutton(master, text="Kendall's tau: monotonic relationship", variable=self.cor_k)
         w.pack(side=TOP, anchor=W)
-        w = tk.Radiobutton(master, text="Hoeffding's D: independent or not", variable=self.cor, value=2)
+        w = tk.Checkbutton(master, text="Hoeffding's D: independent or not", variable=self.cor_h)
         w.pack(side=TOP, anchor=W)
 
         master = tk.LabelFrame(m, text='Scatter Plot')
@@ -211,17 +224,23 @@ class CorrelationDialog(LinearFitDialog):
         #  ylabel = self.ylabel if self.ylabel != "" or self.ylabel is not None else self.yvar.get()
         print("xlabel", xlabel, "y", ylabel)
 
-        cor = self.cor.get()
+        #  cor = self.cor.get()
         print_out = False
         red_ellipse = False
         ellipse = False
-        if cor == 4:
+        if self.cor_p.get():
             red_ellipse = self.red_ellipse.get()
             ellipse = self.ellipse.get()
             print_out = True
-        else:
-            funcs = [spearman, kendall, hoeffding]
-            funcs[cor](x, y, print_out=True, print_port=self.app.print)
+        if self.cor_s.get():
+            spearman(x, y, print_out=True, print_port=self.app.print)
+        if self.cor_k.get():
+            kendall(x, y, print_out=True, print_port=self.app.print)
+        if self.cor_h.get():
+            hoeffding(x, y, print_out=True, print_port=self.app.print)
+        #  else:
+        #      funcs = [spearman, kendall, hoeffding]
+        #      funcs[cor](x, y, print_out=True, print_port=self.app.print)
 
         fit_plot(
             x,
