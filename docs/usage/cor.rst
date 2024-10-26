@@ -285,24 +285,20 @@ While there is another dataset we can test in the `correlation.pickle` sample se
             ---- Spearman's rho Correlation ----
             Spearman's rho correlation: 0.103
             Spearman's rho p-value: 0.570
-            H0: The population Spearman's rho = 0, which means no monotonic relationship between the two variables.
 
             ---- Kendall's tau Correlation ----
             Kendall's tau: 0.102
             Kendall's tau p-value: 0.415
-            H0: The population Kendall's tau = 0, which means no monotonic association between the two variables.
 
             ---- Hoeffding's D Correlation ----
             Hoeffding's D: 0.043
             Hoeffding's D p-value: 0.019
-            H0: The two variables are independent.
 
             ---- Pearson correlation alpha = 0.050 ----
             Correlation coefficient: 0.204
             Confidence Interval (-0.150, 0.512)
             Covariance: 571.448
             p-value = 0.254 N = 33
-            P-value is the probability of there is no linear relationship betweent the two populations.
 
 There is also a dataset without any random errors added, Hoeffding's D gives a higher D value and a much smaller p-value. 
 
