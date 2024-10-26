@@ -83,6 +83,7 @@ Covariance and Pearson correlation coefficient are related, they serve different
 .. list-table:: Comparison of Covariance and Pearson Correlation
    :header-rows: 1
    :widths: 20 40 40
+   :class: tight-table
 
    * - Aspect
      - Covariance
@@ -121,6 +122,14 @@ The correlation ellipse is a strong tool to visualize the direction and strength
      - .. image:: images/cor_p2.png
      - .. image:: images/cor_p3.png
 
+
+.. list-table::
+   :widths: 33 33 33
+
+   * - .. image:: images/cor_p1.png
+     - .. image:: images/cor_p2.png
+     - .. image:: images/cor_p3.png
+
 The screenshots show different levels of correlations. The data is available at `data_sample` folder in the CSV file of `human_age_prediction-Kaggle`. 
 
 To discuss the mechanism behind the ellipse we first look at the univariate Normal Distribution, i.e. distribution changing via one variable. The area under the PDF curve corresponds to probability: 68% area between ± σ and 95% between ± 1.96σ. 
@@ -135,6 +144,15 @@ A Bivariate Normal Distribution has two independent variables. For example, when
 
    * - .. image:: images/cor_e_2d_norm1.png
      - .. image:: images/cor_e_2d_norm2.png
+
+
+.. |img1| image:: images/cor_e_2d_norm1.png
+   :width: 32%
+
+.. |img2| image:: images/cor_e_2d_norm2.png
+   :width: 32%
+
+|img1| |img2|
 
 The ellipse is the contour line of the Bivariate Normal Distribution of the two datasets in the correlation. The commonly used 95% ellipse boundary is the two dimentional form of red line in the univariate distribution, which contains 95% integrated probability under the bell curve. The integrated volume under the bell dorm within the boundary is 95%.
 
