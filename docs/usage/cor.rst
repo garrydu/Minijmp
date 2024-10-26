@@ -208,8 +208,9 @@ Though Spearman's rho is claimed to handle non-linear relationship better than P
    :widths: 33 67
 
    * - .. image:: images/cor_corner_spearman.png
-     - .. ::
+     - .. highlight:: none
 
+       ::
 			---- Pearson correlation alpha = 0.050 ----
 			Correlation coefficient: 0.655
 			Confidence Interval (-0.194, 0.943)
