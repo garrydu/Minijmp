@@ -14,6 +14,9 @@ A fitted distribution is a theoretical distribution calculated using parameter e
 
 The backend of the fitting is scipy. It provides very close results to JMP 17, in 3 to 4 significant digits. The output format and parameter selection follow JMP. The output doesn't inlcude CI and standard errors.
 
+Fit Distributions
+~~~~~~~~~~~~~~~~~
+
 A sample output:
 
 .. image:: images/fit_dist_norm.png
@@ -77,6 +80,9 @@ A sample output:
     - β ≈ 3.6: Approximates normal distribution
 
 
+Compare Distributions
+~~~~~~~~~~~~~~~~~~~~~
+
 .. image:: images/fit_dist4.png
    :align: center
 
@@ -135,5 +141,30 @@ When comparing models:
 
 These AICc Weight is used in JMP in selecting the most appropriate distribution fit, when multiple fits involved.
 
-
     
+Goodness of Fit
+~~~~~~~~~~~~~~~
+
+Goodness of fit describes how well a statistical model, in this case a probability distribution, matches a set of observations. The concept involves:
+
+- Comparing the observed data to the expected data if it were to follow the hypothesized distribution
+- Quantifying the discrepancy between observed and expected values
+- Determining if the discrepancy is statistically significant
+
+The Anderson-Darling test is specifically designed to assess goodness of fit. Here are two sample outputs:
+
+.. image:: images/fit_dist_p1.png
+   :align: center
+
+
+.. image:: images/fit_dist_p2.png
+   :align: center
+
+Interpretation:
+- Lower A² values indicate a better fit to the specified distribution
+- The p-value determines statistical significance:
+
+  - H0: Data follows the specified distribution (e.g., normal, Gamma)
+  - H1: Data does not follow the specified distribution
+  - If p < α (significance level), reject the null hypothesis.
+  - If p ≥ α, fail to reject the null hypothesis

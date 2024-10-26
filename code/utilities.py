@@ -245,7 +245,7 @@ def pearson_correlation(x, y, alpha=0.05, print_out=True, print_port=print):
         print("Confidence Interval (%.3f, %.3f)" % (lo, hi))
         print("Covariance: %.3f" % cov)
         print("p-value = %.3f\tN = %d" % (p, n))
-        print("P-value is the probability of there is no relationship betweent the two populations.")
+        print("P-value is the probability of there is no linear relationship betweent the two populations.")
 
     return {"r": r, "r_l": lo, "r_u": hi, "cov": cov, "p": p, "N": n,
             "ellipse": {"a": a, "b": b, "theta": theta}}

@@ -12,4 +12,4 @@ Stats Menu
    normality
    ci
    fit_dist
-
+   cor
