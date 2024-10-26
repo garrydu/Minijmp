@@ -1,4 +1,13 @@
 
+.. raw:: html
+
+   <style>
+      .tight-table td {
+             white-space: normal !important;
+                       }
+                          </style>
+
+
 Normality
 ---------
 
@@ -16,6 +25,7 @@ A normality test is a statistical procedure used to determine whether a dataset 
 .. list-table:: Differences Between Shapiro-Wilk and Anderson-Darling Tests
    :widths: 20 40 40
    :header-rows: 1
+   :class: tight-table
 
    * - Aspect
      - Shapiro-Wilk Test

@@ -112,16 +112,7 @@ For example the quoted result above show the p-value of the correlation between 
 Correlation Ellipse
 -------------------
 
-The correlation ellipse is a strong tool to visualize the direction and strength of the correlation. The long axis indicates the direction of the correlation, either it is positive or negative. The width of the ellipse, i.e. the ratio between the short and long axes, shows the correlation strength, while the narrower the ellipse is the stronger the correlation they have. However, the direction of the axis and their ratio are not independent. A strong correlation intends to have the long axis at 45 degree, while a weak correlation has the long axis close to horizontal. The direction of the axis thus also tells the strength of the correlation.
-
-
-.. list-table::
-  :widths: 30 30 30
-
-   * - .. image:: images/cor_p1.png
-     - .. image:: images/cor_p2.png
-     - .. image:: images/cor_p3.png
-
+The correlation ellipse is a strong tool to visualize the direction and strength of the correlation. The long axis indicates the direction of the correlation, either it is positive or negative. The width of the ellipse, i.e. the ratio between the short and long axes, shows the correlation strength, while the narrower the ellipse is the stronger the correlation they have. 
 
 .. list-table::
    :widths: 33 33 33
@@ -139,20 +130,22 @@ To discuss the mechanism behind the ellipse we first look at the univariate Norm
 
 A Bivariate Normal Distribution has two independent variables. For example, when shooting bullets towards the target center, the bullet's position in X and Y both follows a univariate Normal Distribution. Combining together, the probability density on the 2 dimentional plane of target paper forms a bell shape, when view from top it has contour of ellipse.
 
-.. list-table::
-   :width: 30 30
-
-   * - .. image:: images/cor_e_2d_norm1.png
-     - .. image:: images/cor_e_2d_norm2.png
-
 
 .. |img1| image:: images/cor_e_2d_norm1.png
-   :width: 32%
+   :width: 40%
 
 .. |img2| image:: images/cor_e_2d_norm2.png
-   :width: 32%
+   :width: 40%
+
+.. raw:: html
+
+<div style="text-align: center;">
 
 |img1| |img2|
+
+.. raw:: html
+
+</div>
 
 The ellipse is the contour line of the Bivariate Normal Distribution of the two datasets in the correlation. The commonly used 95% ellipse boundary is the two dimentional form of red line in the univariate distribution, which contains 95% integrated probability under the bell curve. The integrated volume under the bell dorm within the boundary is 95%.
 
@@ -209,4 +202,24 @@ Both Spearman's and Kendall's coefficients were originally developed for continu
      - May not handle ties in data as well
      - Better at handling ties in data
 
-Though 
+Though Spearman's rho is claimed to handle non-linear relationship better than Pearson's correlation, it still tests monotonic relationship. In data distribution has some non-linear portion for example a cubical or logarithm relationship, Pearson' correlation still gives decent distinguish to the error amount containing in the data, especially p-value, if we don't argue its null hypothesis of linear relationship. In most of my tests, Spearman's rho has similar p-value with Pearson's correlation, except for some carefully tuned corner case like the one below.
+
+.. list-table::
+   :widths: 33 67
+
+   * - .. image:: images/cor_corner_spearman.png
+     - .. ::
+
+			---- Pearson correlation alpha = 0.050 ----
+			Correlation coefficient: 0.655
+			Confidence Interval (-0.194, 0.943)
+			Covariance: 0.547
+			p-value = 0.111	N = 7
+
+			---- Spearman's rho Correlation ----
+			Spearman correlation: 1.000
+			Spearman p-value: 0.000 
+
+Even though it's not strictly correct in null hypothesis, Spearman's rho doesn't work better than Pearson in distinguish if two variables having non-linear monotonic relationship. 
+
+However, Pearson's correlation and Spearman's rho will both handle outliers occure in the dataset poorly. 
