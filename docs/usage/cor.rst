@@ -1,3 +1,11 @@
+.. raw:: html
+
+   <style>
+      .tight-table td {
+             white-space: normal !important;
+                       }
+                          </style>
+
 Correlation
 ===========
 
