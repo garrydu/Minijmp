@@ -24,5 +24,7 @@ with change_dir(new_dir):
     try:
         subprocess.run(['python3', 'MiniJMP.py'])
     except FileNotFoundError:
-        subprocess.run(['pythonw', 'MiniJMP.py'])
-
+        try:
+            subprocess.run(['pythonw', 'MiniJMP.py']) 
+        except BaseException:
+            subprocess.run(['python', 'MiniJMP.py'])
