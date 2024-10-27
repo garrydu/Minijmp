@@ -1,7 +1,9 @@
 # Minijmp
 ![Main Screenshot](docs/images/main.png "Screenshot")
 
-Minijmp is an open-source alternative to Minitab Express, also offering additional features typically found only in JMP or Minitab. As of early 2024, there weren't any free statistical alternatives to JMP and Minitab available, which led me to develop this while writing Python code for statistical analysis. 
+
+Minijmp is a free, open-source program that works like Minitab Express, but comes with extra tools you'd usually find in JMP or Minitab. As of early 2024, I couldn't find any free programs that could do what JMP and Minitab do, so I decided to build one myself while working on statistics with Python.
+
 
 ## Current Features
 The software was developed based on [PandasTable](https://github.com/dmnfarrell/pandastable) (by D. Farrell), utilizing its spreadsheet UI and DataFrame backend. Minijmp replicates approximately 70% of Minitab Express's statistical functions (Ver. 0.1) and includes features like orthogonal fit, GRR, and Cpk calculations. It also has JMP features I like, such as the comparison of means under JMP ANOVA, and Hoeffding's D correlation.
@@ -39,8 +41,19 @@ Run the software.
 
 ```
 cd Minijmp
-python3 start.py
+python start.py
 ```
+
+### Trouble Shooting
+
+Confirm the python version is not lower  than 3.8.
+
+```
+python --version
+```
+
+In some system, may try to specify `python3` to boot the program, in case `python` links to old versions.
+
 
 ### Dependencies
 
