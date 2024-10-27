@@ -1,5 +1,6 @@
-Welcome to Minijmp's documentation!
-========================================
+.. include:: introduction.rst
+   :start-line: 1
+   :end-line: 9
 
 .. toctree::
    :maxdepth: 2
