@@ -202,7 +202,7 @@ Both Spearman's and Kendall's coefficients were originally developed for continu
      - May not handle ties in data as well
      - Better at handling ties in data
 
-Though Spearman's rho is claimed to handle non-linear relationship better than Pearson's correlation, it still tests monotonic relationship. In data distribution has some non-linear portion for example a cubical or logarithm relationship, Pearson' correlation still gives decent distinguish to the error amount containing in the data, especially p-value, if we don't argue its null hypothesis of linear relationship. In most of my tests, Spearman's rho has similar p-value with Pearson's correlation, except for some carefully tuned corner case like the one below.
+Though Spearman's rho is claimed to handle non-linear relationship, it still tests only monotonic relationship. In data distribution has some non-linear portion for example a cubical or logarithm relationship, Pearson' correlation still gives decent distinguish to the error amount containing in the data, especially p-value, if we don't argue its null hypothesis of linear relationship. In most of my tests, Spearman's rho has similar p-value with Pearson's correlation, except for some carefully tuned corner case like the one below.
 
 .. list-table::
    :widths: 33 67
