@@ -44,7 +44,7 @@ class LinearFitDialog(Dialogs):
         ####### extension #######
         self.update_vars()
 
-        master = tk.LabelFrame(m, text='Correlation')
+        master = tk.LabelFrame(m, text='Scatter Plot')
         master.pack(side=TOP, fill=BOTH, padx=2)
         w = tk.Checkbutton(master, text='Scatter Dots',
                            variable=self.scatter)

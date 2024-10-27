@@ -13,3 +13,4 @@ Stats Menu
    ci
    fit_dist
    cor
+   linear_fit
