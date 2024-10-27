@@ -2,7 +2,7 @@ Minijmp
 -------
 
 .. include:: introduction.rst
-   :start-line: 3
+   :start-line: 1 
    :end-line: 9
 
 .. toctree::
