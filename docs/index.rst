@@ -2,8 +2,8 @@ Minijmp
 -------
 
 .. include:: introduction.rst
-   :start-line: 1 
-   :end-line: 9
+   :start-line: 3 
+   :end-line: 12
 
 .. toctree::
    :maxdepth: 2
