@@ -93,7 +93,8 @@ Summary of Fit
 
 Back to the example above of the linear fit between top speed and range of EVs. The results below are the first part of the fit using top speed as predictor and range as the response variable.
 
-::   
+.. code-block:: none
+
         Summary of Fit
         RSquare 0.558			RSquare Adj 0.553
         Root Mean Square Error 84.239	Mean of Response 338.786
