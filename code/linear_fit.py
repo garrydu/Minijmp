@@ -186,22 +186,18 @@ def linear_fit(x, y, print_out=True, print_port=print):
         #  print("Total DF %d\tSum of Sq %.3f" % (n - 1, SST))
         print(f"F Ratio {F_reg:.3f}\tProb > F {p_reg:.3f}")
         print("p value is the probability of slope == 0.")
-        print("\nLack of Fit")
-        t = PT()
-        t.field_names = ["Item", "DF", "Sum of Sq.", "Mean Sq."]
-        t.add_row(["Lack of fit", "%d" % DFLF, "%.3f" % SSLF, "%.3f" % MSLF])
-        t.add_row(["Pure Error", "%d" % DFPE, "%.3f" % SSPE, "%.3f" % MSPE])
-        t.add_row(["Total", "%d" % (n - 1), "%.3f" % SST, " "])
-        print(str(t))
-
-        #  print(
-        #      f"Lack of Fit DF {DFLF:d}\tSum of Sq {SSLF:.3f}\tMean Sq {MSLF:.3f}")
-        #  print(
-        #      f"Pure Error DF {DFPE:d}\tSum of Sq {SSPE:.3f}\tMean Sq {MSPE:.3f}")
-        #  print("Total Error is the Error in Variances Analysis.")
-        print(
-            f"F Ratio {F_lack:.3f}\tProb > F {p_lack:.3f}\tMax R Square {max_r_sq:.3f}")
-        print("p value is the probability of the true relationship is linear.")
+        if p_lack>=0:
+            print("\nLack of Fit")
+            t = PT()
+            t.field_names = ["Item", "DF", "Sum of Sq.", "Mean Sq."]
+            t.add_row(["Lack of fit", "%d" % DFLF, "%.3f" % SSLF, "%.3f" % MSLF])
+            t.add_row(["Pure Error", "%d" % DFPE, "%.3f" % SSPE, "%.3f" % MSPE])
+            t.add_row(["Total", "%d" % (n - 1), "%.3f" % SST, " "])
+            print(str(t))
+            print(
+                f"F Ratio {F_lack:.3f}\tProb > F {p_lack:.3f}\tMax R Square {max_r_sq:.3f}")
+            print("H0: The model correctly specified the relationship.")
+            #  print("p value is the probability of the true relationship is linear.")
         #  print(f"Max R Square {max_r_sq:.3f}")
         print("\nNormality of Residuals")
         print("Shapiro-Wilk Statistics %.3f\tp-value %.3f" %

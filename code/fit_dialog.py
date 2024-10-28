@@ -274,25 +274,25 @@ class OrthoFitDialog(LinearFitDialog):
 class ResidDialog(Dialogs):
     def createWidgets(self, m):
         """Create a set of grp-agg-func options together"""
-        w = tk.Label(
-            m, text="Residual plots are only available for linear fits.")
-        w.pack(side=TOP, fill=BOTH, padx=2)
+        #  w = tk.Label(
+        #      m, text="Residual plots are only available for linear fits.")
+        #  w.pack(side=TOP, fill=BOTH, padx=2)
         f = tk.LabelFrame(m, text='X Y Values')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
         self.yvar = tk.StringVar(value="")
         w = tk.Label(f, text="X")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2, pady=2)
         w = tk.Label(f, text="Y")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.yvar,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2, pady=2)
         return
 
     def apply(self):

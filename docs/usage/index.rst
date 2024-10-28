@@ -14,3 +14,5 @@ Stats Menu
    fit_dist
    cor
    linear_fit
+   residuals
+

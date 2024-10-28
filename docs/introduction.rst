@@ -9,7 +9,9 @@ Minijmp
 
    <br><br>
 
-Minijmp is an open-source alternative to Minitab Express, also offering additional features typically found only in JMP or Minitab. As of early 2024, there weren't any free statistical alternatives to JMP and Minitab available, which led me to develop this while writing Python code for statistical analysis. 
+
+Minijmp is a free, open-source program that works like Minitab Express, but comes with extra tools you'd usually find in JMP or Minitab. As of early 2024, I couldn't find any free programs that could do what JMP and Minitab do, so I decided to build one myself while working on statistics with Python. `Github repo LINK <https://github.com/garrydu/Minijmp>`_
+
 
 Current Features
 ----------------
