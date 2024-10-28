@@ -56,9 +56,6 @@ QQ plots compare the quantiles of the sample data against the quantiles of a the
 - Normally Distributed Data: If the data is normally distributed, the points on the QQ plot will roughly form a straight line from the lower left to the upper right corner.
 - Non-Normal Data: Deviations from this straight line indicate departures from normality.
 
-
-The following patterns violate the assumption that the residuals are normally distributed.
-
 .. list-table::
    :widths: 25 25 25 25
 
@@ -66,6 +63,8 @@ The following patterns violate the assumption that the residuals are normally di
      - .. image:: images/normal_probability_plot_inverted_s_curve_pattern.png
      - .. image:: images/normal_probability_plot_downward_curve_pattern.png
      - .. image:: images/normal_probability_plot_outliers.png
+
+The patterns violate the assumption that the residuals are normally distributed.
 
 - S-curve implies a distribution with long tails.
 - Inverted S-curve implies a distribution with short tails.

@@ -93,7 +93,7 @@ Summary of Fit
 
 Back to the example above of the linear fit between top speed and range of EVs. The results below are the first part of the fit using top speed as predictor and range as the response variable.
 
-.. highlight :: none
+.. highlight:: none
    
         Summary of Fit
         RSquare 0.558			RSquare Adj 0.553
@@ -118,7 +118,7 @@ Back to the example above of the linear fit between top speed and range of EVs. 
 - **Mean of Response:** The mean of response is simply the average (mean) of all your y-values (response variable) in your dataset.
 
 
-.. highlight :: none
+.. highlight:: none
    
         Parameter Estimates
         +-----------+---------+-----------+---------+------------+
@@ -134,7 +134,7 @@ Back to the example above of the linear fit between top speed and range of EVs. 
 - **p-Value:** The `Prob > |t|` in the table, it is. The null hypothesis is the value, i.e. either slope or intercept, equals zero. When the p value is smaller than the significance level, the null hypothesis should be rejected and consider the sloop (or intercept) is not zero. 
 
 
-.. highlight :: none
+.. highlight:: none
    
         Analysis of Variances
         +-------+-----+-------------+------------+
@@ -162,7 +162,7 @@ Lack of Fit
 -----------
 
 
-.. highlight :: none
+.. highlight:: none
    
         Lack of Fit
         +-------------+-----+-------------+-----------+
@@ -186,7 +186,7 @@ The null hypothesis for the lack-of-fit test is that the model correctly specifi
 
 The quoted result above was using Top Speed as the predictor and Range as the Response, of the data in the CSV file of `ElectricCarData_Clean-kaggle.csv` in the `sample_data` folder. When swapping the predictor and response, we receive the results below (just LOF part).
 
-.. highlight :: none
+.. highlight:: none
    
         Lack of Fit
         +-------------+-----+------------+----------+
@@ -212,7 +212,7 @@ The assumption that residuals should be normally distributed is crucial because 
 When residuals aren't normally distributed, it often signals a problem with our linear model. It might mean we're missing an important curved relationship, we've left out key variables, or our data contains outliers that are pulling the line in strange ways. This is why checking residual normality is a standard diagnostic tool - it helps validate whether our linear regression assumptions are reasonable. Both Minitab and JMP provide tests and plots to check this assumption, helping users determine if their linear model is appropriate for their data.
 
 
-.. highlight :: none
+.. highlight:: none
    
         Normality of Residuals
         Shapiro-Wilk Statistics 0.968	p-value 0.015
