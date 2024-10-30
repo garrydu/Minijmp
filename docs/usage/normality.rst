@@ -22,6 +22,8 @@ A normality test is a statistical procedure used to determine whether a dataset 
 
 - **The Anderson-Darling test:** is another robust normality test that builds on the Kolmogorov-Smirnov test by giving more weight to the tails of the distribution. This makes it particularly sensitive to deviations in the tails of the data distribution. It calculates an A² statistic, with larger values indicating greater deviation from normality.
 
+- **p-Value:** The p-value shows the probability of null hypothesis is true, which is the samples were from a normal distribution. So when the p-value is smaller than the significance level, the null hypothesis should be rejected.
+  
 .. list-table:: Differences Between Shapiro-Wilk and Anderson-Darling Tests
    :widths: 20 40 40
    :header-rows: 1

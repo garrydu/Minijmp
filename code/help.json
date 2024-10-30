@@ -32,5 +32,9 @@
     "Residual Plots": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/residuals.html",
         "window":"A supplimental tool of Linear Regression to plot Residuals versus fits, Residuals versus order, Histogram of residuals and QQ plot of normality test.\nChoose the predictor variable (X) and the response variable (Y) of the Linear Regression."
+    },
+    "Orthogonal Regression": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/orthogonal.html",
+        "window":"Calculate the orthogonal regression of the variables, which considering both predictor and response carrying measurement errors."
     }
 }
