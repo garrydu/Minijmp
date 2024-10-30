@@ -22,9 +22,9 @@ new_dir = os.path.join(script_dir, 'code')
 # Use the context manager
 with change_dir(new_dir):
     try:
-        subprocess.run(['python3', 'MiniJMP.py'])
+        subprocess.run(['pythonw', 'MiniJMP.py'])
     except FileNotFoundError:
         try:
-            subprocess.run(['pythonw', 'MiniJMP.py']) 
+            subprocess.run(['python3', 'MiniJMP.py']) 
         except BaseException:
             subprocess.run(['python', 'MiniJMP.py'])

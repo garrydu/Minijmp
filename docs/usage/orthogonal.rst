@@ -16,8 +16,8 @@ The Orthogonal Regression, also known as Deming regression, is to determine whet
 
 Choose Stats>Orthogonal Regression.
 
-PUT DIALOG IMAGE HERE
-
+.. image:: images/ortho1.png
+   :align: center
 
 - **X Y Values:** Select two different columns for the predictor, i.e. X, and the response variable, i.e. Y. 
 - **Orthogonal Regression**
