@@ -25,12 +25,12 @@
         "link":"https://minijmp.readthedocs.io/en/latest/usage/cor.html",
         "window":"Calculate correlation between two data columns and draw a scatter plot. Correlation ellipse can be drawn when Pearson's Correlation is selected."
     },
-    "Linear Fit": {
+    "Linear Regression": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/linear_fit.html",
         "window":"Find the linear model that best describes how the response variable (Y) changes with the predictor variable (X), using the least squares estimation method which minimizes the sum of the squared distances between the points and the fitted line. "
     },
     "Residual Plots": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/residuals.html",
-        "window":"A supplimental tool of Linear Fit to plot Residuals versus fits, Residuals versus order, Histogram of residuals and QQ plot of normality test.\nChoose the predictor variable (X) and the response variable (Y) of the Linear Fit."
+        "window":"A supplimental tool of Linear Regression to plot Residuals versus fits, Residuals versus order, Histogram of residuals and QQ plot of normality test.\nChoose the predictor variable (X) and the response variable (Y) of the Linear Regression."
     }
 }

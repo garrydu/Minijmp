@@ -163,4 +163,5 @@ cython_debug/
 
 # windows linux Zone.Identifier
 *.Identifier
-
+# WI editor generated
+working_draft

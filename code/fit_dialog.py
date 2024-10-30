@@ -40,6 +40,7 @@ class LinearFitDialog(Dialogs):
         self.show_CI = tk.BooleanVar(value=False)
         self.show_PI = tk.BooleanVar(value=False)
         self.scatter = tk.BooleanVar(value=True)
+        self.ortho_resid = tk.BooleanVar(value=False)
 
         ####### extension #######
         self.update_vars()
@@ -56,7 +57,7 @@ class LinearFitDialog(Dialogs):
                            variable=self.red_ellipse)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        master = tk.LabelFrame(m, text='Linear Fit')
+        master = tk.LabelFrame(m, text='Linear Regression')
         master.pack(side=TOP, fill=BOTH, padx=2)
         w = tk.Checkbutton(master, text='Show Fit',
                            variable=self.linear)
@@ -68,14 +69,21 @@ class LinearFitDialog(Dialogs):
                            variable=self.show_PI)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        master = tk.LabelFrame(m, text='Orthogonal Fit')
+        master = tk.LabelFrame(m, text='Orthogonal Regression')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Checkbutton(master, text='Show Fit',
+        slave = tk.Frame(master)
+        slave.pack(side=TOP, fill=BOTH)
+        w = tk.Checkbutton(slave, text='Show Fit',
                            variable=self.ortho)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(master, text="Ratio")
+        w = tk.Checkbutton(slave, text='Residual Table',
+                           variable=self.ortho_resid)
+        w.pack(side=LEFT, padx=2, pady=2)
+        slave = tk.Frame(master)
+        slave.pack(side=TOP, fill=BOTH)
+        w = tk.Label(slave, text="Error varaince ratio (y/x)")
         w.pack(side=LEFT, fill=X, padx=2)
-        w = tk.Entry(master, textvariable=self.ortho_ratio,
+        w = tk.Entry(slave, textvariable=self.ortho_ratio,
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
 
@@ -111,6 +119,7 @@ class LinearFitDialog(Dialogs):
             red_ellipse=self.red_ellipse.get(),
             linear=self.linear.get(),
             show_CI=self.show_CI.get(),
+            ortho_resid=self.ortho_resid.get(),
             ortho=self.ortho.get(),
             show_PI=self.show_PI.get(),
             xlabel=xlabel,  # self.xlabel if self.xlabel != "" or self.xlabel is None else self.xvar.get(),
@@ -275,7 +284,7 @@ class ResidDialog(Dialogs):
     def createWidgets(self, m):
         """Create a set of grp-agg-func options together"""
         #  w = tk.Label(
-        #      m, text="Residual plots are only available for linear fits.")
+        #      m, text="Residual plots are only available for linear regressions.")
         #  w.pack(side=TOP, fill=BOTH, padx=2)
         f = tk.LabelFrame(m, text='X Y Values')
         f.pack(side=TOP, fill=BOTH, padx=2)

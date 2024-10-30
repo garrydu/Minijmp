@@ -19,6 +19,7 @@ def fit_plot(x, y, alpha=0.05, print_out=False,
              x_min=None, x_max=None,
              y_min=None, y_max=None,
              scatter=True, ax=None,
+             ortho_resid=False,
              red_ellipse=False, dot_size=20,
              ax_margin=0.1, print_port=print):
 
@@ -66,25 +67,26 @@ def fit_plot(x, y, alpha=0.05, print_out=False,
         ortho_res = orthogonal_fit(
             x,
             y,
+            print_residual=ortho_resid,
             error_ratio=ortho_ratio,
             print_port=print,
             print_out=print_out,
             alpha=alpha)
-        res["Orthogonal Fit"] = ortho_res
+        res["Orthogonal Regression"] = ortho_res
         x1, x0 = x_max, x_min
         x_line = [x0, x1]
         y_line = [ortho_res["intercept"] + x0 * ortho_res["slope"],
                   ortho_res["intercept"] + x1 * ortho_res["slope"]]
-        ax.plot(x_line, y_line, color='k', label='Orthogonal Fit')
+        ax.plot(x_line, y_line, color='k', label='Orthogonal Regression')
 
     if linear:
         l_res = linear_fit(x, y, print_out=print_out, print_port=print)
-        res["Linear Fit"] = l_res
+        res["Linear Regression"] = l_res
         x1, x0 = x_max, x_min
         x_line = [x0, x1]
         y_line = [l_res["intercept"] + x0 * l_res["slope"],
                   l_res["intercept"] + x1 * l_res["slope"]]
-        ax.plot(x_line, y_line, color='r', label='Linear Fit')
+        ax.plot(x_line, y_line, color='r', label='Linear Regression')
         alpha_label = " %d%%" % ((1 - alpha) * 100)
         if show_PI:
             n = len(x)

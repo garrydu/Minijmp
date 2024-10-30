@@ -15,4 +15,4 @@ Stats Menu
    cor
    linear_fit
    residuals
-
+   orthogonal

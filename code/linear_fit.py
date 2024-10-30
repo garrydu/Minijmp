@@ -149,7 +149,7 @@ def linear_fit(x, y, print_out=True, print_port=print):
         p_int = 1 if b0 == 0 else 0
 
     if print_out:
-        print("\n---- Linear Fit ----")
+        print("\n---- Linear Regression ----")
         print("Summary of Fit")
         print(f"RSquare {R_sq:.3f}\t\t\tRSquare Adj {R_sq_adj:.3f}")
         print(

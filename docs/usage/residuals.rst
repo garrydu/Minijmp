@@ -6,7 +6,7 @@ Choose Stats>Residual Plots
 .. image:: images/residual1.png
    :align: center
 
-- **X Y Values:** Select two different column for the predictor, i.e. X, and the response variable, i.e. Y. Only residual plots will be displayed, linear fit of the two variable is done at the backend and won't be shown. 
+- **X Y Values:** Select two different column for the predictor, i.e. X, and the response variable, i.e. Y. Only residual plots will be displayed, linear regression of the two variable is done at the backend and won't be shown. 
 
 .. include:: linear_fit.rst
    :start-line: 207

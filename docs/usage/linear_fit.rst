@@ -6,28 +6,28 @@
                        }
                           </style>
 
-Linear Fit
+Linear Regression
 ==========
 
-Choose Stats>Linear Fit.
+Choose Stats>Linear Regression.
 
 .. image:: images/linear_fit1.png
    :align: center
 
-The Linear fit share a same dialog with orthogonal fit, and also provide scatter plot and correlation ellipse too. 
+The Linear regression share a same dialog with orthogonal regression, and also provide scatter plot and correlation ellipse too. 
 
-- **X Y Values:** Select two different column for the predictor, i.e. X, and the response variable, i.e. Y. Swapping the two values does not simply Swapping the axes, but will affect the result, which will be discussed in the orthogonal fit section. 
+- **X Y Values:** Select two different columns for the predictor, i.e. X, and the response variable, i.e. Y. Swapping the two values does not simply Swapping the axes, but will affect the result, which will be discussed in the orthogonal regression section. 
 - **Scatter Plot:** 
 
   - **Scatter Dots:** Turn on and off showing individual data points in the plot output.
   - **Correlation Ellipse:** Display a light blue filled ellipse for Bivariate Normal Distribution, which is only available with Pearson's correlation. The ellipse will be always drawn unless Pearson's Correlation is unselected. 
   - **Ellipse Outline:** Display a red outline of the ellipse above. Either of these two settings can work alone, but also together.
 
-- **Linear Fit:** Show the fited line in red in the output plot.
+- **Linear Regression:** Show the fited line in red in the output plot.
 - **Confidence Interval:** Show the confidence Interval of the fitted line in green dash. The range of the interval is decided by the Alpha settting at the end.
 - **Prediction Interval:** Show the Prediction Interval of the fitted line in purple dash. The range of the interval is decided by the Alpha setting as well.
 
-- **Orthogonal Fit:** Toggle the orthogonal fitted line, which will be discussed in next section.
+- **Orthogonal Regression:** Toggle the orthogonal regressionted line, which will be discussed in next section.
 
 - **Axis Settings:**
 
@@ -44,7 +44,7 @@ Plot Interpretation
 -------------------
 
 To understand the plot and the output prints, we will use the data in the CSV file of `ElectricCarData_Clean-kaggle.csv` in the `sample_data` folder. First using the Top Speed as the predictor variable, which is X, and the Range column as the response variable, which is Y, fit the line. Then swap their order and fit them again. 
-They are good examples of swapping X and Y in linear fit generates different results. The two red lines are not symmetrical to the diagonal line. 
+They are good examples of swapping X and Y in linear regression generates different results. The two red lines are not symmetrical to the diagonal line. 
 
 .. image:: images/linear_fit_plot.png
    :align: center
@@ -52,7 +52,7 @@ They are good examples of swapping X and Y in linear fit generates different res
 Fitted Line
 ~~~~~~~~~~~
 
-Linear fit uses a Least Square Method. The core of calculating a linear fit lies in minimizing the distances between the actual data points and the line itself. This is done by focusing on the vertical distances (residuals) from each point to the proposed line.
+Linear regression uses a Least Square Method. The core of calculating a linear regression lies in minimizing the distances between the actual data points and the line itself. This is done by focusing on the vertical distances (residuals) from each point to the proposed line.
 
 It's very import to note that the distances minimized is the vertial distance to the fitted line. Since the distance is not symmetrical to the diagonal, the fitted line won't either.
 
@@ -91,7 +91,7 @@ For a 95% prediction interval, we can say that there's a 95% probability that a 
 Summary of Fit
 --------------
 
-Back to the example above of the linear fit between top speed and range of EVs. The results below are the first part of the fit using top speed as predictor and range as the response variable.
+Back to the example above of the linear regression between top speed and range of EVs. The results below are the first part of the fit using top speed as predictor and range as the response variable.
 
 .. code-block:: none
 
@@ -147,7 +147,7 @@ Back to the example above of the linear fit between top speed and range of EVs. 
         F Ratio 127.251	Prob > F 0.000
         p value is the probability of slope == 0.
 
-- **Degrees of Freedom (DF):** The degrees of freedom of the model, which is the linear fit model, is one less than the number of terms. The linear model has slope and interpret two terms, while the degrees of freedom is one for linear fit. For more complex model the number will increase accordingly. Degrees of freedom of the errors is two less than the total number of the data points.
+- **Degrees of Freedom (DF):** The degrees of freedom of the model, which is the linear regression model, is one less than the number of terms. The linear model has slope and interpret two terms, while the degrees of freedom is one for linear regression. For more complex model the number will increase accordingly. Degrees of freedom of the errors is two less than the total number of the data points.
 
 - **p-Value:** This is the important value to look at. If p < 0.05 (or your chosen significance level): reject the null hypothesis Conclude that your model provides a statistically significantly better fit than the intercept-only model ( which is a horizontal line at y mean) at least one of your independent variables is significantly related to the dependent variable. The p-value is used to test the hypothesis that there is no relationship between the predictor and the response. Or, stated differently, the p-value is used to test the hypothesis that the true slope coefficient is zero. 
 
@@ -223,5 +223,5 @@ P value in the results indicates the probability of the residuals coming from a 
 
 To learn more about the normality test, please check the help page of `Normality` Dialog. `LINK <https://minijmp.readthedocs.io/en/latest/usage/normality.html>`_
 
-The software provides more tools to visualize the linear fit residuals. Please check the next section `Residual Plot`. `LINK <https://minijmp.readthedocs.io/en/latest/usage/residuals.html>`_
+The software provides more tools to visualize the linear regression residuals. Please check the next section `Residual Plot`. `LINK <https://minijmp.readthedocs.io/en/latest/usage/residuals.html>`_
 

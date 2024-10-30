@@ -6,7 +6,7 @@ Minijmp is a free, open-source program that works like Minitab Express, but come
 
 
 ## Current Features
-The software was developed based on [PandasTable](https://github.com/dmnfarrell/pandastable) (by D. Farrell), utilizing its spreadsheet UI and DataFrame backend. Minijmp replicates approximately 70% of Minitab Express's statistical functions (Ver. 0.1) and includes features like orthogonal fit, GRR, and Cpk calculations. It also has JMP features I like, such as the comparison of means under JMP ANOVA, and Hoeffding's D correlation.
+The software was developed based on [PandasTable](https://github.com/dmnfarrell/pandastable) (by D. Farrell), utilizing its spreadsheet UI and DataFrame backend. Minijmp replicates approximately 70% of Minitab Express's statistical functions (Ver. 0.1) and includes features like orthogonal regression, GRR, and Cpk calculations. It also has JMP features I like, such as the comparison of means under JMP ANOVA, and Hoeffding's D correlation.
 
 All mathematical calculations have been calibrated against both Minitab and JMP. Since these software packages sometimes produce different results (e.g., in variance tests), Minijmp either:
 - Provides options to choose between different algorithms, or

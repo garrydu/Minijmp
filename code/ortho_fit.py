@@ -1,12 +1,14 @@
 import numpy as np
 from utilities import norm_test
 from scipy.stats import norm
+from prettytable import PrettyTable as PT
 
 
 def orthogonal_fit(x, y, error_ratio=1.0, alpha=0.05,
-                   print_port=print, print_out=True):
+                   print_port=print, print_out=True,
+                   print_residual=False):
     """
-    Perform orthogonal fit with unequal variances.
+    Perform orthogonal regression with unequal variances.
 
     Parameters:
     x, y: arrays of data points
@@ -44,8 +46,9 @@ def orthogonal_fit(x, y, error_ratio=1.0, alpha=0.05,
 # The code below replicated the minitab math,
 # the confidence interval outputs are not same to JMP but MiniTab 20
 
+    # u for x, e for y
     var_u = (Syy + w * Sxx - ((Syy - w * Sxx)**2 + 4 * w * Sxy**2)**.5) / 2 / w
-    #  var_e = w * var_u
+    var_e = w * var_u
     # above noted as est. delta ^2 u and est. delta ^2 e
     if Sxy == 0 and Syy < w * Sxx:
         var_u = Syy / w
@@ -84,16 +87,42 @@ def orthogonal_fit(x, y, error_ratio=1.0, alpha=0.05,
 
     if print_out:
         print("\n---- Orthogonal Regression alpha = %.3f ----" % alpha)
-        print("Error Variance Ratio %.3f" % w)
         print("Slope %.3f CI(%.3f, %.3f)" % (b1, slope_l, slope_u))
         print("Intercept %.3f CI(%.3f, %.3f)" % (b0, int_l, int_u))
-        print("Normality of Residuals")
-        print("Shaprio-Wilk p %.3f\tAnderson Darling p %.3f" % (
-            ntest_resid["shapiro p"], ntest_resid["AD p"]))
+        #  print("\nError Variance")
+        print("\nError Variance Ratio %.3f" % w)
+        print("X error variance %.3f" % var_u)
+        print("Y error variance %.3f" % var_e)
+
+    if print_out:
+        print("\nNormality of Residuals")
+        #  print("Shaprio-Wilk p %.3f\tAnderson Darling p %.3f" % (
+        #      ntest_resid["shapiro p"], ntest_resid["AD p"]))
+    # Normalitiy of the residuals
+    ntest_resid = norm_test(vt_est, print_out=print_out, print_port=print_port)
+
+    if print_residual:
+        t = PT()
+        t.field_names = ['Obs', 'X', 'X Fit', 'Y', 'Y Fit', 'Resid', 'Std Resid']
+        for i, xx in enumerate(x):
+            t.add_row(['%d' % (i + 1), '%.2f' % xx, '%.2f' % x_est[i],
+                       '%.2f' % y[i], '%.2f' % y_est[i], '%.2f' % vt_est[i],
+                       '%.2f' % std_vt_est[i]])
+        print(" ")
+        print(str(t))
 
     return {"slope": slope, "intercept": intercept,
             "slope_l": slope_l, "slope_u": slope_u,
             "int_l": int_l, "int_u": int_u,
             "Fitted Y": y_est, "Fitted X": x_est,
             "Residuals": vt_est, "St Resid": std_vt_est,
-            "Normal test Resid": ntest_resid}
+            "Normal test Resid": ntest_resid,
+            "Var U": var_u, "Var E": var_e}
+
+
+if __name__ == "__main__":
+    x = [0.27605, 0.08993, 0.23165, 0.03308, 0.36766, 0.13048, 0.78341, 0.66737, 0.64194, 3.61725,
+         0.21866, 0.94511, 1.16029, 0.83957, 0.66793, 0.49791, 0.63187, 1.26930, 2.03622, 2.31915]
+    y = [0.78557, 1.94455, 2.18364, 1.00715, 0.71009, 0.32651, 1.01881, 1.21348, 2.24900, -0.50332,
+         1.17126, -0.01074, 1.88280, 1.39863, 0.44323, 2.01868, 1.98543, 1.39951, 0.28374, 3.26509]
+    orthogonal_fit(x, y, print_residual=True, error_ratio=1.3)

@@ -1,7 +1,7 @@
 Col TopSpeed_KmH inputs: 103, Col Range_Km inputs: 103.
 Valid number pairs: 103.
 
----- Linear Fit ----
+---- Linear Regression ----
 Summary of Fit
 RSquare 0.558			RSquare Adj 0.553
 Root Mean Square Error 84.239	Mean of Response 338.786
@@ -45,7 +45,7 @@ p values are the probabilities of true dist is normal.
 Col Range_Km inputs: 103, Col TopSpeed_KmH inputs: 103.
 Valid number pairs: 103.
 
----- Linear Fit ----
+---- Linear Regression ----
 Summary of Fit
 RSquare 0.558			RSquare Adj 0.553
 Root Mean Square Error 29.128	Mean of Response 179.194

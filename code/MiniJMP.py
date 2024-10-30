@@ -159,8 +159,8 @@ class Minijmp(Minijmp_pre):
             '05Confidence Intervals': {'cmd': self.confidence_interval},
             '06Fit Distributions': {'cmd': self.fit_dist},
             '13Correlation': {'cmd': self.correlation},
-            '16Orthogonal Fit': {'cmd': self.ortho_fit},
-            '14Linear Fit': {'cmd': self.linear_fit},
+            '16Orthogonal Regression': {'cmd': self.ortho_fit},
+            '14Linear Regression': {'cmd': self.linear_fit},
             '15Residual Plots': {'cmd': self.resid},
             '17Correlation Matrix': {'cmd': self.multi_cor},
             '22One Sample Mean t-test': {'cmd': self.mean_1sample},
@@ -350,7 +350,7 @@ class Minijmp(Minijmp_pre):
         _ = LinearFitDialog(
             self.table, app=self,
             df=self.table.model.df,
-            title='Linear Fit')
+            title='Linear Regression')
         return
 
     def correlation(self):
@@ -366,7 +366,7 @@ class Minijmp(Minijmp_pre):
         _ = OrthoFitDialog(
             self.table, app=self,
             df=self.table.model.df,
-            title='Orthogonal Fit')
+            title='Orthogonal Regression')
         return
 
     def describe(self):
