@@ -1,6 +1,7 @@
 from tkinter import ttk
 import tkinter as tk
 from tkinter import TOP, LEFT, X, BOTH, W
+from prettytable import PrettyTable as PT
 ###################################
 #  from pandastable_local.dialogs import addListBox
 ########### Own Modules ###########
@@ -187,7 +188,7 @@ class CorrelationDialog(LinearFitDialog):
         w.pack(side=TOP, anchor=W)
         w = tk.Checkbutton(master, text="Kendall's tau: monotonic relationship", variable=self.cor_k)
         w.pack(side=TOP, anchor=W)
-        w = tk.Checkbutton(master, text="Hoeffding's D: independent or not", variable=self.cor_h)
+        w = tk.Checkbutton(master, text="Hoeffding's D: independent or not (Slow, O(n^2))", variable=self.cor_h)
         w.pack(side=TOP, anchor=W)
 
         master = tk.LabelFrame(m, text='Scatter Plot')
@@ -332,19 +333,68 @@ class MCorDialog(Dialogs):
             f, values=self.cols, width=20, label='columns')
         w.pack(side=LEFT, fill=X, padx=10)
 
+        master = tk.LabelFrame(m, text='Correlation Select')
+        master.pack(side=TOP, fill=BOTH, padx=2)
+        self.cor_p = tk.BooleanVar(value=True)
+        self.cor_s = tk.BooleanVar(value=False)
+        self.cor_k = tk.BooleanVar(value=False)
+        self.cor_h = tk.BooleanVar(value=False)
+        w = tk.Checkbutton(master, text="Pearson: linear relationship", variable=self.cor_p)
+        w.pack(side=TOP, anchor=W)
+        w = tk.Checkbutton(master, text="Spearman's rho: monotonic relationship", variable=self.cor_s)
+        w.pack(side=TOP, anchor=W)
+        w = tk.Checkbutton(master, text="Kendall's tau: monotonic relationship", variable=self.cor_k)
+        w.pack(side=TOP, anchor=W)
+        w = tk.Checkbutton(master, text="Hoeffding's D: independent or not (Slow, O(n^2))", variable=self.cor_h)
+        w.pack(side=TOP, anchor=W)
+
         self.ax_margin = tk.DoubleVar(value=0.1)
         self.red_ellipse = tk.BooleanVar(value=False)
+        self.ylabel_0deg = tk.BooleanVar(value=False)
+        self.xlabel_45deg = tk.BooleanVar(value=False)
+        self.xtick_45deg = tk.BooleanVar(value=False)
+
         master = tk.LabelFrame(m, text='Plot Setting')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(master, text="Margin (0.1=10%% of data range)")
+        slave = tk.Frame(master)
+        slave.pack(side=TOP, fill=BOTH, padx=2)
+        w = tk.Label(slave, text="Margin (0.1=10%% of data range)")
         w.pack(side=LEFT, fill=X, padx=2)
-        w = tk.Entry(master, textvariable=self.ax_margin,
+        w = tk.Entry(slave, textvariable=self.ax_margin,
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(master, text='Ellipse Outline',
+        w = tk.Checkbutton(master, text="Horizontal Y-labels",
+                           variable=self.ylabel_0deg)
+        w.pack(side=TOP, anchor=W, padx=2, pady=2)
+        slave = tk.Frame(master)
+        slave.pack(side=TOP, fill=BOTH, padx=2)
+        w = tk.Checkbutton(slave, text="45-degree X-labels",
+                           variable=self.xlabel_45deg)
+        w.pack(side=LEFT, padx=2, pady=2)
+        w = tk.Checkbutton(slave, text="45-degree X-ticks",
+                           variable=self.xtick_45deg)
+        w.pack(side=LEFT, padx=2, pady=2)
+
+        slave = tk.LabelFrame(master, text="Pearson's Correlation Only")
+        slave.pack(side=TOP, fill=BOTH, padx=2)
+        self.ellipse = tk.BooleanVar(value=True)
+        self.red_ellipse = tk.BooleanVar(value=False)
+        w = tk.Checkbutton(slave, text='Correlation Ellipse',
+                           variable=self.ellipse)
+        w.pack(side=LEFT, padx=2, pady=2)
+        w = tk.Checkbutton(slave, text='Ellipse Outline',
                            variable=self.red_ellipse)
         w.pack(side=LEFT, padx=2, pady=2)
-        self.add_alpha(m)
+        self.alpha = tk.DoubleVar(value=0.05)
+        w = tk.Label(slave, text="Alpha")
+        w.pack(side=LEFT, fill=X, padx=2)
+        w = tk.Entry(slave, textvariable=self.alpha,
+                     bg='white', width=5)
+        w.pack(side=LEFT, padx=2, pady=2)
+        #  w = tk.Checkbutton(master, text='Ellipse Outline',
+        #                     variable=self.red_ellipse)
+        #  w.pack(side=LEFT, padx=2, pady=2)
+        #  self.add_alpha(m)
         return
 
     def ok(self):
@@ -367,25 +417,67 @@ class MCorDialog(Dialogs):
             alpha = 0.05
 
         pf = self.app.showPlotViewer(figsize=(7, 7))
-        #  for y in range(n - 1):
-        #      r = []
-        #      for x in range(1, n):
-        #          r.append(
-        #              pf.fig.add_subplot(n - 1, n - 1, y * (n - 1) + x)
-        #          )
-        #      axs.append(r)
-        # Adjust the spacing between subplots using the Figure object
-        #  pf.fig.subplots_adjust(hspace=0)
         master_ax = pf.fig.add_subplot(1, 1, 1)
 
+        print_out = False
+        red_ellipse = False
+        ellipse = False
+        if self.cor_p.get():
+            red_ellipse = self.red_ellipse.get()
+            ellipse = self.ellipse.get()
+            print_out = True
+        if self.cor_s.get():
+            print_multi_col_tables(data, self.grpcols, spearman, print_port=self.app.print, name="Spearman's rho")
+            #  spearman(x, y, print_out=True, print_port=self.app.print)
+        if self.cor_k.get():
+            print_multi_col_tables(data, self.grpcols, kendall, print_port=self.app.print, name="Kendall's tau")
+            #  kendall(x, y, print_out=True, print_port=self.app.print)
+        if self.cor_h.get():
+            print_multi_col_tables(data, self.grpcols, hoeffding, print_port=self.app.print, name="Hoeffding's D")
+            #  hoeffding(x, y, print_out=True, print_port=self.app.print)
+        #  else:
+        #      funcs = [spearman, kendall, hoeffding]
+        #      funcs[cor](x, y, print_out=True, print_port=self.app.print)
         multi_fit(
             data,
             self.grpcols,
-            print_out=True,
+            print_out=print_out,
+            ylabel_0deg=self.ylabel_0deg.get(),
+            xlabel_45deg=self.xlabel_45deg.get(),
+            xtick_45deg=self.xtick_45deg.get(),
             print_port=self.app.print,
             ax=master_ax,
             fig=pf.fig,
             alpha=alpha,
             ax_margin=ax_margin,
-            red_ellipse=self.red_ellipse.get())
+            red_ellipse=red_ellipse,
+            ellipse=ellipse)
         return
+
+
+def print_multi_col_tables(
+        data, labels, func, print_port=print, name=""):
+    t = PT(["\\"] + labels)
+    t2 = PT(["\\"] + labels)
+    #  cor_res = []
+    n = len(data)
+    for y in range(n):
+        res_tmp = []
+        row = [labels[y]]
+        row2 = [labels[y]]
+        for x in range(n):
+            r = func(data[x], data[y], print_out=False)
+            row.append("%.3f" % r["cor"])
+            row2.append("%.3f" % r["p"])
+            res_tmp.append(r)
+        #  cor_res.append(res_tmp)
+        t.add_row(row)
+        t2.add_row(row2)
+    #  res = {"pearson": cor_res}
+
+    print = print_port
+    print("\n---- " + name + " correlation coefficient ----")
+    print(str(t))
+    print("\n---- " + name + " correlation p-value  ----")
+    print(str(t2))
+    return

@@ -16,3 +16,4 @@ Stats Menu
    linear_fit
    residuals
    orthogonal
+   multi_cor

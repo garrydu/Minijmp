@@ -155,7 +155,8 @@ def fit_plot(x, y, alpha=0.05, print_out=False,
 
 def multi_fit_orig(data, labels, print_out=False, print_port=print,
                    axs=None, fig=None, alpha=0.05, red_ellipse=False,
-                   show_plot=False, filename=None, ax_margin=0.1):
+                   show_plot=False, filename=None, ax_margin=0.1,
+                   ellipse=True):
 
     t = PT(["\\"] + labels)
     t2 = PT(["\\"] + labels)
@@ -197,7 +198,7 @@ def multi_fit_orig(data, labels, print_out=False, print_port=print,
             else:
                 #  axs[fy][fx].set_aspect('equal')
                 fit_plot(data[x], data[y], ax_margin=ax_margin,
-                         ellipse=True, ax=axs[fy][fx], alpha=alpha,
+                         ellipse=ellipse, ax=axs[fy][fx], alpha=alpha,
                          xlabel=labels[x] if y == n - 1 else None,
                          ylabel=labels[y] if x == 0 else None,
                          red_ellipse=red_ellipse, dot_size=dot_size)
@@ -257,7 +258,9 @@ def create_inset_grid(ax, n):
 
 def multi_fit(data, labels, print_out=False, print_port=print,
               ax=None, fig=None, alpha=0.05, red_ellipse=False,
-              show_plot=False, filename=None, ax_margin=0.1):
+              show_plot=False, filename=None, ax_margin=0.1,
+              ellipse=True, ylabel_0deg=False, xlabel_45deg=False ,
+              xtick_45deg=False):
 
     t = PT(["\\"] + labels)
     t2 = PT(["\\"] + labels)
@@ -304,16 +307,24 @@ def multi_fit(data, labels, print_out=False, print_port=print,
             else:
                 #  axs[fy][fx].set_aspect('equal')
                 fit_plot(data[x], data[y], ax_margin=ax_margin,
-                         ellipse=True, ax=axs[fy][fx], alpha=alpha,
+                         ellipse=ellipse, ax=axs[fy][fx], alpha=alpha,
                          xlabel=labels[x] if y == n - 1 else None,
                          ylabel=labels[y] if x == 0 else None,
                          red_ellipse=red_ellipse, dot_size=dot_size)
                 if x > 0:
                     axs[fy][fx].get_yaxis().set_visible(False)
+                elif ylabel_0deg:
+                    axs[fy][fx].yaxis.label.set_rotation(0)
+                    axs[fy][fx].yaxis.label.set_ha("right")
                 #      axs[fy][fx].tick_params(
                 #          axis='y', which='both', left=False, labelleft=False)
                 if y < n - 1:
                     axs[fy][fx].get_xaxis().set_visible(False)
+                else:
+                    if xlabel_45deg:
+                        axs[fy][fx].xaxis.label.set_rotation(45)
+                    if xtick_45deg:
+                        axs[fy][fx].tick_params(axis='x', rotation=45)
 
     #  fig.subplots_adjust(hspace=0)
     #  fig.subplots_adjust(wspace=0)
