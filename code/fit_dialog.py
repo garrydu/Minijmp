@@ -367,7 +367,7 @@ class MCorDialog(Dialogs):
                            variable=self.ylabel_0deg)
         w.pack(side=TOP, anchor=W, padx=2, pady=2)
         slave = tk.Frame(master)
-        slave.pack(side=TOP, fill=BOTH, padx=2)
+        slave.pack(side=TOP, fill=BOTH, padx=0)
         w = tk.Checkbutton(slave, text="45-degree X-labels",
                            variable=self.xlabel_45deg)
         w.pack(side=LEFT, padx=2, pady=2)

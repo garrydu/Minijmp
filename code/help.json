@@ -40,5 +40,13 @@
     "Multi Column Correlation": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/multi_cor.html",
         "window":"Select multiple variables using CTRL-click for individual selections or SHIFT-click for ranges. Calculate correlations simultaneously using one or multiple algorithm(s) of your choice."
-    }
+    },
+    "One sample mean t-test": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/1sample_t.html",
+        "window":"Testing whether the population mean (estimated using the sample mean) is likely to be equal to a hypothesized value."
+},
+    "One sample mean Z-test": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/1sample_z.html",
+        "window":"Testing whether the population mean (estimated using the sample mean) is likely to be equal to a hypothesized value, when the population standard deviation is known."
+}
 }

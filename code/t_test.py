@@ -47,6 +47,7 @@ def t_test_1sample(data_list, u0, print_out=False,
         print("stdev = %.3f" % stdev)
         print("t = %.3f" % t)
         print("df = %.3f" % df)
+        print("u0 = %.3f"%u0)
         print("Two-tailed test H0 u==u0, H1 u!=u0: p = %.3f" % p)
         print("P-value is the prob of that population mean equals the specified value, which the samples came from.")
         print(
@@ -108,6 +109,8 @@ def z_test_1sample(
         print("mean = %.3f" % mean)
         print("z = %.3f" % z)
         print("df = %.3f" % df)
+        print("u0 = %.3f"%u0)
+        print("Known StDev = %.3f"%s0)
         print("Two-tailed test H0: u==u0, H1 u!=u0: p = %.3f" % p)
         print("P-value is the prob of that population mean equals the specified value, which the samples came from.")
         print(

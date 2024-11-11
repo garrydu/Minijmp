@@ -415,14 +415,14 @@ class Minijmp(Minijmp_pre):
         _ = Mean1SampleDialog(
             self.table, app=self,
             df=self.table.model.df,
-            title='One sample t-test')
+            title='One sample mean t-test')
         return
 
     def mean_1sampleZ(self):
         _ = Mean1SampleZDialog(
             self.table, app=self,
             df=self.table.model.df,
-            title='One sample Z-test')
+            title='One sample mean Z-test')
         return
 
     def var_1sample(self):

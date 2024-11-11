@@ -17,3 +17,6 @@ Stats Menu
    residuals
    orthogonal
    multi_cor
+   1sample_t
+   1sample_z
+
