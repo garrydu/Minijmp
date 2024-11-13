@@ -147,10 +147,10 @@ def prop_test_1sample(events=1, N=1, p0=1, print_port=print,
     p_bi_uneq = binom_blaker_p(events, N, p0)
 
     std = (p * (1 - p) / N)**.5
-    CI_l, CI_u = (p + norm.ppf(alpha / 2) * std,
-                  p + norm.ppf(1 - alpha / 2) * std)
-    CI_high = p + norm.ppf(1 - alpha) * std
-    CI_low = p + norm.ppf(alpha) * std
+    CI_l, CI_u = (max(0, p + norm.ppf(alpha / 2) * std),
+                  min(1, p + norm.ppf(1 - alpha / 2) * std))
+    CI_high = min(1, p + norm.ppf(1 - alpha) * std)
+    CI_low = max(0, p + norm.ppf(alpha) * std)
 
 # https://support.minitab.com/en-us/minitab/help-and-how-to/statistics/basic-statistics/how-to/1-proportion/methods-and-formulas/methods-and-formulas/
 # Clopper-Pearson exact confidence interval method

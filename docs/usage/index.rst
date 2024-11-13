@@ -20,4 +20,5 @@ Stats Menu
    1sample_t
    1sample_z
    1sample_dev
-        
+   1sample_prop
+
