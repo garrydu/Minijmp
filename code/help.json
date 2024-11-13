@@ -48,5 +48,13 @@
     "One sample mean Z-test": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/1sample_z.html",
         "window":"Testing whether the population mean (estimated using the sample mean) is likely to be equal to a hypothesized value, when the population standard deviation is known."
+},
+    "One sample Stdev test": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/1sample_dev.html",
+        "window":"Testing whether the population standard deviation (estimated using the sample) is likely to be equal to a hypothesized value. Both Chi sq and Bonett tests will be performed."
+},
+    "One Proportion Test": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/1sample_prop.html",
+        "window":"Use 1 Proportion to estimate a population proportion and to compare the proportion to a target value. The test includes binomial exact, normal approximate and chi square results."
 }
 }

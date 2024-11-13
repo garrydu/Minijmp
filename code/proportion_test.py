@@ -6,6 +6,7 @@ from prettytable import PrettyTable as PT
 ####### Own Modules ########
 from binomial import binomial
 from chi_sq import chi_square
+from blakerCI import binom_blaker_p, binom_blaker_limits
 
 
 def prop_2sample(n1=None, n2=None, e1=None,
@@ -138,6 +139,12 @@ def prop_test_1sample(events=1, N=1, p0=1, print_port=print,
     b_res = binomial(N, p0, x=events, print_out=False)
     #  print(b_res)
     p_bi = b_res["left_acc_p"]
+    p_bi_r = b_res["right_acc_p"]
+    #  p_bi_uneq = b_res['not equal p']
+    #  rv = binom(N, p0)
+    #  x = events
+    #  p_bi_uneq = 1 - min(rv.sf(x - 1), rv.cdf(x)) - min(rv.cdf(x - 1), rv.sf(x))
+    p_bi_uneq = binom_blaker_p(events, N, p0)
 
     std = (p * (1 - p) / N)**.5
     CI_l, CI_u = (p + norm.ppf(alpha / 2) * std,
@@ -154,6 +161,8 @@ def prop_test_1sample(events=1, N=1, p0=1, print_port=print,
     F = f_dist.ppf(alpha, dfn, dfd)
     p_exct_low = dfn * F / (dfd + dfn * F)
 
+    b_CI = binom_blaker_limits(events, N, level=1 - alpha, tol=1e-6)
+
     dfn = 2 * (events + 1)
     dfd = 2 * (N - events)
     F = f_dist.ppf(1 - alpha / 2, dfn, dfd)
@@ -166,22 +175,21 @@ def prop_test_1sample(events=1, N=1, p0=1, print_port=print,
 
     if print_out:
         print = print_port
+        #  print(min(events, N - events))
         print("\n---- One sample propotion test ----")
         #  print("Z porportion test")
         print("\np-value for H0: p==p0, H1: p!=p0")
         print("Normal Approx.   %.3f" % p_norm)
         print("Strerne's Method %.3f" % p_s)
         print("Blaker's Method  %.3f" % p_b)
+        print("Adj. Blaker's Exact   %.3f" % p_bi_uneq)
         print("\nH0: p==p0, H1: p<p0.")
-        print("Normal App. p-value = %.3f\nBinomial Exact p-value = %.3f" %
+        print("Normal Approx. p-value = %.3f\nClopper-Pearson Exact p-value = %.3f" %
               (p_norm_less, p_bi))
-        #  print("p-value %.3f" % p_norm_less,
-        #        "for H0 p==p0, H1 p<p0.")
+        print("\nH0: p==p0, H1: p>p0.")
+        print("Normal Approx. p-value = %.3f\nClopper-Pearson Exact p-value = %.3f" %
+              (1 - p_norm_less, p_bi_r))
         pct = "%.2f%%" % (100 - alpha * 100)
-        #  "CI (%.3f, %.3f), (0, %.3f), (%.3f, 1)" % (
-        #      CI_l, CI_u, CI_high, CI_low))
-        #  print("\nBinomial test p-value %.3f" %
-        #        p_bi, "for gettig less or equal events if real p equals p0.")
         t = PT()
         t.field_names = ["N", "Event", "Sample P Ratio"]
         t.add_row([str(N), str(events), "%.3f" % (events / N)])
@@ -191,13 +199,15 @@ def prop_test_1sample(events=1, N=1, p0=1, print_port=print,
         print("P ratio CI of " + pct)
         t.field_names = ["Algo", " CI", "Upper Bound",
                          "Lower Bound"]
-        t.add_row(["Normal App.", "(%.3f, %.3f)" % (CI_l, CI_u),
+        t.add_row(["Normal Approx.", "(%.3f, %.3f)" % (CI_l, CI_u),
                    "%.3f" % CI_high, "%.3f" % CI_low])
-        t.add_row(["Clopper-Pearson\nexact", "(%.3f, %.3f)" %
+        t.add_row(["Clopper-Pearson", "(%.3f, %.3f)" %
                    (p_exct_l, p_exct_u), "%.3f" %
                    p_exct_high, "%.3f" %
                    p_exct_low])
+        t.add_row(['Blaker Adj.', '(%.3f, %.3f)' % b_CI, '-', '-'])
         print(str(t))
+        print("Note: the results have been calibrated with Minitab 22, which uses adjusted Blaker's exact method for H1 p!=p0, and Clopper-Pearson exact for H1 p>p0 and p<p0.")
         #  print("\nJMP Test Probabilities in Distributions")
 
     chi_res = chi_square([[events, N - events],
@@ -211,14 +221,14 @@ def prop_test_1sample(events=1, N=1, p0=1, print_port=print,
             "p Sterne": p_s, "p Blaker": p_b,
             "CI exact": {"CI l": p_exct_l, "CI u": p_exct_u,
                          "CI high": p_exct_high, "CI low": p_exct_low},
-            "JMP chi sq": chi_res
+            "JMP chi sq": chi_res, 'Blaker p': p_bi_uneq, 'Blaker CI': b_CI
             }
 
 
 if __name__ == "__main__":
     print(prop_test_1sample(9, 250, .073, print_out=True))
-    prop_2sample(n1=250, e1=9, e2=9, n2=350, print_out=True)
-    prop_2sample(n2=250, e1=9, e2=9, n1=350, print_out=True)
+    #  prop_2sample(n1=250, e1=9, e2=9, n2=350, print_out=True)
+    #  prop_2sample(n2=250, e1=9, e2=9, n1=350, print_out=True)
     #  print(p_blaker(250, .073, 9), p_sterne(250, .073, 9))
     #  print(p_likelihood_ratio(250, .073, 9))
     #  print(p_likelihood_ratio(50, .35, 10))

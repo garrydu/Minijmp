@@ -6,6 +6,7 @@ from math import log as ln
 from prettytable import PrettyTable as PT
 ########### Own Modules ############
 #  from utilities import mean_std_CIs
+from bonett import var_1sample as bonett_var_1sample
 
 
 def chi2_test_stdev(data_list, s0, print_out=False, alpha=0.05,
@@ -321,9 +322,9 @@ def two_pop_var_test(l1, l2, print_out=True):
     return res
 
 
-def var_1sample(data=None, sample_n=None, sample_std=None,
-                print_port=print, print_out=False, alpha=0.05,
-                s0=None):
+def chi2_var_1sample(data=None, sample_n=None, sample_std=None,
+                     print_port=print, print_out=False, alpha=0.05,
+                     s0=None):
     if s0 is None:
         return
     if sample_n is None or sample_std is None:
@@ -351,8 +352,9 @@ def var_1sample(data=None, sample_n=None, sample_std=None,
     if print_out:
         print = print_port
         pct = "%.2f%%" % (100 - 100 * alpha)
-        print("\n---- 1 Sample Variance ----")
+        print("\n---- 1 Sample Stdev test ----")
         print("N = %d\tstd = %.3f" % (n, std))
+        print("s0 = %.3f" % s0)
         print("H0 s==s0, H1 s!=s0: p = %.3f" % p)
         print("Chi sq CI " + pct + " (%.3f, %.3f)" % CI_95)
         print("H0 s==s0, H1 s>s0: p = %.3f" % p_l)
@@ -366,6 +368,39 @@ def var_1sample(data=None, sample_n=None, sample_std=None,
         "CI 95": CI_95, "p gt": p_u, "p lt": p_l,
         "CI upper": CI_u, "CI lower": CI_l
     }
+
+
+def var_1sample(data=None, sample_n=None, sample_std=None,
+                print_port=print, print_out=False, alpha=0.05,
+                s0=None):
+    chi2_res = chi2_var_1sample(data=data, sample_n=sample_n, sample_std=sample_std,
+                                print_out=False, alpha=alpha, s0=s0)
+    bonett_res = {"Bonett p": np.nan,
+                  "Bonett CI": (np.nan, np.nan),
+                  "One tail lower boundary": np.nan,
+                  "One tail upper boundary": np.nan}
+    if chi2_res is not None and data is not None:
+        b_res = bonett_var_1sample(data, alpha=alpha, s0=s0)
+        if b_res is not None:
+            bonett_res = b_res
+    res = {**chi2_res, **bonett_res}
+    if print_out:
+        print = print_port
+        print("\n---- 1 sample standard deviation test ----")
+        print("N = %d\tStDev: s = %.3f" % (chi2_res['n'], chi2_res['stdev']))
+        print("s0 = %.3f" % s0)
+        t = PT()
+        t.field_names = [' ', 'Chi Sq', 'Bonett']
+        t.add_row(['P-value *', "%.3f" % chi2_res['p'], "%.3f" % bonett_res['Bonett p']])
+        pct = "%.1f%%" % (100 - 100 * alpha)
+        t.add_row(['StDev CI ' + pct, '(%.3f, %.3f)' % chi2_res['CI 95'], '(%.3f, %.3f)' % bonett_res['Bonett CI']])
+        t.add_row([pct + ' upper bound', "%.3f" % chi2_res['CI upper'], "%.3f" % bonett_res['One tail upper boundary']])
+        t.add_row([pct + ' lower bound', "%.3f" % chi2_res['CI lower'], "%.3f" % bonett_res['One tail lower boundary']])
+        print(str(t))
+        print("* H0 s==s0, H1 s!=s0")
+        print("The Bonett method is valid for any continuous distribution.")
+        print("The chi-square method is valid only for the normal distribution.")
+    return res
 
 
 if __name__ == "__main__":

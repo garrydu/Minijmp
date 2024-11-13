@@ -166,10 +166,10 @@ class Minijmp(Minijmp_pre):
             '22One Sample Mean t-test': {'cmd': self.mean_1sample},
             '23One Sample Mean Z-test': {'cmd': self.mean_1sampleZ},
             '24One Sample Stdev': {'cmd': self.var_1sample},
-            '25One Sample Proportion': {'cmd': self.prop_1sample},
+            '25One Proportion Test': {'cmd': self.prop_1sample},
             '26Two Samples t-test': {'cmd': self.mean_2samples},
             '27Paired t-test': {'cmd': self.paired_t},
-            '28Two Samples Proportion': {'cmd': self.prop_2samples},
+            '28Two Proportions Test': {'cmd': self.prop_2samples},
             '29Multi Stdev Test': {'cmd': self.multi_var},
             '32Oneway ANOVA': {'cmd': self.anova_1way},
             '33Mean Comparison t': {'cmd': self.JMP_t_test},
@@ -457,14 +457,14 @@ class Minijmp(Minijmp_pre):
         _ = Prop1SDialog(
             self.table, app=self,
             df=self.table.model.df,
-            title='One Sample Proportion')
+            title='One Proportion Test')
         return
 
     def prop_2samples(self):
         _ = Prop2SDialog(
             self.table, app=self,
             df=self.table.model.df,
-            title='Two Samples Proportion')
+            title='Two Proportions Test')
         return
 
     def anova_1way(self):

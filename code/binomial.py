@@ -41,6 +41,10 @@ def binomial(n, p, x=None, pvalue=None, print_out=False, print_port=print, ax=No
             "x_left": left_x, "x_right": right_x,
             "acc_p_left": left_acc_p, "acc_p_right": right_acc_p
         }
+        prop_test_y = min(x, n - x)
+        #  print(prop_test_y)
+        res['not equal p'] = sum(rv.pmf(i) for i in range(prop_test_y + 1)) +\
+            sum(rv.pmf(i) for i in range(n - prop_test_y, n + 1))
 
         if print_out:
             print("Prob at x = %d is %.3f." % (x, res["px"]))
@@ -117,7 +121,7 @@ def binomial(n, p, x=None, pvalue=None, print_out=False, print_port=print, ax=No
             pass
         ax.legend(loc='best', frameon=True)
 
-        return res
+    return res
 
 
 if __name__ == "__main__":

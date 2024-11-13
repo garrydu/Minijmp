@@ -19,4 +19,5 @@ Stats Menu
    multi_cor
    1sample_t
    1sample_z
-
+   1sample_dev
+        
