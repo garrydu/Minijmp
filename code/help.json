@@ -56,5 +56,13 @@
     "One Proportion Test": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/1sample_prop.html",
         "window":"Use 1 Proportion to estimate a population proportion and to compare the proportion to a target value. The test includes binomial exact, normal approximate and chi square results."
+},
+    "Two samples t-test": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/2sample_t.html",
+        "window":"Test whether mean values of two sample sets have their difference being equal to the hypothesized value."
+},
+    "Paired t-test": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/paired_t.html",
+        "window":"A paired t-test determines if there is a significant difference between the means of two related groups of measurements (like before and after scores from the same subjects) by analyzing the differences between each pair of observations."
 }
 }

@@ -205,19 +205,22 @@ def t_test_2samples(l1=None, l2=None,
         return {"CI": CI, "p": p, "p lower": pl, "p upper": pu, "t": t,
                 "df": df}
 
-    summarized = False
-    if n1 is not None and n2 is not None:
-        if s1 is not None and s2 is not None:
-            if u1 is not None and u2 is not None:
-                summarized = True
-    if not summarized:
-        if l1 is None or l2 is None:
-            return
+    #  summarized = False
+    #  if n1 is not None and n2 is not None:
+    #      if s1 is not None and s2 is not None:
+    #          if u1 is not None and u2 is not None:
+    #              summarized = True
+    #  if not summarized:
+    #      if l1 is None or l2 is None:
+    #          return
+    if n1 is None or s1 is None or u1 is None:
         u1 = stat.mean(l1)
-        u2 = stat.mean(l2)
         s1 = stat.stdev(l1)
-        s2 = stat.stdev(l2)
         n1 = len(l1)
+
+    if n2 is None or s2 is None or u2 is None:
+        u2 = stat.mean(l2)
+        s2 = stat.stdev(l2)
         n2 = len(l2)
 
     if print_out:

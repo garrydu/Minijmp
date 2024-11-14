@@ -3,8 +3,8 @@ from tkinter import TOP, BOTH, LEFT, X, ttk
 ###################################
 #  from pandastable_local.dialogs import addListBox
 ########### Own Modules ###########
-from dialog import Dialogs,addListBox
-from utilities import number_list, get_number, event_count
+from dialog import Dialogs, addListBox
+from utilities import number_list, get_number, event_count, number_2lists
 from t_test import t_test_1sample, z_test_1sample, t_test_2samples, paired_t_test
 from chi_sq import var_1sample, multi_pop_var_test
 from proportion_test import prop_test_1sample, prop_2sample
@@ -327,6 +327,7 @@ class Mean2SampleDialog(Dialogs):
         u2 = get_number(self.u2)
         s2 = get_number(self.s2)
         n2 = get_number(self.n2)
+        d0 = get_number(self.d0)
 
         alpha = get_number(self.alpha)
         pooled = self.pooled.get()
@@ -334,6 +335,7 @@ class Mean2SampleDialog(Dialogs):
         t_test_2samples(l1=x, l2=y, print_out=True,
                         u1=u1, u2=u2, s1=s1, s2=s2,
                         n1=n1, n2=n2,
+                        d0=d0 if d0 is not None else 0,
                         alpha=alpha, pooled=pooled,
                         print_port=self.app.print)
         return
@@ -359,7 +361,7 @@ class PairedTDialog(Dialogs):
         w.pack(side=LEFT, padx=2)
 
         master = tk.LabelFrame(
-            m, text='Hypothesized population mean of the differences')
+            m, text='Hypothesized mean of the differences')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.d0 = tk.StringVar(value="0")
         w = tk.Label(master, text="Sample 1 - Sample 2")
@@ -372,19 +374,26 @@ class PairedTDialog(Dialogs):
         return
 
     def apply(self):
-        if len(self.xvar.get()) > 0:
-            x = number_list(self.df[self.xvar.get()],
-                            col_name=self.xvar.get(),
-                            print_out=True, print_port=self.app.print)
+        if len(self.xvar.get()) > 0 and len(self.yvar.get()) > 0:
+            x, y = number_2lists(self.df[self.xvar.get()], self.df[self.yvar.get()],
+                                 col_name2=self.yvar.get(),
+                                 col_name1=self.xvar.get(),
+                                 print_out=True, print_port=self.app.print)
         else:
-            x = None
-
-        if len(self.yvar.get()) > 0:
-            y = number_list(self.df[self.yvar.get()],
-                            col_name=self.yvar.get(),
-                            print_out=True, print_port=self.app.print)
-        else:
-            y = None
+            self.error(msg="Invalid sample values received.")
+            return
+        #      x = number_list(self.df[self.xvar.get()],
+        #                      col_name=self.xvar.get(),
+        #                      print_out=True, print_port=self.app.print)
+        #  else:
+        #      x = None
+        #
+        #  if len(self.yvar.get()) > 0:
+        #      y = number_list(self.df[self.yvar.get()],
+        #                      col_name=self.yvar.get(),
+        #                      print_out=True, print_port=self.app.print)
+        #  else:
+        #      y = None
 
         alpha = get_number(self.alpha)
         u0 = get_number(self.d0)
