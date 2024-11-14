@@ -139,7 +139,7 @@ def paired_t_test(l1, l2, print_out=False, u0=0,
     if print_out:
         print = print_port
         print("\n---- Paired t test ----")
-        print("Hypothesized population mean of the differences u0 = %.3f" % u0)
+        print("Hypothesized mean of the differences u0 = %.3f" % u0)
         print("Paired difference (Sample 1 - Sample 2):")
         print("mean (ud) = %.3f" % res["mean"])
         print("stdev = %.3f" % res["stdev"])
