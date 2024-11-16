@@ -24,5 +24,6 @@ Stats Menu
    2sample_t
    paired_t
    2sample_prop
+   multi_sample_dev
 
 

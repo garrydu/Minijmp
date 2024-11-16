@@ -68,5 +68,9 @@
     "Two Proportions Test": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/2sample_prop.html",
         "window":"When your data contain only two categories, such as pass/fail, use the two proportions test to determine whether the population proportions of two groups differ."
+},
+    "Mutli-sample Stdev Test": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/multi_sample_dev.html",
+        "window":"Test if standard deviations of all the samples are equal. Data need to be in separated columns. If data are stacked in one column, use Split Data Column in Data Menu. Select multiple columns with CTRL+click and SHIFT+click."
 }
 }

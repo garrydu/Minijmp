@@ -279,7 +279,7 @@ def multi_pop_var_test(data, labels, print_out=False, print_port=print,
         print("\n---- Multi Sample Standard Deviation Test ----")
         t = PT()
         pct = "%.2f%%" % (100 - 100 * alpha)
-        t.field_names = ["Sample", "N", "stdev", pct + " CI of std"]
+        t.field_names = ["Sample", "N", "stdev", pct + " CI of std", "MAD to Mean", "MAD to Median"]
         for i in range(len(data)):
             chi2_r = chi2_test_stdev(
                 data[i],
@@ -288,21 +288,34 @@ def multi_pop_var_test(data, labels, print_out=False, print_port=print,
                 print_out=False,
                 print_port=print_port)
             sr = chi2_r["95_range_from_S"]
+            #  chi2_r = chi2_test_stdev(data[i], 1,
+            #                           alpha=alpha / len(data),
+            #                           print_out=False)
+            #  sr2 = chi2_r["95_range_from_S"]
+            mean = stat.mean(data[i])
+            median = stat.median(data[i])
+            mad = sum(abs(x - mean) for x in data[i]) / len(data[i])
+            mad2 = sum(abs(x - median) for x in data[i]) / len(data[i])
             t.add_row([labels[i], len(data[i]),
                        "%.3f" % stat.stdev(data[i]),
-                       "(%.3f, %.3f)" % sr])
+                       "(%.3f, %.3f)" % sr,
+                       "%.3f" % (mad), "%.3f" % (mad2)
+                       ])
         print(str(t))
-        print("Stdev CI method is same to JMP but different from Minitab.")
+        print("Note: MAD to Mean is Mean Absolute Difference to Mean. MAD to Median is Mean Absolute Difference to Median.\n")
 
-        print("p value is the prob of the pops' standard deviations are equal.")
+        print("H0: All variances are equal. H1: At least one variance is different.\n")
         print("O'Brien[.5]       p = %.3f" % res["OBrien"]["p"])
         print("Levene            p = %.3f" % res["Levene"]["p"])
         print("Brown-Forsythe    p = %.3f" % res["Brown_Forsythe"]["p"])
+
     if len(data) == 2:
         res2 = several_tests_stdev_2sided(data[0], data[1], print_out=False)
         if print_out:
             print("2 Sided F test    p = %.3f" % res2["F"]["p"])
         res["F"] = res2["F"]
+    if print_out:
+        print("\nNote: the results were calibrated with JMP17.\n")
 
     return res
 
@@ -408,8 +421,9 @@ if __name__ == "__main__":
     chi_square([[95, 43], [101, 64]])
     chi2_test_stdev([1, 1, 2, 2, 3, 4, 1], 2, print_out=True)
     var_1sample(data=[1, 2, 3, 1, 1, 2, 2], s0=1, print_out=True)
-    multi_pop_var_test([[1, 2, 3, 1, 1, 2, 2], [1, 3, 4, 2, 2, 1, 3]], [
-        "a", "b"], print_out=True)
+    multi_pop_var_test([[1, 2, 3, 1, 1, 2, 2], [1, 3, 4, 2, 2, 1, 3],
+                       [2, 3, 1]],
+                       ["a", "b", 'c'], print_out=True)
     several_tests_stdev_2sided([1, 2, 3, 1, 1, 2, 2], [
         1, 3, 4, 2, 2, 1, 3], print_out=True)
     chi_square([[2, 1], [0, 2], [1, 0]])
