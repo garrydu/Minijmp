@@ -64,5 +64,9 @@
     "Paired t-test": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/paired_t.html",
         "window":"A paired t-test determines if there is a significant difference between the means of two related groups of measurements (like before and after scores from the same subjects) by analyzing the differences between each pair of observations."
+},
+    "Two Proportions Test": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/2sample_prop.html",
+        "window":"When your data contain only two categories, such as pass/fail, use the two proportions test to determine whether the population proportions of two groups differ."
 }
 }

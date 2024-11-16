@@ -517,23 +517,31 @@ class Prop2SDialog(Dialogs):
         f = tk.LabelFrame(m, text='Sample 1')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
+        w = tk.Label(f, text="Col.")
+        w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.event_name = tk.StringVar(value="")
+        w = tk.Label(f, text="Name of Event")
+        w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(f, textvariable=self.event_name,
                      bg='white', width=15)
         w.pack(side=LEFT, padx=2, pady=2)
 
         f = tk.LabelFrame(m, text='Sample 2')
         f.pack(side=TOP, fill=BOTH, padx=2)
+        w = tk.Label(f, text="Col.")
+        w.pack(side=LEFT, fill=X, padx=2)
         self.yvar = tk.StringVar(value="")
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.yvar,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.event_name2 = tk.StringVar(value="")
+        w = tk.Label(f, text="Name of Event")
+        w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(f, textvariable=self.event_name2,
                      bg='white', width=15)
         w.pack(side=LEFT, padx=2, pady=2)

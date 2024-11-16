@@ -23,4 +23,6 @@ Stats Menu
    1sample_prop
    2sample_t
    paired_t
+   2sample_prop
+
 
