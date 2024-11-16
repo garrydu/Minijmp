@@ -19,9 +19,7 @@ Choose Stats> Multi Sample Stdev Test
 - **Variables:** Select multiple variables with your mouse, using SHIFT-Click to select a range, and CTRL-Click to toggle a single selection. The columns selected must have continuous data. Categorical data will be ignored. The columns do not have to have same count of observations.
 - **Alpha:** Set the range of confidence intervals to be calculated, (1-alpha)100%. When alpha is set to 0.05, 95% confidence interval will be displayed.
 
-Use the test for equal variances to determine whether the variances or the standard deviations of two or more groups differ. You must have at least one categorical factor and a continuous response.
-
-For example, a lumber distributor wants to compare the variation of beam lengths that are cut by three sawmills. If any sawmill produces beams that have significantly more variation, the distributor may stop selling lumber from that sawmill.
+Use the test for equal variances to determine whether the variances or the standard deviations of two or more groups differ. For example, a lumber distributor wants to compare the variation of beam lengths that are cut by three sawmills. If any sawmill produces beams that have significantly more variation, the distributor may stop selling lumber from that sawmill.
 
 The results were calibrated with JMP 17, but the p values are different from Minitab 20.
 
@@ -65,12 +63,12 @@ Alternative hypothesis (H1): The alternative hypothesis states that not all popu
 
 Compare the p-value to the significance level to determine whether to reject the null hypothesis.
 
-There are several algorithms used in the evaluation. `2 Sided F Test` will only be used when there are two samples. There is no certain conclusion which algorithm is better than the others.
+There are several algorithms used in the evaluation. `2 Sided F Test` will only be used when there are two samples. 
 
 O'Brien's test is a robust method for testing homogeneity of variances:
 
 1. It transforms the original data using a weighted average of the squared deviation from the group mean and the group variance.
-2. The test statistic is then calculated using either a one-way ANOVA F-test or a Welch-modified two-sample t-test on the transformed data.
+2. The test statistic is then calculated using either a one-way ANOVA F-test on the transformed data.
 3. O'Brien's test with r=0.5 is recommended for general use due to its balance between robustness and power.
 
 Levene's test is widely used for assessing equality of variances:
@@ -92,10 +90,7 @@ The two-sided F-test is used to compare the variances of two populations:
 2. The test statistic follows an F-distribution under the null hypothesis.
 3. It is sensitive to departures from normality.
 
-Comparison
-----------
-
-.. list-table::
+.. list-table:: Comparison of the methods
    :header-rows: 1
    :widths: 20 20 20 20 20
    :class: tight-table
@@ -120,11 +115,6 @@ Comparison
      - Moderate
      - Moderate
      - Highest (if normal)
-   * - Ease of computation
-     - Complex
-     - Moderate
-     - Moderate
-     - Simplest
    * - Sensitivity to outliers
      - Moderate
      - Moderate
