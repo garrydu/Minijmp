@@ -49,7 +49,7 @@ def one_way_anova(data, labels, print_out=False, print_port=print,
         pct = "%.2f%%" % (100 - 100 * alpha)
         print("\n---- Oneway Anova ----\nAnalysis of Variance")
         t = PT()
-        t.field_names = ["Source", "DF", "SS", "MS", "F Ratio", "P Value"]
+        t.field_names = ["Source", "DF", "Adj. SS", "Adj. MS", "F Ratio", "P Value"]
         t.add_row(["Between", df_between, "%.3f" % SSB, "%.3f" % MSB,
                    "%.3f" % F, "%.3f" % p])
         t.add_row(["Within", df_within, "%.3f" % SSW, "%.3f" % MSW, " ", " "])
@@ -63,12 +63,12 @@ def one_way_anova(data, labels, print_out=False, print_port=print,
                        "%.3f" % stds[i], "(%.3f, %.3f)" % CIs[i]])
         print(str(t))
         print(
-            "Note: SE Mean uses a pooled estimate of error variance = %.3f." %
+            "Note: SE Mean and CI both use a pooled estimate of error variance = %.3f." %
             pooled_variance)
 
     return {"F": F, "p": p,
             "df B": df_between, "df W": df_within, "df TTL": df_total,
-            "MSB": MSB, "MSW": MSW, "MSE": MSW, "MSA": MSB
+            "MSB": MSB, "MSW": MSW, "MSE": MSW, "MSA": MSB, "CI": CIs
             }
 
 # The means compare each pair in JMP uses pooled t-test
@@ -111,7 +111,7 @@ def JMP_ANOVA_t_test(data, labels, print_out=False, print_port=print,
     def t_test_anova(l1, l2, print_out=False):
         u1 = stat.mean(l1)
         u2 = stat.mean(l2)
-       #  s1 = stat.stdev(l1)
+        #  s1 = stat.stdev(l1)
         #  s2 = stat.stdev(l2)
         n1 = len(l1)
         n2 = len(l2)

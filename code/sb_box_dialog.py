@@ -188,15 +188,16 @@ class singleBoxDialog(SBDialog):
                 return
             grp = self.grouping.get()
             if grp != "":
-                self.make_working_df(cols=[xvar, grp])
+                self.make_working_df(cols=[grp], numcols=[xvar])
             else:
-                self.make_working_df(cols=[xvar])
+                self.make_working_df(cols=[], numcols=[xvar])
                 grp = None
 
         pf = self.showPlotViewer()
         pf.ax = pf.fig.add_subplot(111)
 
         self.xlabel_v = self.xlabel.get()
+        self.ylabel_v = self.ylabel.get()
         if self.xlabel_v == "":
             self.xlabel_v = "Groups" if grp == "" else grp
         if self.ylabel_v == "":
@@ -359,7 +360,7 @@ class multiBoxDialog(singleBoxDialog):
             return
         grp = self.grouping.get()
         hue = self.hue.get()
-        cols = [xvar]
+        cols = []
         if grp != "":
             cols.append(grp)
         else:
@@ -368,12 +369,13 @@ class multiBoxDialog(singleBoxDialog):
             cols.append(hue)
         else:
             hue = None
-        self.make_working_df(cols=cols)
+        self.make_working_df(cols=cols, numcols=[xvar])
 
         pf = self.showPlotViewer()
         pf.ax = pf.fig.add_subplot(111)
 
         self.xlabel_v = self.xlabel.get()
+        self.ylabel_v = self.ylabel.get()
         if self.xlabel_v == "":
             self.xlabel_v = "Groups" if grp == "" else grp
         if self.ylabel_v == "":

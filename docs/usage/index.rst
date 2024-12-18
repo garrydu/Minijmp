@@ -25,5 +25,7 @@ Stats Menu
    paired_t
    2sample_prop
    multi_sample_dev
+   anova_1way
+   anova_2way
 
 

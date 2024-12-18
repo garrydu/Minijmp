@@ -6,7 +6,7 @@ import numpy as np
 import seaborn as sb
 ########### Own Modules ###########
 from dialog import Dialogs
-from utilities import get_number, is_void, grouping_by_labels, transpose_2D_list
+from utilities import get_number, is_void, grouping_by_labels, transpose_2D_list, number_list
 
 
 class SBDialog(Dialogs):
@@ -48,7 +48,7 @@ class SBDialog(Dialogs):
         return self.app.showPlotViewer(
             save_last=self.no_preview)
 
-    def make_working_df(self, cols=None):
+    def make_working_df(self, cols=None, numcols=[]):
         def voids2nan(data):
             return [np.nan if is_void(i) else i
                     for i in data]
@@ -57,6 +57,8 @@ class SBDialog(Dialogs):
             cols = self.cols
         for key in cols:
             d[key] = voids2nan(self.df[key])
+        for key in numcols:
+            d[key] = number_list(self.df[key])
         self.working_df = DF(d)
         return
 

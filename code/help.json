@@ -72,5 +72,13 @@
     "Mutli-sample Stdev Test": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/multi_sample_dev.html",
         "window":"Test if standard deviations of all the samples are equal. Data need to be in separated columns. If data are stacked in one column, use Split Data Column in Data Menu. Select multiple columns with CTRL+click and SHIFT+click."
+},
+    "One-Way ANOVA": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/anova_1way.html",
+        "window":"Use One-Way ANOVA to determine whether the population means of two or more groups differ. If the ANOVA finds that at least one group is different, perform a comparisons analysis to identify pairs of groups that are significantly different. The input data can be a stack of continuous responses and corresponding a categorical factor column, or separated columns of continuous samples."
+},
+    "Two-Way ANOVA": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/anova_2way.html",
+        "window":"The two-way ANOVA compares the mean differences between groups that have been split on two independent variables (called factors). Use a two-way ANOVA when you want to know how two independent categorical variables (factors), in combination, affect a dependent variable (response)."
 }
 }

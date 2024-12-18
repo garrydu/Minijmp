@@ -372,6 +372,25 @@ def filter_voids(data):
     return res
 
 
+def hash_xor(numbers):
+    h = 0
+    for num in numbers:
+        h ^= hash(num)
+    return h
+
+
+def order_insensitive_hash(numbers):
+    return hash((len(numbers), sum(numbers), sum(n**2 for n in numbers)))
+
+
+def hash_combined(numbers):
+    length = len(numbers)
+    sum_nums = sum(numbers)
+    sum_squares = sum(n**2 for n in numbers)
+    xor_hash = hash_xor(numbers)
+    return hash((length, sum_nums, sum_squares, xor_hash))
+
+
 @lru_cache
 def calculate_d2(n):
     def integrand(x):

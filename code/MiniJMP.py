@@ -171,9 +171,9 @@ class Minijmp(Minijmp_pre):
             '27Paired t-test': {'cmd': self.paired_t},
             '28Two Proportions Test': {'cmd': self.prop_2samples},
             '29Multi-Sample Stdev Test': {'cmd': self.multi_var},
-            '32Oneway ANOVA': {'cmd': self.anova_1way},
-            '33Mean Comparison t': {'cmd': self.JMP_t_test},
-            '34Twoway ANOVA': {'cmd': self.anova_2way},
+            '32One-Way ANOVA': {'cmd': self.anova_1way},
+            #  '33Mean Comparison t': {'cmd': self.JMP_t_test},
+            '34Two-Way ANOVA': {'cmd': self.anova_2way},
             '42Contingency table & Chi2': {'cmd': self.chi2table},
             '43Proportion Chi Square': {'cmd': self.chi2prop},
             '06sep': '', '20sep': '', '30sep': '', '40sep': ''}
@@ -471,7 +471,7 @@ class Minijmp(Minijmp_pre):
         _ = Anova1WayDialog(
             self.table, app=self,
             df=self.table.model.df,
-            title='Oneway Anova')
+            title='One-Way ANOVA')
         return
 
     def JMP_t_test(self):
@@ -485,7 +485,7 @@ class Minijmp(Minijmp_pre):
         _ = Anova2WayDialog(
             self.table, app=self,
             df=self.table.model.df,
-            title='Twoway Anova')
+            title='Two-Way ANOVA')
         return
 
     def chi2table(self):
