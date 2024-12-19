@@ -2,14 +2,14 @@
 Confidence Intervals
 --------------------
 
-Choose Stats>Confidence Intervals.
+Choose Stats > Confidence Intervals.
 
 .. image:: images/ci1.png
    :align: center
 
-- **Data Col. Select:** Select the sampled dataset, i.e. a column of data. The population who was sampled from should be normally distributed. 
+- **Data Col. Select:** Choose the column containing your sampled dataset. The population from which the sample was drawn should be normally distributed. 
 
-- **Alpha:** The Confidence Intervals want to calculate. 0.05 stands for 95% probability range of the population mean and standard deviation, while 0.1 stands for 90%, and so on.
+- **Alpha:** Specify the alpha level for the confidence intervals. An alpha of 0.05 corresponds to a 95% confidence interval for the population mean and standard deviation, while an alpha of 0.1 corresponds to a 90% confidence interval, and so on.
 
 A sample output:
 
@@ -33,5 +33,5 @@ Interpretation:
 
 - **One-sided Confidence Interval:** A 95% one-sided upper bound of 0.767 can be interpreted as: "We are 95% confident that the true population mean is less than or equal to 0.767." Similarly, a 95% one-sided lower bound of -0.035 can be interpreted as: "We are 95% confident that the true population mean is greater than or equal to -0.035."
 
-The Interpretation of CI of standard deviation is same to the mean CI above. 
+The interpretation of the confidence interval for the standard deviation is similar to that of the mean confidence interval described above.
 

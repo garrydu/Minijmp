@@ -9,12 +9,12 @@
 Orthogonal Regression
 =====================
 
-The Orthogonal Regression, also known as Deming regression, is to determine whether two instruments or methods provide comparable measurements. Orthogonal regression examines the linear relationship between two continuous variables: one response (Y) and one predictor (X). 
+Orthogonal Regression, also known as Deming regression, is used to determine whether two instruments or methods provide comparable measurements. It examines the linear relationship between two continuous variables: one response (Y) and one predictor (X).
 
-- Unlike simple linear regression (least squares regression), both the response and predictor in orthogonal regression contain measurement error. 
-- In Linear Regression, i.e. simple regression, only the response variable contains measurement error, or saying the calculation considers that the predictor doesn't have measurement error.
+- Unlike simple linear regression (least squares regression), both the response and predictor in orthogonal regression contain measurement error.
+- In Linear Regression, i.e., simple regression, only the response variable contains measurement error, assuming the predictor doesn't have measurement error.
 
-Choose Stats>Orthogonal Regression.
+Choose Stats > Orthogonal Regression.
 
 .. image:: images/ortho1.png
    :align: center
@@ -22,27 +22,27 @@ Choose Stats>Orthogonal Regression.
 - **X Y Values:** Select two different columns for the predictor, i.e. X, and the response variable, i.e. Y. 
 - **Orthogonal Regression**
 
-  - **Show Fit:** The orthogonal regression shares the dialog with linear regression. By default, keep the box checked, otherwise orthogonal regression will not be performed. 
-  - **Residal Table:** Show the residuals, standardized residuals, eastimated x and y values in a table printed out. 
-  - **Error variance ratio (Y/X):** The ratio the error variance uses the measurement error not the variance of the input data. One approach to get the variance of the measurement is GRR. Leave it 1 by default for equal variance assumption, if the ratio is unavailable. 
-  - **Alpha:** Set the range of confidence intervals to be calculated, (1-alpha)100%. When alpha is set to 0.05, 95% confidence interval will be displayed.
+  - **Show Fit:** The orthogonal regression shares the dialog with linear regression. By default, keep the box checked; otherwise, orthogonal regression will not be performed.
+  - **Residual Table:** Show the residuals, standardized residuals, estimated x and y values in a printed table.
+  - **Error Variance Ratio (Y/X):** The ratio of the error variance uses the measurement error, not the variance of the input data. One approach to get the variance of the measurement is GRR. Leave it as 1 by default for equal variance assumption if the ratio is unavailable.
+  - **Alpha:** Set the range of confidence intervals to be calculated, (1-alpha)100%. When alpha is set to 0.05, a 95% confidence interval will be displayed.
     
-This tool is calibrated to Minitab 20. JMP uses different output format, and some numbers, such as CI, with slight differences.
+This tool is calibrated to Minitab 20. JMP uses a different output format, and some numbers, such as CI, may have slight differences.
 
 OLS and Orthogonal Regression
 -----------------------------
 
-Linear regression in previous sections is also called as ordinary least squared (OLS) regression. The method minimizes the squared sum of the vertial distances between the observed responses and the fitted line. The method only considering the measurement error of the response variable, and treating the predictor accurate without measurement errors. This is usually not the case, which both variables have measurement errors. Linear Regression thus is a good tool to make predicting models but not for showing data relationship. 
+Linear regression in previous sections is also called ordinary least squares (OLS) regression. The method minimizes the squared sum of the vertical distances between the observed responses and the fitted line. The method only considers the measurement error of the response variable, treating the predictor as accurate without measurement errors. This is usually not the case, as both variables often have measurement errors. Linear Regression is thus a good tool for making predictive models but not for showing data relationships.
 
 .. image:: images/ortho_ols.png
    :align: center
 
-Orthogonal Regression considers both variables carrying measurement errors, which matches common circumstances. The method minimizes the orthogonal distances from the observed points to the fitted line, when the error variance ratio is 1. The method shows better the relationship between the two variables, though due to its complexity, linear regression is more suitable for value predicting. 
+Orthogonal Regression considers both variables carrying measurement errors, which matches common circumstances. The method minimizes the orthogonal distances from the observed points to the fitted line when the error variance ratio is 1. The method better shows the relationship between the two variables, though due to its complexity, linear regression is more suitable for value predicting.
 
 .. image:: images/ortho_ortho.png
    :align: center
 
-For example, a dataset has X and Y values both generated by `np.linspace(0, 10, 500) + np.random.normal(0, 1, 500)`. The real relationship between the two sets should be a straight line with slope euqaling to one. After applied both regression methods to the dataset, the linear regression, the red line, has smaller slope than one, since it considering all the errors in to response variable. The orthogonal regression gives the line close to the position. 
+For example, a dataset has X and Y values both generated by `np.linspace(0, 10, 500) + np.random.normal(0, 1, 500)`. The real relationship between the two sets should be a straight line with a slope equal to one. After applying both regression methods to the dataset, the linear regression, the red line, has a smaller slope than one, as it considers all the errors in the response variable. The orthogonal regression gives the line close to the true position.
 
 .. image:: images/ortho_cmp.png
    :align: center
@@ -102,9 +102,9 @@ Here below is a comparison table between the two methods.
 Error Variance Ratio
 --------------------
 
-The error variance ratio is a crucial concept in orthogonal regression, also known as total least squares or errors-in-variables regression. This ratio plays a significant role in determining the fit of the regression line and has important implications for the interpretation of the results. Let's explore this concept in detail 
+The error variance ratio is a crucial concept in orthogonal regression, also known as total least squares or errors-in-variables regression. This ratio plays a significant role in determining the fit of the regression line and has important implications for the interpretation of the results. Let's explore this concept in detail.
 
-The error variance ratio in orthogonal regression refers to the ratio of the variance of errors in the y-variable to the variance of errors in the x-variable. Mathematically the error variance ratio λ is defined as:
+The error variance ratio in orthogonal regression refers to the ratio of the variance of errors in the y-variable to the variance of errors in the x-variable. Mathematically, the error variance ratio λ is defined as:
 
 .. math::
 
@@ -131,7 +131,7 @@ In practice, the true error variance ratio is often unknown and must be estimate
 - In many cases, researchers assume λ = 1.
 - If comparing data from two measurement results, using the Gauge Repeatability and Reproducibility (GRR) variance as the measurement variance for orthogonal fit input is indeed a valid and often recommended approach. This method provides a robust estimate of measurement uncertainty that can significantly improve the accuracy of your orthogonal fit model.
 
-When the ratio is one, the orthogonal regression is minimizing the orthogonal distances between the data points and fitted line. However, when the ratio is not equal to one, the distances direction starts to move away from the orthogonal direction, until becoming vertical or horizontal when the ratio goes very large or small.
+When the ratio is one, the orthogonal regression minimizes the orthogonal distances between the data points and the fitted line. However, when the ratio is not equal to one, the direction of the distances starts to move away from the orthogonal direction, until becoming vertical or horizontal when the ratio becomes very large or small.
 
 Fit Summary
 -----------
@@ -154,9 +154,9 @@ Fit Summary
    P-value indicates the probability of sampling from a 
    normal distributed population.
 
-Parameter estimates of slope and intercept tell what is the equation of the fitted line, while `Y = Slope * X + Intercept`. The confidence interval estimates the uncertainty around the mean prediction. Or say it shows the range of 95% (or other number set by Alpha) probability the line will lay. 
+Parameter estimates of slope and intercept tell what is the equation of the fitted line, while `Y = Slope * X + Intercept`. The confidence interval estimates the uncertainty around the mean prediction. Or say it shows the range of 95% (or other number set by Alpha) probability the line will lay.
 
-Error Variances in X and Y are the numbers of from evaluation, the variances between the observed values and fitted values in X and Y. They are not necessary to be equal to the GRR variances for the two variables, though ideally they should. The quoted result was for the dataset generated by `np.linspace(0, 10, 500) + np.random.normal(0, 1, 500)`. The random portion in both X and Y has variance set to 1. The variance from the orthogonal regression gives a close result to the theoretical value.
+Error Variances in X and Y are the numbers from evaluation, the variances between the observed values and fitted values in X and Y. They are not necessarily equal to the GRR variances for the two variables, though ideally, they should be. The quoted result was for the dataset generated by `np.linspace(0, 10, 500) + np.random.normal(0, 1, 500)`. The random portion in both X and Y has variance set to 1. The variance from the orthogonal regression gives a close result to the theoretical value.
 
 Residuals
 ---------
@@ -171,14 +171,14 @@ Residuals
    |  3  |  2.03 |  1.79 |  1.60 |  1.84 | -0.49 |   -0.35   |
    |  4  |  2.94 |  2.03 |  1.18 |  2.09 | -1.82 |   -1.28   |
 
-When **Residual Table** is checked, a detailed table with residuals and fitted values will be displayed. Since all the data point pairs will be displayed, be cautious with large datasets. 
+When **Residual Table** is checked, a detailed table displaying residuals and fitted values will be shown. Be cautious with large datasets, as all data point pairs will be displayed.
 
-In orthogonal regression, the fitted point and the observed point have different x and y values. The figure below demonstrated a case when error variance ratio is one. In Minitab, the residuals are calculated by the vertical distances between the observed point to the fitted line, which is not the distance between observed point to the fitted point. However, the angle between them is consistent, the distribution of the vertical distance is same to the distribution of the distances between the observed and fitted points.
+In orthogonal regression, the fitted and observed points have different x and y values. The figure below illustrates a case where the error variance ratio is one. In Minitab, residuals are calculated as the vertical distances from the observed points to the fitted line, not the distance between the observed and fitted points. However, the angle between them remains consistent, and the distribution of the vertical distances is the same as the distribution of the distances between the observed and fitted points.
 
 .. image:: images/ortho_resid.png
    :align: center
 
-The standardized residual is helpful in identifying outliers. Anything larger than 3 are worth to take a look. It is calculated as:
+The standardized residual is useful for identifying outliers. Values greater than 3 warrant further investigation. It is calculated as:
 
 .. math::
 
@@ -197,5 +197,6 @@ where
 - :math:`\hat{\beta}_1`: estimate of slope
 - :math:`\sigma_u^2`: estimate of error variance for X
 
-A normality test is also applied to the residual results by default. It helps to test if the residuals were from a normal distribution. More explanation of the ouput in the `Normality` section. `LINK <https://minijmp.readthedocs.io/en/latest/usage/normality.html>`_
+
+A normality test is also applied to the residuals by default. This test helps determine if the residuals originate from a normal distribution. More details on the output can be found in the  `Normality` section. `LINK <https://minijmp.readthedocs.io/en/latest/usage/normality.html>`_
 

@@ -6,12 +6,12 @@ Choose Stats> One Sample Mean t-test
 .. image:: images/1sample_t1.png
    :align: center
 
-- **Sample Values:** The column contains the sampled values. The values have to be numerical of continuous values. 
-- **Summarized Data:** When knowing the statistical descriptions of the sampled values, filling out N, which is the count of the sampled values, StDev, the standard deviation of the sampled values, and mean. The filled information will override the sampled values selected above. 
+- **Sample Values:** This column contains the sampled values, which must be numerical and continuous.
+- **Summarized Data:** If you know the statistical descriptions of the sampled values, fill in `N` (the count of the sampled values), `StDev` (the standard deviation of the sampled values), and the mean. This information will override the sampled values selected above.
 - **Hypothesis Test:** The hypothesized mean value of the population.
-- **Alpha:** The significance level used in the calculation. For example the confidence intervals, the range of confidence intervals is (1-alpha)100%.
+- **Alpha:** The significance level used in the calculation. For example, for confidence intervals, the range is (1-alpha)100%.
 
-A one sample t-test is a statistical procedure used to determine whether the mean of a single sample differs significantly from a known or hypothesized population mean.
+A one-sample t-test is a statistical procedure used to determine whether the mean of a single sample differs significantly from a known or hypothesized population mean.
 
 In a one-sample t-test, we're comparing a sample mean to a hypothesized population mean (often called μ₀ or a test value). While the sample mean (x̄) is indeed a specific calculated number from our data, the key idea is that we're testing whether this sample mean could reasonably have come from a population with our hypothesized mean. For example, if we calculate a sample mean of 72.5 from our data and we're testing against a hypothesized population mean of 70, we're not asking if 72.5 exactly equals 70 (which it clearly doesn't). Instead, we're asking whether the difference between 72.5 and 70 is large enough to conclude that our sample likely came from a population with a different mean, or if this difference could reasonably occur by chance when sampling from a population with mean 70. This is why we use concepts like sampling distribution and probability to make this determination, rather than strict numerical equality.
 
@@ -42,6 +42,3 @@ The t-test is based on the t-distribution, which is a probability distribution t
 - When P-value is smaller than the significance level, the null hypothesis should be rejected. Or in another way, the p-value is the probability the population mean equals to the hypothesized population mean.
 - The confidence intervals of the population mean, the percentage size of the range is set by alpha.
 - In a t-test, the null hypothesis (H0) and alternative hypothesis (H1) can indeed be formulated as you described, with H0: μ = μ0 and H1: μ > μ0. This is known as a one-tailed or directional test. If H0 is rejected, we accept that the true mean is greater than μ0, which is precisely what H1 states.
-
-
-

@@ -2,17 +2,17 @@
 Fit Distributions
 -----------------
 
-Choose Stats>Fit Distributions.
+Choose Stats > Fit Distributions.
 
 .. image:: images/fit_dist1.png
    :align: center
 
-A fitted distribution is a theoretical distribution calculated using parameter estimates derived from a sample that you enter. This dialog can help to find the most suitable distribution to the sample. If plotting required, please use Plots>Histogram & Dist. Fit, however which can't compare across distributions.
+A fitted distribution is a theoretical distribution calculated using parameter estimates derived from a sample you provide. This dialog helps identify the most suitable distribution for the sample. For plotting, use Plots > Histogram & Dist. Fit, although it cannot compare across distributions.
 
 - **Data Col. Select:** Select the sampled dataset, i.e. a column of data. 
-- **Models:** Select the distributions to test with. Please note some distributions require input values all positive or non-negative.
+- **Models:** Select the distributions to test. Note that some distributions require all input values to be positive or non-negative.
 
-The backend of the fitting is scipy. It provides very close results to JMP 17, in 3 to 4 significant digits. The output format and parameter selection follow JMP. The output doesn't inlcude CI and standard errors.
+The fitting process uses SciPy, providing results very close to JMP 17, accurate to 3 to 4 significant digits. The output format and parameter selection follow JMP conventions. The output does not include confidence intervals (CI) and standard errors.
 
 Fit Distributions
 ~~~~~~~~~~~~~~~~~
@@ -86,7 +86,8 @@ Compare Distributions
 .. image:: images/fit_dist4.png
    :align: center
 
-When comparing distribution fits, several criteria are commonly used to evaluate and select the best model. Here's an explanation of AICc, BIC, AICc Weight, and -2*loglikelihood:
+When comparing distribution fits, several criteria are used to evaluate and select the best model:
+
 
 1. **AICc (Corrected Akaike Information Criterion):**
 

@@ -11,7 +11,7 @@
 Normality
 ---------
 
-Choose Stats>Normality. 
+Choose Stats > Normality. 
 
 .. image:: images/norm_test1.png
    :align: center
@@ -55,8 +55,8 @@ A sample output.
 
 QQ plots compare the quantiles of the sample data against the quantiles of a theoretical normal distribution. This allows for a visual inspection of how closely the data follows normality. 
 
-- Normally Distributed Data: If the data is normally distributed, the points on the QQ plot will roughly form a straight line from the lower left to the upper right corner.
-- Non-Normal Data: Deviations from this straight line indicate departures from normality.
+- **Normally Distributed Data:** If the data is normally distributed, the points on the QQ plot will roughly form a straight line from the lower left to the upper right corner.
+- **Non-Normal Data:** Deviations from this straight line indicate departures from normality.
 
 .. list-table::
    :widths: 25 25 25 25

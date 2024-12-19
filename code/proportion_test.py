@@ -72,8 +72,8 @@ def prop_2sample(n1=None, n2=None, e1=None,
         print(pct + " Lower bound for difference %.3f" % CI2[0])
         print("\nH0: p1 == p2")
         t = PT()
-        t.field_names = ["p value", "Z", "p1 != p2", "p1 < p2", "p1 > p2"]
-        t.add_row(["Fisher's Excat", " ", "%.3f" % p_f,
+        t.field_names = ["p-value", "Z", "p1 != p2", "p1 < p2", "p1 > p2"]
+        t.add_row(["Fisher's Exact", " ", "%.3f" % p_f,
                    "%.3f" % pl_f, "%.3f" % pu_f])
         t.add_row(["Normal appx.", "%.3f" % Zs, "%.3f" % p,
                    "%.3f" % pl, "%.3f" % pu])
@@ -180,7 +180,7 @@ def prop_test_1sample(events=1, N=1, p0=1, print_port=print,
         #  print("Z porportion test")
         print("\np-value for H0: p==p0, H1: p!=p0")
         print("Normal Approx.   %.3f" % p_norm)
-        print("Strerne's Method %.3f" % p_s)
+        print("Sterne's Method  %.3f" % p_s)
         print("Blaker's Method  %.3f" % p_b)
         print("Adj. Blaker's Exact   %.3f" % p_bi_uneq)
         print("\nH0: p==p0, H1: p<p0.")

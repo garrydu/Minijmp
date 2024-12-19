@@ -7,14 +7,14 @@ Choose Stats> One Sample StDev
    :align: center
 
 
-- **Sample Values:** The column contains the sampled values. The values have to be numerical of continuous values. 
-- **Summarized Data:** When knowing the statistical descriptions of the sampled values, filling out N, which is the count of the sampled values, StDev, the standard deviation of the sampled values. The filled information will override the sampled values selected above. 
+- **Sample Values:** This column contains the sampled values, which must be numerical and continuous. 
+- **Summarized Data:** If you know the statistical descriptions of the sampled values, fill in `N`, the count of the sampled values, and `StDev`, the standard deviation of the sampled values. This information will override the sampled values selected above.
 - **Hypothesis Test:** The hypothesized standard deviation value of the population.
-- **Alpha:** The significance level used in the calculation. For example the confidence intervals, the range of confidence intervals is (1-alpha)100%.
+- **Alpha:** The significance level used in the calculation. For example, the confidence intervals are calculated as (1-alpha)100%.
 
-Many statistical methods have been developed to evaluate the variance of a population, each with its own strengths and limitations. The classical chi-square method used to test the variance is likely the most commonly used, but it is extremely sensitive to the assumption of normality and can produce extremely inaccurate results when the data are skewed or heavy-tailed. Give the data a test of its normality, before using chi_square test of variance or standard deviation. The software also provides the Bonett method to test the hypothesis, however it has to have a data set input, and won't work with summarized values inputs.
+Many statistical methods have been developed to evaluate the variance of a population, each with its own strengths and limitations. The classical chi-square method is likely the most commonly used for testing variance, but it is extremely sensitive to the assumption of normality and can produce inaccurate results when the data are skewed or heavy-tailed. It is advisable to test the data for normality before using the chi-square test for variance or standard deviation. The software also provides the Bonett method to test the hypothesis; however, it requires a data set input and will not work with summarized values inputs.
 
-The test is not to test the standard deviation of the data set itself being equal to another hypothesized value. Similar to the mean tests, the test is to find the significance level of the population standard deviation being equal to the hypothesized value. 
+The test is not designed to assess whether the standard deviation of the data set itself is equal to another hypothesized value. Similar to mean tests, the purpose is to determine the significance level of the population standard deviation being equal to the hypothesized value.
 
 The calculation was calibrated with Minitab 20.
 
@@ -37,7 +37,7 @@ A sample output:
   The Bonett method is valid for any continuous distribution.
   The chi-square method is valid only for the normal distribution.
 
-The null hypothesis of the test is that the population standard deviation is equal to the specified value, from which the dataset was sampled. The chi-square method requires normal distribution. The Bonett method requires continuous distribution, but not limited to normal distribution. While the dataset does not show significance level in the normality test, use the p-value of Bonett test.
+The null hypothesis of the test is that the population standard deviation is equal to the specified value from which the dataset was sampled. The chi-square method requires a normal distribution, while the Bonett method requires a continuous distribution but is not limited to normal distribution. If the dataset does not show significance in the normality test, use the p-value from the Bonett test.
 
-The confidence intervals are the range of standard deviation of the population at centain possibility occurs. The range was set by alpha, which the percentage is (1-alpha)100%. The upper boundary for example is centain percentage of possibility the population standard deviation will fall less than the value, which is similar to the lower boundary.
+The confidence intervals represent the range of the population standard deviation at a certain probability. The range is set by alpha, with the percentage being (1-alpha)100%. For example, the upper boundary indicates the percentage probability that the population standard deviation will be less than the value, similar to the lower boundary.
 

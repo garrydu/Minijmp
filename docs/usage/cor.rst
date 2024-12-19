@@ -9,7 +9,7 @@
 Correlation
 ===========
 
-Choose Stats>Correlation.
+Choose Stats > Correlation.
 
 .. image:: images/cor1.png
    :align: center
@@ -17,25 +17,25 @@ Choose Stats>Correlation.
 Correlation is a statistical measure that describes the strength and direction of the relationship between two variables.
 
 - **X Y Values:** Select the two sets of data. The order of the dataset, either which is X, won't change the correlation result, but only the plotting orientation. 
-- **Correlation Select:**  There are two main types of correlation analyses: parametric (like Pearson's correlation) and nonparametric (such as Spearman's and Kendall's correlations). Their difference will be discussed, however select Pearson's Correlation by default if you are not sure.
+- **Correlation Select:**  There are two main types of correlation analyses: parametric (like Pearson's correlation) and nonparametric (such as Spearman's and Kendall's correlations). Their differences will be discussed, but select Pearson's Correlation by default if you are unsure.
 - **Scatter Plot Setting:** A scatter plot of data will be displayed, all the settings below are about this plot. 
 
-  - **Correlation Ellipse:** Display a light blue filled ellipse for Bivariate Normal Distribution, which is only available with Pearson's correlation. The ellipse will be always drawn unless Pearson's Correlation is unselected. 
-  - **Ellipse Outline:** Display a red outline of the ellipse above. Either of these two settings can work alone, but also together.
-  - **Alpha:** It determines the contour level of the ellipse. If alpha is 0.05, the ellipse of 95% Probability Contour will be displayed; while 0.3 for 70% of Probability Contour. Leave it by default if you are not sure. This alpha also determines the confidence intervals range of the Pearson's correlation coefficient. 
+  - **Correlation Ellipse:** Display a light blue filled ellipse for Bivariate Normal Distribution, which is only available with Pearson's correlation.  
+  - **Ellipse Outline:** Display a red outline of the ellipse above. Either of these two settings can work alone or together.
+  - **Alpha:** Determines the contour level of the ellipse. If alpha is 0.05, the ellipse of 95% Probability Contour will be displayed; while 0.3 for 70% of Probability Contour. Leave it by default if you are unsure. This alpha also determines the confidence intervals range of the Pearson's correlation coefficient.
   - **Axis Settings:**
 
     - **Label:** If left blank, the axis will be labelled with the data column name.
-    - **Min and Max:** The by-default min and max of axis are set by the **Margin** in **Plot Setting** below. 
+    - **Min and Max:** The default min and max of the axis are set by the **Margin** in **Plot Setting** below.
     - **Legend and Grid:** They won't be shown by default.
-    - **Margin:** A margin of 0.1 means using a width of 10% of range of data as the blank margin of the plot.
+    - **Margin:** A margin of 0.1 means using a width of 10% of the range of data as the blank margin of the plot.
 
 The results of correlation have been calibrated with Minitab 20, JMP pro 17 and R (lib Hmisc 5.1).
 
-- The Pearson's correlation shows same result to Minitab, while I didn't find CI of correlation coefficient in JMP.
-- The Spearman's rho and Kendall's tau are same to the JMP results, p-value of Kendalls in a few cases showed <0.1 difference from JMP, though not affecting judgement. 
-- The Hoeffding's D value works the same with JMP, the p-value is the same to R.
-- Minitab doesn't have Hoeffding and Kendalls to compare with.
+- The Pearson's correlation shows the same result as Minitab, while I didn't find CI of the correlation coefficient in JMP.
+- The Spearman's rho and Kendall's tau are the same as the JMP results, with the p-value of Kendall's in a few cases showing <0.1 difference from JMP, though not affecting judgment.
+- The Hoeffding's D value works the same with JMP, and the p-value is the same as R.
+- Minitab doesn't have Hoeffding and Kendall's to compare with.
 
 
 Pearson's Correlation
@@ -71,14 +71,14 @@ Degrees of Correlation:
 - Low Degree: Values below +0.29 are considered a weak correlation.
 - No Correlation: A value of zero implies no relationship.
 
-However the criteria depend on the type of data, and the purpose of the evaluation. For some situation, a abs(r) > 0.7 or higher is considered a good correlation.
+However, the criteria depend on the type of data, and the purpose of the evaluation. For some situation, a abs(r) > 0.7 or higher is considered a good correlation.
 
 **The confidence intervals** are of the correlation coefficient, whose range is set by the alpha in the dialog. 
 
 Covariance
 ~~~~~~~~~~
 
-Covariance and Pearson correlation coefficient are related, they serve different purposes. Covariance is more fundamental but harder to interpret, while Pearson correlation provides a standardized measure of linear relationship strength that's easier to understand and compare across different variable pairs. If you are not sure, ingore the convariance value.
+Covariance and Pearson correlation coefficient are related, but they serve different purposes. Covariance is more fundamental but harder to interpret, while Pearson correlation provides a standardized measure of linear relationship strength that's easier to understand and compare across different variable pairs. If you are unsure, ignore the covariance value.
 
 .. list-table:: Comparison of Covariance and Pearson Correlation
    :header-rows: 1
@@ -112,7 +112,7 @@ For example the quoted result above show the p-value of the correlation between 
 Correlation Ellipse
 -------------------
 
-The correlation ellipse is a strong tool to visualize the direction and strength of the correlation. The long axis indicates the direction of the correlation, either it is positive or negative. The width of the ellipse, i.e. the ratio between the short and long axes, shows the correlation strength, while the narrower the ellipse is the stronger the correlation they have. 
+The correlation ellipse is a strong tool to visualize the direction and strength of the correlation. The long axis indicates the direction of the correlation, either positive or negative. The width of the ellipse, i.e., the ratio between the short and long axes, shows the correlation strength; the narrower the ellipse, the stronger the correlation.
 
 .. list-table::
    :widths: 33 33 33
@@ -123,12 +123,12 @@ The correlation ellipse is a strong tool to visualize the direction and strength
 
 The screenshots show different levels of correlations. The data is available at `data_sample` folder in the CSV file of `human_age_prediction-Kaggle`. 
 
-To discuss the mechanism behind the ellipse we first look at the univariate Normal Distribution, i.e. distribution changing via one variable. The area under the PDF curve corresponds to probability: 68% area between ± σ and 95% between ± 1.96σ. 
+To discuss the mechanism behind the ellipse, we first look at the univariate Normal Distribution, i.e., distribution changing via one variable. The area under the PDF curve corresponds to probability: 68% area between ± σ and 95% between ± 1.96σ.
 
 .. image:: images/cor_e_1d_norm.png
    :align: center
 
-A Bivariate Normal Distribution has two independent variables. For example, when shooting bullets towards the target center, the bullet's position in X and Y both follows a univariate Normal Distribution. Combining together, the probability density on the 2 dimentional plane of target paper forms a bell shape, when view from top it has contour of ellipse.
+A Bivariate Normal Distribution has two independent variables. For example, when shooting bullets towards the target center, the bullet's position in X and Y both follows a univariate Normal Distribution. Combining together, the probability density on the 2-dimensional plane of target paper forms a bell shape; when viewed from the top, it has a contour of an ellipse.
 
 
 .. |img1| image:: images/cor_e_2d_norm1.png
@@ -147,7 +147,7 @@ A Bivariate Normal Distribution has two independent variables. For example, when
 
     </div>
 
-The ellipse is the contour line of the Bivariate Normal Distribution of the two datasets in the correlation. The commonly used 95% ellipse boundary is the two dimentional form of red line in the univariate distribution, which contains 95% integrated probability under the bell curve. The integrated volume under the bell dorm within the boundary is 95%.
+The ellipse is the contour line of the Bivariate Normal Distribution of the two datasets in the correlation. The commonly used 95% ellipse boundary is the two-dimensional form of the red line in the univariate distribution, which contains 95% integrated probability under the bell curve. The integrated volume under the bell dorm within the boundary is 95%.
 
 .. image:: images/contour_cor_5_25_50.png
    :align: center
@@ -157,7 +157,6 @@ The above is a stacked image, not generated by the software directly, of 95%, 75
 Since the ellipse is drawn based on Normal Distribution. When both varialbes are normally distributed, the Pearson correlation coefficient fully describes their linear relationship. In this case, the probability contours of the distribution form perfect ellipses.
 
 **If one or both of the variables are not normally distributed, the ellipse can still be drawn as a visualization tool, but its interpretation may be less straightforward.** Pearson correlation does not strictly require normally distributed inputs.
-
 
 Non-parametric Correlation
 --------------------------
@@ -221,9 +220,9 @@ Though Spearman's rho is claimed to handle non-linear relationship, it still tes
 			Spearman correlation: 1.000
 			Spearman p-value: 0.000 
 
-Even though it's not strictly correct in null hypothesis, Spearman's rho doesn't work better than Pearson in distinguish if two variables having non-linear monotonic relationship. 
+Even though it's not strictly correct in null hypothesis, Spearman's rho doesn't work better than Pearson in distinguishing if two variables have a non-linear monotonic relationship.
 
-However, Pearson's correlation and Spearman's rho both handle outliers poorly. Kendall's tau stands out in this perspective. Tested with non-linear related data I have and those with ourliers, Kendall's tau did a better job in telling the potential correlation between the varialbes. For example, in the `sampmle_data` folder `correlation.pickle`, the column `X` and column `Outlier` have non-linear relationship with outliers. Only Kendall's tau gives small p-value, while all the three methods' coefficients are similar. 
+However, Pearson's correlation and Spearman's rho both handle outliers poorly. Kendall's tau stands out in this perspective. Tested with non-linear related data I have and those with outliers, Kendall's tau did a better job in telling the potential correlation between the variables. For example, in the `sample_data` folder `correlation.pickle`, the column `X` and column `Outlier` have a non-linear relationship with outliers. Only Kendall's tau gives a small p-value, while all three methods' coefficients are similar.p
 
 
 .. list-table::
@@ -272,7 +271,7 @@ If we testing the data set above with Hoeffding's D, it will give a definite rej
             Hoeffding's p-value: 0.000
             H0: The two variables are independent.
 
-While there is another dataset we can test in the `correlation.pickle` sample sets, the first and second column show two linear relationships who go in different directions with random errors. Testing with the four correlations, only Hoeffding's D gave a p-value less than 0.05 and rejected the null hypothesis.
+In another dataset from the `correlation.pickle` sample sets, the first and second columns show two linear relationships moving in different directions with random errors. Testing with the four correlations, only Hoeffding's D provided a p-value less than 0.05, rejecting the null hypothesis.
 
 
 .. list-table::
@@ -300,9 +299,9 @@ While there is another dataset we can test in the `correlation.pickle` sample se
             Covariance: 571.448
             p-value = 0.254 N = 33
 
-There is also a dataset without any random errors added, Hoeffding's D gives a higher D value and a much smaller p-value. 
+In a dataset without any random errors, Hoeffding's D gives a higher D value and a much smaller p-value.
 
-In general, Pearson's Correlation is good enough for most of the cases. Hoeffding's D is a great choice when complicated relationship involved, and to determine the random error amount inside the datasets. Hoeffding's D value generally increases monotonically with stronger relationships between variables, which can be used as the measure of randomness. 
+In general, Pearson's correlation is sufficient for most cases. Hoeffding's D is a great choice when complex relationships are involved and to determine the amount of random error within the datasets. Hoeffding's D value generally increases monotonically with stronger relationships between variables, which can be used as a measure of randomness.
 
 - Hoeffding's D ranges from -0.5 to 1.
 - A value of 0 indicates no association between the variables.

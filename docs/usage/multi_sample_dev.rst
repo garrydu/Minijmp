@@ -17,11 +17,11 @@ Choose Stats> Multi Sample Stdev Test
 
 
 - **Variables:** Select multiple variables with your mouse, using SHIFT-Click to select a range, and CTRL-Click to toggle a single selection. The columns selected must have continuous data. Categorical data will be ignored. The columns do not have to have same count of observations.
-- **Alpha:** Set the range of confidence intervals to be calculated, (1-alpha)100%. When alpha is set to 0.05, 95% confidence interval will be displayed.
+- **Alpha:** Set the confidence interval range to be calculated as (1-alpha)100%. For example, when alpha is set to 0.05, a 95% confidence interval will be displayed.
 
 Use the test for equal variances to determine whether the variances or the standard deviations of two or more groups differ. For example, a lumber distributor wants to compare the variation of beam lengths that are cut by three sawmills. If any sawmill produces beams that have significantly more variation, the distributor may stop selling lumber from that sawmill.
 
-The results were calibrated with JMP 17, but the p values are different from Minitab 20.
+The results were calibrated with JMP 17, but the p-values may differ from those in Minitab 20.
 
 A sample output:
 
@@ -53,13 +53,12 @@ The Mean Absolute Deviation (MAD) to Mean is calculated as :math:`\text{MAD} = \
   - Dividing by :math:`n` gives the average of these differences.
   - A larger MAD indicates greater variability in the data, while a smaller MAD suggests data points are closer to the mean.
 
-The MAD to Median is similar, but swap the mean value to median. When the skewness is high in the dataset, use the value with median instead of mean.
+The MAD to Median is similar, but uses the median instead of the mean. When the dataset has high skewness, use the value with the median instead of the mean.
 
-The test for equal variances is a hypothesis test that evaluates two mutually exclusive statements about two or more population standard deviations. These two statements are called the null hypothesis and the alternative hypotheses. A hypothesis test uses sample data to determine whether to reject the null hypothesis. The hypotheses for a test for equal variances are as follows:
+The test for equal variances is a hypothesis test that evaluates two mutually exclusive statements about two or more population standard deviations. These statements are the null hypothesis and the alternative hypothesis. A hypothesis test uses sample data to determine whether to reject the null hypothesis. The hypotheses for a test for equal variances are as follows:
 
-Null hypothesis (H0): The null hypothesis states that the population standard deviations are all equal.
-
-Alternative hypothesis (H1): The alternative hypothesis states that not all population standard deviations are equal.
+- **Null hypothesis (H0):** The population standard deviations are all equal.
+- **Alternative hypothesis (H1):** Not all population standard deviations are equal.
 
 Compare the p-value to the significance level to determine whether to reject the null hypothesis.
 
