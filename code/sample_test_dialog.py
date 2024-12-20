@@ -218,7 +218,7 @@ class Var1SampleDialog(Dialogs):
                 return
             std = n = None
         else:
-            x = []
+            x = None
         if s0 is None:
             return
         var_1sample(data=x, s0=s0, print_out=True,
