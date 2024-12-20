@@ -1,12 +1,14 @@
 Residual Plots
 ==============
 
-Choose Stats>Residual Plots
+The function will analyze the residuals of a linear regression.
+
+Choose Stats > Residual Plots
 
 .. image:: images/residual1.png
    :align: center
 
-- **X Y Values:** Select two different column for the predictor, i.e. X, and the response variable, i.e. Y. Only residual plots will be displayed, linear regression of the two variable is done at the backend and won't be shown. 
+- **X Y Values:** Select two different columns for the predictor (X) and the response variable (Y). Only residual plots will be displayed; the linear regression of the two variables is performed in the background and will not be shown.
 
 .. include:: linear_fit.rst
    :start-line: 207
@@ -16,11 +18,10 @@ Choose Stats>Residual Plots
 .. image:: images/residual2.png
    :align: center
 
-- **Residuals versus order:** The residuals versus order plot displays the residuals in the order that the data were collected.
+- **Residuals versus order:** This plot displays the residuals in the order the data were collected.
 
-  - Use the residuals versus order plot to verify the assumption that the residuals are independent from one another. 
-  - Independent residuals show no trends or patterns when displayed in time order. Ideally, the residuals on the plot should fall randomly and not exceed the red dash lines.
-  - Patterns in the points may indicate that residuals near each other may be correlated, and thus, not independent. 
+  - Use this plot to verify the assumption that residuals are independent. Independent residuals show no trends or patterns over time. Ideally, residuals should fall randomly and not exceed the red dashed lines.
+  - Patterns may indicate that residuals near each other are correlated and not independent. 
 
 
 .. list-table::
@@ -32,7 +33,7 @@ Choose Stats>Residual Plots
 
 If you see a pattern, investigate the cause. The above types of patterns may indicate that the residuals are dependent.
 
-- **Residuals versus fits:** The residuals versus fits graph plots the residuals on the y-axis and the fitted values on the x-axis. Use the residuals versus fits plot to verify the assumption that the residuals are randomly distributed and have constant variance. 
+- **Residuals versus fits:** This graph plots residuals on the y-axis and fitted values on the x-axis. Use it to verify that residuals are randomly distributed with constant variance.
 
   - Ideally, the points should fall randomly on both sides of 0, with no recognizable patterns in the points. 
   - The patterns in the following table may indicate that the model does not meet the model assumptions.
@@ -42,14 +43,14 @@ If you see a pattern, investigate the cause. The above types of patterns may ind
     - A point that is far away from zero means An outlier
     - A point that is far away from the other points in the x-direction means An influential point 
 
-- **Histogram of residuals:** The histogram of the residuals shows the distribution of the residuals for all observations. Use the histogram of the residuals to determine whether the data are skewed or include outliers. The patterns in the following table may indicate that the model does not meet the model assumptions.
+- **Histogram of residuals:** This shows the distribution of residuals for all observations. Use it to determine if data are skewed or include outliers.
 
   - A long tail in one direction indicates Skewness
   - A bar that is far away from the other bars indicates An outlier
 
 A histogram is most effective when you have approximately 20 or more data points. If the sample is too small, then each bar on the histogram does not contain enough data points to reliably show skewness or outliers. 
 
-- **Normality QQ Plot:** The normal probability plot of the residuals displays the residuals versus their expected values when the distribution is normal. Use the normal probability plot of the residuals to verify the assumption that the residuals are normally distributed. The normal probability plot of the residuals should approximately follow a straight line.
+- **Normality QQ Plot:** This plot displays residuals versus their expected values if normally distributed. Use it to verify that residuals are normally distributed. The plot should approximately follow a straight line.
 
   - Check out the help page of `Normality` for more information about QQ plot interpreting. `LINK <https://minijmp.readthedocs.io/en/latest/usage/normality.html>`_
-  - If you see a nonnormal pattern, use the other residual plots to check for other problems with the model, such as missing terms or a time order effect. If the residuals do not follow a normal distribution, the confidence intervals and p-values can be inaccurate.
+  - If a nonnormal pattern is observed, use other residual plots to check for issues like missing terms or time order effects. Non-normal residuals can lead to inaccurate confidence intervals and p-values.
