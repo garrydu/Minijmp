@@ -13,21 +13,21 @@ from chi_sq import chi_square
 class Chi2TableDialog(Dialogs):
     def createWidgets(self, m):
         f = tk.LabelFrame(m, text='Raw Data (categorical values)')
-        f.pack(side=TOP, fill=BOTH, padx=2)
+        f.pack(side=TOP, fill=BOTH, padx=2,pady=2)
         self.xvar = tk.StringVar(value="")
         self.yvar = tk.StringVar(value="")
         w = tk.Label(f, text="Rows")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2,pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2,pady=2)
         w = tk.Label(f, text="Columns")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2,pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.yvar,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2,pady=2)
 
         f = tk.LabelFrame(m, text='Summarized in a 2 way table (overriding)')
         f.pack(side=TOP, fill=BOTH, padx=2)

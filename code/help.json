@@ -80,5 +80,9 @@
     "Two-Way ANOVA": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/anova_2way.html",
         "window":"The two-way ANOVA compares the mean differences between groups that have been split on two independent variables (called factors). Use a two-way ANOVA when you want to know how two independent categorical variables (factors), in combination, affect a dependent variable (response)."
+},
+"Contingency Table and Chi SQ Test": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/chi2.html",
+        "window":"Use Cross Tabulation and Chi-Square analysis when your data is categorized by two categorical variables. Input the categorical data with two columns. Use a summarized table when the rows and columns contain total counts for each cross-category."
 }
 }

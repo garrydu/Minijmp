@@ -27,5 +27,5 @@ Stats Menu
    multi_sample_dev
    anova_1way
    anova_2way
-
+   chi2
 
