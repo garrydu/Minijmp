@@ -28,4 +28,4 @@ Stats Menu
    anova_1way
    anova_2way
    chi2
-
+   chi2prop

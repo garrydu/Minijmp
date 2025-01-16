@@ -84,5 +84,9 @@
 "Contingency Table and Chi SQ Test": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/chi2.html",
         "window":"Use Cross Tabulation and Chi-Square analysis when your data is categorized by two categorical variables. Input the categorical data with two columns. Use a summarized table when the rows and columns contain total counts for each cross-category."
+},
+"Propabilities Chi SQ Test": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/chi2_prob.html",
+        "window":"Test the estimated probabilities of the levels of a categorical variable against the specified hypothesized probabilities."
 }
 }

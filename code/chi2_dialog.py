@@ -126,8 +126,15 @@ class Chi2PropDialog(Dialogs):
         #  print(d.results)
         res = number_list(d.results)
         #  print(res, sum(res), cnts)
-        if sum(res) != 1 or len(res) != len(cnts):
-            self.error("Total probability is not 1 or invalid inputs.")
+        if len(res) != len(cnts):
+            self.error("Invalid inputs.")
+            return
+        if any(_ <= 0 for _ in res):
+            self.error("The hypothesized probabilities need be greater than zero and less than one.")
+            return
+        if sum(res) != 1:
+            self.error("The hypothesized probabilities did not sum to 1. The probabilities were rescaled.")
+            res = [x / sum(res) for x in res]
 
         ratio = sum(cnts) * 1e9
         pseudo_data = [_ * ratio for _ in res]
