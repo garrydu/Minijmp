@@ -15,7 +15,7 @@ Choose Stats > Contingency table & Chi2
 The Chi Square results are consistent with both JMP 17 and Minitab 22.
 
 
-Open the sample data file `car_poll.pickle` in the `sample_data` folder. Select the columns and rows as `Sex` and `type`. The result is shown below.
+Open the sample data file `car_poll.pickle` in the `sample_data` folder. Select the columns and rows as `Gender` and `type`. The result is shown below.
 
 
 .. code-block:: none
@@ -46,4 +46,4 @@ The joint frequency data are analyzed with the chi-square statistic to evaluate 
   - H0: The variables are independent; no association between variables exists.
   - H1: The variables are not independent; an association between variables exist and variables are dependent. 
 
-The software uses the Pearson test and the Likelihood-Ratio test to determine whether an association between machine and shift exists. Because the p-values for the Pearson test and the Likelihood-Ratio test are more than 0.05, we cannot reject the null hypothesis and conclude that there is no association between the type of cars and the gender of buyers.
+The software uses the Pearson test and the Likelihood-Ratio test to determine whether an association between machine and shift exists. Because the p-values for the Pearson test and the Likelihood-Ratio test are more than 0.05, we cannot reject the null hypothesis. We thus conclude that there is no association between the type of cars and the gender of buyers.

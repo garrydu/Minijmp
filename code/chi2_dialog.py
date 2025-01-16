@@ -5,7 +5,7 @@ from prettytable import PrettyTable as PT
 ###################################
 from pandastable_local.dialogs import MultipleValDialog
 ########### Own Modules ###########
-from dialog import Dialogs,addListBox
+from dialog import Dialogs, addListBox
 from utilities import count_2factors, number_2Dlist, transpose_2D_list, filter_voids, count_1factor, number_list
 from chi_sq import chi_square
 
@@ -13,21 +13,21 @@ from chi_sq import chi_square
 class Chi2TableDialog(Dialogs):
     def createWidgets(self, m):
         f = tk.LabelFrame(m, text='Raw Data (categorical values)')
-        f.pack(side=TOP, fill=BOTH, padx=2,pady=2)
+        f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
         self.xvar = tk.StringVar(value="")
         self.yvar = tk.StringVar(value="")
         w = tk.Label(f, text="Rows")
-        w.pack(side=LEFT, fill=X, padx=2,pady=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
-        w.pack(side=LEFT, padx=2,pady=2)
+        w.pack(side=LEFT, padx=2, pady=2)
         w = tk.Label(f, text="Columns")
-        w.pack(side=LEFT, fill=X, padx=2,pady=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.yvar,
             width=14)
-        w.pack(side=LEFT, padx=2,pady=2)
+        w.pack(side=LEFT, padx=2, pady=2)
 
         f = tk.LabelFrame(m, text='Summarized in a 2 way table (overriding)')
         f.pack(side=TOP, fill=BOTH, padx=2)
@@ -76,31 +76,31 @@ class Chi2TableDialog(Dialogs):
 class Chi2PropDialog(Dialogs):
     def createWidgets(self, m):
         f = tk.LabelFrame(m, text='Raw Data (categorical values)')
-        f.pack(side=TOP, fill=BOTH, padx=2)
+        f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
         self.xvar = tk.StringVar(value="")
         w = tk.Label(f, text="Sample")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2, pady=2)
 
         f = tk.LabelFrame(m, text='Summarized counts (overriding)')
-        f.pack(side=TOP, fill=BOTH, padx=2)
+        f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
         self.rvar = tk.StringVar(value="")
         w = tk.Label(f, text="Levels")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.rvar,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2, pady=2)
         self.cnt = tk.StringVar(value="")
         w = tk.Label(f, text="Counts")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.cnt,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2, pady=2)
 
         return
 
@@ -111,7 +111,7 @@ class Chi2PropDialog(Dialogs):
         if len(rvar) > 0 and len(cnt) > 0:
             [rKeys, cnts] = filter_voids([list(self.df[rvar]),
                                           list(self.df[cnt])])
-            cnts=number_list(cnts)
+            cnts = number_list(cnts)
         else:
             cnts, rKeys = count_1factor(
                 self.df[self.xvar.get()])
