@@ -14,7 +14,7 @@ All mathematical calculations have been calibrated against both Minitab and JMP.
 
 A quick overview of available functions (as of version 0.1) is shown below. More functions will be added after documentation and help files are completed.
 
-![Menu Screenshot](docs/images/menu.png)
+![Menu Screenshot](docs/images/menu.gif)
 
 ## Documentation
 
