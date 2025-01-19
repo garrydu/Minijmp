@@ -276,6 +276,9 @@ class MTable(Table):
                                            width=w, height=h,
                                            window=self.cellentry, anchor='nw',
                                            tag='entry')
+        #  if col == 0:
+        #  self.xview_moveto(0)
+        #  print(col, row)
         return
 
     def handleCellEntry(self, row, col, nxt_col=False):
@@ -303,7 +306,12 @@ class MTable(Table):
         else:
             self.currentrow = self.currentrow + 1
         #  self.drawSelectedRect(self.currentrow, self.currentcol)
+        #  self.xview_moveto(0)
         self.drawCellEntry(self.currentrow, self.currentcol)
+        print(self.currentcol, self.currentrow)
+        #  if self.currentcol == 0:
+        #  self.xview_moveto(0.5)
+        #  self.xview_scroll(-1, "unit")
         return
 
     def handle_double_click(self, event):
@@ -314,6 +322,7 @@ class MTable(Table):
         col = self.get_col_clicked(event)
         print(row, col, self.currentrow, self.currentcol)
         self.drawCellEntry(self.currentrow, self.currentcol)
+        #  self.xview_scroll(-1, "unit")
         return
 
     def paste(self, event=None):

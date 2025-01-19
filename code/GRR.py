@@ -1,5 +1,7 @@
 from prettytable import PrettyTable as PT
 import pandas as pd
+import statistics as stats
+from scipy.stats import f as f_dist
 # ############# Own Modules ############
 from utilities import d2_2D as d2
 from two_way_anova import two_way_anova
@@ -262,6 +264,125 @@ def grr_master(y=None, op=None, part=None, mode="aiag",
                               print_out=print_out, print_port=print_port)
 
 
+def grr_nested(y=None, op=None, part=None, print_out=False, print_port=print,
+               hist_std=None):
+    a = len(set(part))  # a is number of parts
+    b = len(set(op))  # number of operators
+    n = len(y) / a
+    if int(n) < n:
+        raise ValueError("The number of measurements per part should be consistent across all parts. A part should be only measured by one operator.")
+    if any(len(set([i for i, j in zip(part, op) if j == o])) != len(y) / n / b for o in set(op)):
+        raise ValueError("The experiment design is not balanced.")
+    a = len(y) / n / b
+
+    # calc anova table
+    # https://support.minitab.com/en-us/minitab/help-and-how-to/quality-and-process-improvement/measurement-system-analysis/how-to/gage-study/nested-gage-r-r-study/methods-and-formulas/anova-table/
+    # SS operator, the formulation in the webpage is inconsitant with Minitab 22 result, the one below is
+    grand_mean = stats.mean(y)
+    SSO = sum((stats.mean(i for i, j in zip(y, op) if j == o) - grand_mean)**2 * len([i for i, j in zip(y, op) if j == o]) for o in set(op))
+    #  print(a, n, SSO)
+    ## SS part by operator
+    SSPO = n * sum(sum((stats.mean(i for i, k in zip(y, part) if k == p) -
+                        stats.mean(i for i, j in zip(y, op) if j == o))**2 for p in set(
+        [i for i, j in zip(part, op) if j == o]
+    )) for o in set(op))
+    # SS repeatability
+
+    def square_sum(l):
+        return sum((i - stats.mean(l))**2 for i in l)
+
+    SSR = sum(sum(square_sum([i for i, j, k in zip(y, op, part) if j == o and k == p]) for p in set(part))
+              for o in set(op))
+    SST = SSR + SSPO + SSO
+
+    #  print(SSO, SSPO, SSR)
+    DFO = b - 1
+    DFPO = b * (a - 1)
+    DFR = a * b * (n - 1)
+    DFTTL = a * b * n - 1
+
+    MSO = SSO / DFO
+    MSPO = SSPO / DFPO
+    MSR = SSR / DFR
+
+    FO = MSO / MSPO
+    FPO = MSPO / MSR
+
+    p_o = 1 - f_dist.cdf(FO, DFO, DFPO)
+    p_po = 1 - f_dist.cdf(FPO, DFPO, DFR)
+
+    Repeatability = MSR
+    Reproducibility = max(0, (MSO - MSPO) / a / n)
+    GRR_var_comp = Repeatability + Reproducibility
+    std_grr = GRR_var_comp**.5
+    std_repeat = Repeatability**.5
+    std_reproduce = Reproducibility**.5
+
+    part_var_comp = (MSPO - MSR) / n
+    std_part = part_var_comp**.5
+    hist_std_used = False
+    if hist_std is not None:
+        if hist_std >= std_grr:
+            std_part = (hist_std**2 - GRR_var_comp)**.5
+            part_var_comp = std_part**2
+            hist_std_used = True
+
+    ttl_var_comp = part_var_comp + GRR_var_comp
+    std_ttl = ttl_var_comp**.5
+
+    distinct = max(1, int(1.41 * std_part / std_grr))
+
+    if print_out:
+        print = print_port
+        print("\n---- Gage R&R Nested ANOVA ----\n\nGage R&R Nested for Response")
+        t = PT()
+        t.field_names = ["Source", "DF", "SS", "MS", "F Ratio", "P Value"]
+        t.add_row(["Operator", DFO, "%.3f" % SSO, "%.3f" % MSO,
+                   "%.3f" % FO, "%.3f" % p_o])
+        t.add_row(["Part(Operator)", DFPO, "%.3f" % SSPO, "%.3f" % MSPO,
+                   "%.3f" % FPO, "%.3f" % p_po])
+        t.add_row(["Repeatability", DFR, "%.3f" % SSR, "%.3f" % MSR, " ", " "])
+        t.add_row(["Total", DFTTL, "%.3f" % SST, "", "", ""])
+        print(str(t))
+
+        print("\nVariance Components")
+        t = PT()
+        t.field_names = ["Source", "VarComp", "%Contribution"]
+        t.add_row(["Total Gage R&R", "%.3f" % GRR_var_comp, "%.2f" % (100 * GRR_var_comp / ttl_var_comp)])
+        t.add_row(["  Repeatability", "%.3f" % Repeatability, "%.2f" % (100 * Repeatability / ttl_var_comp)])
+        t.add_row(["  Reproducibility", "%.3f" % Reproducibility, "%.2f" % (100 * Reproducibility / ttl_var_comp)])
+        t.add_row(["Part-to-part", "%.3f" % part_var_comp, "%.2f" % (100 * part_var_comp / ttl_var_comp)])
+        t.add_row(["Total Variation", "%.3f" % ttl_var_comp, "100.00"])
+        t.align["Source"] = "l"
+        print(str(t))
+
+        if hist_std is not None:
+            print("Historical Standard Deviation = %.3f" % hist_std)
+        if hist_std_used:
+            print("Total Variance = historical stdDev squared")
+
+        print("\nGage Evaluation")
+        t = PT()
+        t.field_names = ["Source", "StdDev(SD)", "6 x SD", "SD%"]
+        t.align["Source"] = "l"
+        t.add_row(["Total Gage R&R", "%.3f" % std_grr, "%.3f" % (6 * std_grr), "%.2f" % (100 * std_grr / std_ttl)])
+        t.add_row(["  Repeatability", "%.3f" % std_repeat, "%.3f" % (6 * std_repeat), "%.2f" % (100 * std_repeat / std_ttl)])
+        t.add_row(["  Reproducibility", "%.3f" % std_reproduce, "%.3f" % (6 * std_reproduce), "%.2f" % (100 * std_reproduce / std_ttl)])
+        t.add_row(["Part-to-part", "%.3f" % std_part, "%.3f" % (6 * std_part), "%.2f" % (100 * std_part / std_ttl)])
+        t.add_row(["Total Variation", "%.3f" % std_ttl, "%.3f" % (6 * std_ttl), "100.00"])
+        print(str(t))
+
+        if hist_std_used:
+            print("Historical standard deviation is used to calculate values of some sources.")
+
+        print("\nNumber of Distinct Categories = %d" % distinct)
+
+    return {"Distinct Categories": distinct, "P value operator": p_o,
+            "P value part": p_po, "GRR%": (100 * std_grr / std_ttl),
+            "GRR STD": std_grr, "Repeatability STD": std_repeat,
+            "Reproducibility STD": std_reproduce}
+
+
 if __name__ == "__main__":
     c1 = ['A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A',
           'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B',
@@ -284,3 +405,20 @@ if __name__ == "__main__":
     grr_master(y=c3, part=c2, print_out=True, mode="aiag")
     grr_xbar_r(y=c3, op=c1, part=c2, print_out=True)
     grr_master(y=c3, part=c2, op=c1, print_out=True, mode="aiag", inter=False)
+    Part = [
+        5, 4, 7, 7, 2, 3, 6, 10, 1, 1, 10, 6, 8, 2, 8, 3, 9, 9, 5, 4,
+        16, 13, 20, 20, 13, 15, 11, 14, 12, 19, 11, 16, 19, 12, 18, 18, 17, 14, 17, 15,
+        21, 23, 22, 26, 21, 23, 30, 24, 25, 28, 26, 22, 24, 27, 29, 28, 25, 29, 27, 30
+    ]
+    Operator = [
+        3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+        2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ]
+    Response = [
+        120.78, 121.55, 121.33, 121.99, 118.14, 119.35, 122.87, 121.00, 118.03, 117.92, 121.11, 122.87, 119.68, 117.70, 119.90, 119.57, 120.12, 119.68, 120.67, 121.00,
+        121.33, 119.68, 120.12, 119.68, 119.24, 115.94, 122.21, 119.90, 119.24, 118.58, 121.88, 121.33, 118.69, 119.46, 119.13, 119.02, 121.33, 120.89, 121.00, 116.49,
+        117.92, 121.11, 122.87, 119.68, 117.70, 119.90, 119.57, 120.12, 119.68, 120.67, 121.00, 122.43, 119.68, 117.37, 121.55, 120.56, 119.24, 121.33, 118.03, 118.47
+    ]
+    #  print([i for i,j,k in zip(Response, Operator, Part) if j==1 and k
+    grr_nested(y=Response, op=Operator, part=Part, print_out=True, hist_std=0.5393)

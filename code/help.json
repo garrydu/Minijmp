@@ -88,5 +88,9 @@
 "Propabilities Chi SQ Test": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/chi2_prob.html",
         "window":"Test the estimated probabilities of the levels of a categorical variable against the specified hypothesized probabilities."
+},
+"Crossed Gage R&R": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/grr.html",
+        "window":"Gage R&R (Repeatability and Reproducibility) is a statistical technique used to assess the reliability and consistency of a measurement system. It helps determine how much of the observed variation in measurements is due to the equipment and operators versus actual differences in the items being measured."
 }
 }

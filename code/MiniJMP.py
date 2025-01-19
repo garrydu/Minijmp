@@ -15,7 +15,7 @@ from basic_dialogs import DescribeDialog, NormTestDialog, CIDialog, MultiDescrib
 from sample_test_dialog import Mean1SampleDialog, Mean1SampleZDialog, Var1SampleDialog, Mean2SampleDialog, PairedTDialog, MultiVarDialog, Prop1SDialog, Prop2SDialog
 from anova_dialog import Anova1WayDialog, TtestDialog, Anova2WayDialog
 from chi2_dialog import Chi2TableDialog, Chi2PropDialog
-from qc_dialog import GRRDialog, CpkDialog, CpkSubDialog, TIDialog
+from qc_dialog import GRRDialog, CpkDialog, CpkSubDialog, TIDialog, GRR_Nested_Dialog
 from ctrlchart_dialog import IMRDialog, IDialog, MRDialog, XBRDialog, XBSDialog, NPDialog, PDialog, CDialog, UDialog
 from sb_hist_dialog import singleHistoDialog, multiHistoDialog, xyHistoDialog
 from sb_box_dialog import singleBoxDialog, multiBoxDialog
@@ -181,7 +181,8 @@ class Minijmp(Minijmp_pre):
         self.menu.add_cascade(label='Stats', menu=self.stats_menu['var'])
 
         self.quality_menu = {
-            '01Gauge R&R Balanced': {'cmd': self.grr},
+            '01Crossed Gage R&R': {'cmd': self.grr},
+            '02Nested Gage R&R': {'cmd': self.grr_nst},
             '07Process Capability (Cpk)': {'cmd': self.cpk},
             '08Cpk with Subgroups': {'cmd': self.cpksub},
             '22Tolerance Interval': {'cmd': self.ti_norm},
@@ -506,7 +507,14 @@ class Minijmp(Minijmp_pre):
         _ = GRRDialog(
             self.table, app=self,
             df=self.table.model.df,
-            title='Guage R&R')
+            title='Crossed Gage R&R')
+        return
+
+    def grr_nst(self):
+        _ = GRR_Nested_Dialog(
+            self.table, app=self,
+            df=self.table.model.df,
+            title='Nested Gage R&R')
         return
 
     def cpk(self):

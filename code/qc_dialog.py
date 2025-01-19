@@ -5,47 +5,123 @@ from tkinter import TOP, LEFT, X, BOTH
 #  from pandastable_local.dialogs import addListBox
 ########### Own Modules ###########
 from dialog import Dialogs
-from GRR import grr_master
+from GRR import grr_master, grr_nested
 from utilities import is_void, is_number, grouping_by_labels, number_list, get_number
 from cpk_plot import cpk_plot
 from ti import ti_norm
 from grr_plot import grr_plot
 
 
-class GRRDialog(Dialogs):
+class GRR_Nested_Dialog(Dialogs):
     def createWidgets(self, m):
-        f = tk.LabelFrame(m, text='Input Columns')
-        f.pack(side=TOP, fill=BOTH, padx=2)
+        ff = tk.LabelFrame(m, text='Input Columns')
+        ff.pack(side=TOP, fill=BOTH, padx=2, pady=2)
+        f = tk.Frame(ff)
+        f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
         self.xvar = tk.StringVar(value="")
         self.yvar = tk.StringVar(value="")
         w = tk.Label(f, text="Measurement")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2, pady=2)
         w = tk.Label(f, text="Part #")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.yvar,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2, pady=2)
 
-        f = tk.LabelFrame(m, text='Optional Input')
-        f.pack(side=TOP, fill=BOTH, padx=2)
+        f = tk.Frame(ff)
+        f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
         self.ovar = tk.StringVar(value="")
         w = tk.Label(f, text="Operators")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.ovar,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2, pady=2)
+
+        f = tk.LabelFrame(m, text='Optional Input')
+        f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
+        self.hist_std = tk.StringVar(value="")
+        w = tk.Label(f, text="Historical Process(total) StdDev")
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
+        w = tk.Entry(f, textvariable=self.hist_std,
+                     bg='white', width=10)
+        w.pack(side=LEFT, padx=2, pady=2)
+
+        return
+
+    def apply(self):
+        try:
+            y = self.df[self.xvar.get()]
+            p = self.df[self.yvar.get()]
+            o = self.df[self.ovar.get()]
+        except BaseException:
+            self.error(msg="Input error or too few input items.")
+            return
+
+        r = [[], [], []]
+        for i, j, k in zip(y, p, o):
+            if is_void(j) or is_void(k):
+                continue
+            if is_number(i):
+                r[0].append(float(i))
+                r[1].append(j)
+                r[2].append(k)
+
+        if len(r[0]) < 4:
+            self.error(msg="Input error: too few data points.")
+            return
+
+        try:
+            grr_nested(
+                y=r[0], part=r[1],
+                op=r[2],  # if has_op else None,
+                hist_std=get_number(self.hist_std),
+                print_out=True,
+                print_port=self.app.print)
+        except ValueError as e:
+            self.error(msg=e)
+        return
+
+
+class GRRDialog(Dialogs):
+    def createWidgets(self, m):
+        f = tk.LabelFrame(m, text='Input Columns')
+        f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
+        self.xvar = tk.StringVar(value="")
+        self.yvar = tk.StringVar(value="")
+        w = tk.Label(f, text="Measurement")
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
+        w = ttk.Combobox(
+            f, values=self.cols, textvariable=self.xvar,
+            width=14)
+        w.pack(side=LEFT, padx=2, pady=2)
+        w = tk.Label(f, text="Part #")
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
+        w = ttk.Combobox(
+            f, values=self.cols, textvariable=self.yvar,
+            width=14)
+        w.pack(side=LEFT, padx=2, pady=2)
+
+        f = tk.LabelFrame(m, text='Optional Input')
+        f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
+        self.ovar = tk.StringVar(value="")
+        w = tk.Label(f, text="Operators")
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
+        w = ttk.Combobox(
+            f, values=self.cols, textvariable=self.ovar,
+            width=14)
+        w.pack(side=LEFT, padx=2, pady=2)
 
         f = tk.LabelFrame(m, text='Algo Setting')
-        f.pack(side=TOP, fill=BOTH, padx=2)
+        f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
         self.mvar = tk.StringVar(value="AIAG (JMP17)")
         w = tk.Label(f, text="Method")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f,
             values=[
@@ -54,7 +130,7 @@ class GRRDialog(Dialogs):
                 "XBAR/R (Minitab)"],
             textvariable=self.mvar,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2, pady=2)
         self.inter = tk.BooleanVar(value=True)
         w = tk.Checkbutton(f, text='Operator x Part Interaction',
                            variable=self.inter)
