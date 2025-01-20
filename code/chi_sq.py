@@ -31,7 +31,7 @@ def chi2_test_stdev(data_list, s0, print_out=False, alpha=0.05,
 
     if print_out:
         print = print_port
-        print("Population stdev: %.2f\nSampled stdev: %.2f" % (s0, stdev))
+        print("Population SD: %.2f\nSampled SD: %.2f" % (s0, stdev))
         print("df = %d" % df)
         print("chi square = %.2f" % chi_sq)
         print("Prob of variation is greater than the sample. p = %.2f" % p)
@@ -40,7 +40,7 @@ def chi2_test_stdev(data_list, s0, print_out=False, alpha=0.05,
             (alpha * 50, chi2_low0025, alpha * 50, chi2_high0975))
         print(
             pct +
-            " confidence range of stdev: (%.2f, %.2f), when sampling %d times from a population with stdev of %.2f." %
+            " confidence range of SD: (%.2f, %.2f), when sampling %d times from a population with SD of %.2f." %
             (stdev_range_low,
              stdev_range_high,
              df +
@@ -48,11 +48,11 @@ def chi2_test_stdev(data_list, s0, print_out=False, alpha=0.05,
              s0))
         print(
             pct +
-            " confidence range of the population stdev: (%.2f, %.2f), where the samples came from." %
+            " confidence range of the population SD: (%.2f, %.2f), where the samples came from." %
             std_range_from_S)
         print(
             pct +
-            " confidence the population stdev lower than %.2f, where the samples came from." %
+            " confidence the population SD lower than %.2f, where the samples came from." %
             std_from_S_high95)
 
     return {
@@ -279,7 +279,7 @@ def multi_pop_var_test(data, labels, print_out=False, print_port=print,
         print("\n---- Multi Sample Standard Deviation Test ----")
         t = PT()
         pct = "%.2f%%" % (100 - 100 * alpha)
-        t.field_names = ["Sample", "N", "stdev", pct + " CI of std", "MAD to Mean", "MAD to Median"]
+        t.field_names = ["Sample", "N", "SD", pct + " CI of std", "MAD to Mean", "MAD to Median"]
         for i in range(len(data)):
             chi2_r = chi2_test_stdev(
                 data[i],
@@ -365,7 +365,7 @@ def chi2_var_1sample(data=None, sample_n=None, sample_std=None,
     if print_out:
         print = print_port
         pct = "%.2f%%" % (100 - 100 * alpha)
-        print("\n---- 1 Sample Stdev test ----")
+        print("\n---- 1 Sample SD test ----")
         print("N = %d\tstd = %.3f" % (n, std))
         print("s0 = %.3f" % s0)
         print("H0 s==s0, H1 s!=s0: p = %.3f" % p)
@@ -400,13 +400,13 @@ def var_1sample(data=None, sample_n=None, sample_std=None,
     if print_out:
         print = print_port
         print("\n---- 1 sample standard deviation test ----")
-        print("N = %d\tStDev: s = %.3f" % (chi2_res['n'], chi2_res['stdev']))
+        print("N = %d\tSD: s = %.3f" % (chi2_res['n'], chi2_res['stdev']))
         print("s0 = %.3f" % s0)
         t = PT()
         t.field_names = [' ', 'Chi Sq', 'Bonett']
         t.add_row(['P-value *', "%.3f" % chi2_res['p'], "%.3f" % bonett_res['Bonett p']])
         pct = "%.1f%%" % (100 - 100 * alpha)
-        t.add_row(['StDev CI ' + pct, '(%.3f, %.3f)' % chi2_res['CI 95'], '(%.3f, %.3f)' % bonett_res['Bonett CI']])
+        t.add_row(['SD CI ' + pct, '(%.3f, %.3f)' % chi2_res['CI 95'], '(%.3f, %.3f)' % bonett_res['Bonett CI']])
         t.add_row([pct + ' upper bound', "%.3f" % chi2_res['CI upper'], "%.3f" % bonett_res['One tail upper boundary']])
         t.add_row([pct + ' lower bound', "%.3f" % chi2_res['CI lower'], "%.3f" % bonett_res['One tail lower boundary']])
         print(str(t))

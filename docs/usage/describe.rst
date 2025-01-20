@@ -22,7 +22,7 @@ The statistical items on the top table are locked by default, while the percenti
 
 - **Mean:** The average of all valid inputted numbers.
 
-- **StDev:** The standard deviation of all valid inputs. The formula for standard deviation is :math:`\sigma = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \mu)^2}{n}}`.
+- **SD:** The standard deviation of all valid inputs. The formula for standard deviation is :math:`\sigma = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \mu)^2}{n}}`.
 
 - **SE Mean:** The standard error of the mean quantifies the variability of sample means around the true population mean. :math:`\text{SEM} = \frac{\sigma}{\sqrt{n}}`
 

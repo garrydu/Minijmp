@@ -7,10 +7,10 @@
                        }
                           </style>
 
-Multi-Sample StDev Test
+Multi-Sample SD Test
 =======================
 
-Choose Stats> Multi Sample Stdev Test
+Choose Stats> Multi Sample SD Test
 
 .. image:: images/multi_sample_dev.png
    :align: center
@@ -29,7 +29,7 @@ A sample output:
 
   ---- Multi Sample Standard Deviation Test ----
   +--------+----+-------+------------------+-------------+---------------+
-  | Sample | N  | stdev | 95.00% CI of std | MAD to Mean | MAD to Median |
+  | Sample | N  | SD | 95.00% CI of std | MAD to Mean | MAD to Median |
   +--------+----+-------+------------------+-------------+---------------+
   |   a    | 20 | 1.014 |  (0.771, 1.480)  |    0.813    |     0.803     |
   |   b    | 20 | 1.061 |  (0.807, 1.550)  |    0.857    |     0.838     |

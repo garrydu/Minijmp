@@ -349,13 +349,13 @@ class CpkSubDialog(Dialogs):
 
         f = tk.LabelFrame(m, text='Within-Subgroup Variation')
         f.pack(side=TOP, fill=BOTH, padx=2)
-        self.subm = tk.StringVar(value="Unbiased Stdev")
+        self.subm = tk.StringVar(value="Unbiased Std Dev")
         w = tk.Label(f, text="Average of")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f,
             values=[
-                "Unbiased Stdev",
+                "Unbiased Std Dev",
                 "Ranges"],
             textvariable=self.subm,
             width=14)
@@ -467,7 +467,7 @@ class TIDialog(Dialogs):
         w = tk.Entry(master, textvariable=self.sample_n,
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(master, text="Stdev")
+        w = tk.Label(master, text="SD")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.sample_std,
                      bg='white', width=5)

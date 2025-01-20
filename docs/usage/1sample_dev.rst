@@ -1,14 +1,14 @@
 One Sample Standard Deviation Test
 ==================================
 
-Choose Stats> One Sample StDev
+Choose Stats> One Sample SD
 
 .. image:: images/1sample_dev1.png
    :align: center
 
 
 - **Sample Values:** This column contains the sampled values, which must be numerical and continuous. 
-- **Summarized Data:** If you know the statistical descriptions of the sampled values, fill in `N`, the count of the sampled values, and `StDev`, the standard deviation of the sampled values. This information will override the sampled values selected above.
+- **Summarized Data:** If you know the statistical descriptions of the sampled values, fill in `N`, the count of the sampled values, and `Std Dev`, the standard deviation of the sampled values. This information will override the sampled values selected above.
 - **Hypothesis Test:** The hypothesized standard deviation value of the population.
 - **Alpha:** The significance level used in the calculation. For example, the confidence intervals are calculated as (1-alpha)100%.
 
@@ -23,13 +23,13 @@ A sample output:
 .. code-block:: none
 
   ---- 1 sample standard deviation test ----
-  N = 20  StDev: s = 0.957
+  N = 20  SD: s = 0.957
   s0 = 1.000
   +-------------------+----------------+----------------+
   |                   |     Chi Sq     |     Bonett     |
   +-------------------+----------------+----------------+
   |     P-value *     |     0.874      |     0.822      |
-  |   StDev CI 95.0%  | (0.728, 1.398) | (0.699, 1.453) |
+  |   SD CI 95.0%     | (0.728, 1.398) | (0.699, 1.453) |
   | 95.0% upper bound |     1.311      |     1.351      |
   | 95.0% lower bound |     0.760      |     0.739      |
   +-------------------+----------------+----------------+

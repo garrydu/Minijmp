@@ -38,3 +38,4 @@ Quality Menu
    :maxdepth: 2
 
    grr
+   grr_nst

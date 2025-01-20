@@ -22,10 +22,10 @@ A sample output:
   95.0% Prob that mean is less than 1.386.
   95.0% Prob that mean is greater than 0.602.
   
-  95.0% Prob that stdev is in the range of (0.771, 1.480)
-  95.0% Prob that stdev is less than 1.389.
-  95.0% Prob that stdev is greater than 0.805.
-  Stdev CI method is same to JMP but different from Minitab.
+  95.0% Prob that SD is in the range of (0.771, 1.480)
+  95.0% Prob that SD is less than 1.389.
+  95.0% Prob that SD is greater than 0.805.
+  SD CI method is same to JMP but different from Minitab.
 
 Interpretation:
 

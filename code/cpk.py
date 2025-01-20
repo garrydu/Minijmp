@@ -159,7 +159,7 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
             else:
                 df_sub = len(flat_list) - sub_grps
         else:
-            within_msg = "Within sigma estimated by averge of unbiased stdev."
+            within_msg = "Within sigma estimated by averge of unbiased SD."
             std_within = stat.mean(
                 [stat.stdev(l) / c4_values(len(l)) for l in data])
             df_sub = len(flat_list) - sub_grps

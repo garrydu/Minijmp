@@ -174,14 +174,14 @@ def mean_std_CIs(data, alpha=0.05, print_out=False, print_port=print):
             mean_1side_range[0])
         print(
             pct +
-            "Prob that stdev is in the range of (%.3f, %.3f)" %
+            "Prob that SD is in the range of (%.3f, %.3f)" %
             std_2side_range)
-        print(pct + "Prob that stdev is less than %.3f." % std_1side_range[1])
+        print(pct + "Prob that SD is less than %.3f." % std_1side_range[1])
         print(
             pct +
-            "Prob that stdev is greater than %.3f." %
+            "Prob that SD is greater than %.3f." %
             std_1side_range[0])
-        print("Stdev CI method is same to JMP but different from Minitab.")
+        print("SD CI method is same to JMP but different from Minitab.")
     return {"std 2side": std_2side_range, "std 1side": std_1side_range,
             "mean 2side": mean_2side_range, "mean 1side": mean_1side_range}
 

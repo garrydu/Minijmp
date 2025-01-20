@@ -58,7 +58,7 @@ A sample output:
   z = -2.880
   df = 19.000
   u0 = 1.500
-  Known StDev = 0.500
+  Known SD = 0.500
   Two-tailed test H0: μ = μ0, H1: μ ≠ μ0: p = 0.004
   The p-value is the probability that the population mean equals the specified value from which the samples came.
   95.00% range of population mean from which the samples came: (0.959, 1.397)

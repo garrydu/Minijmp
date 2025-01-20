@@ -22,7 +22,7 @@ Sample Output:
   Hypothesized mean of the differences u0 = 0.000
   Paired difference (Sample 1 - Sample 2):
   mean (ud) = 0.222
-  stdev = 1.671
+  SD = 1.671
   t = 0.596
   df = 19.000
   n = 20

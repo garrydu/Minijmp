@@ -44,7 +44,7 @@ def describe(data, print_port=print,
         #  t.field_names = ["Item", "Value", "Item", "Value", "Item", "Value"]
         t.add_row(["N", "%d" %
                    N, "Mean", "%.3f" %
-                   mean, "StDev", "%.3f" %
+                   mean, "SD", "%.3f" %
                    std])
         t.add_row(["SE Mean", "%.3f" % SEM, "Variance", "%.3f" % var,
                    "CoefVar", "%.2f" % coefvar])

@@ -44,7 +44,7 @@ def t_test_1sample(data_list, u0, print_out=False,
         print = print_port
         print("\n---- One sample t ----")
         print("mean = %.3f" % mean)
-        print("stdev = %.3f" % stdev)
+        print("SD = %.3f" % stdev)
         print("t = %.3f" % t)
         print("df = %.3f" % df)
         print("u0 = %.3f"%u0)
@@ -110,7 +110,7 @@ def z_test_1sample(
         print("z = %.3f" % z)
         print("df = %.3f" % df)
         print("u0 = %.3f"%u0)
-        print("Known StDev = %.3f"%s0)
+        print("Known SD = %.3f"%s0)
         print("Two-tailed test H0: u==u0, H1 u!=u0: p = %.3f" % p)
         print("P-value is the prob of that population mean equals the specified value, which the samples came from.")
         print(
@@ -142,7 +142,7 @@ def paired_t_test(l1, l2, print_out=False, u0=0,
         print("Hypothesized mean of the differences u0 = %.3f" % u0)
         print("Paired difference (Sample 1 - Sample 2):")
         print("mean (ud) = %.3f" % res["mean"])
-        print("stdev = %.3f" % res["stdev"])
+        print("SD = %.3f" % res["stdev"])
         print("t = %.3f" % res["t"])
         print("df = %.3f" % res["df"])
         print("n = %d" % len(l1))

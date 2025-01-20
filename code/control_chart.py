@@ -76,7 +76,7 @@ def xBar_S(data):  # , print_out=True, max_xlabels=25,xLabels=None):
 
     return {"Y1": xbar, "Y2": S, "bar1": xbar_bar, "ucl1": xbar_ucl,
             "ucl2": S_UCL, "lcl1": xbar_lcl, "lcl2": S_LCL, "n": n,
-            "bar2": S_bar, "ylabel1": "X Bar", "ylabel2": "Stdev",
+            "bar2": S_bar, "ylabel1": "X Bar", "ylabel2": "Std Dev",
             "X": list(range(len(data)))}
 
 

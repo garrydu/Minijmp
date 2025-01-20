@@ -7,7 +7,7 @@ Choose Stats> One Sample Mean t-test
    :align: center
 
 - **Sample Values:** This column contains the sampled values, which must be numerical and continuous.
-- **Summarized Data:** If you know the statistical descriptions of the sampled values, fill in `N` (the count of the sampled values), `StDev` (the standard deviation of the sampled values), and the mean. This information will override the sampled values selected above.
+- **Summarized Data:** If you know the statistical descriptions of the sampled values, fill in `N` (the count of the sampled values), `Std Dev` (the standard deviation of the sampled values), and the mean. This information will override the sampled values selected above.
 - **Hypothesis Test:** The hypothesized mean value of the population.
 - **Alpha:** The significance level used in the calculation. For example, for confidence intervals, the range is (1-alpha)100%.
 
@@ -20,7 +20,7 @@ In a one-sample t-test, we're comparing a sample mean to a hypothesized populati
 
   ---- One sample t ----
   mean = 1.141
-  stdev = 1.222
+  SD = 1.222
   t = -0.580
   df = 19.000
   u0 = 1.300

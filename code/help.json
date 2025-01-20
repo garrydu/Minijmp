@@ -49,7 +49,7 @@
         "link":"https://minijmp.readthedocs.io/en/latest/usage/1sample_z.html",
         "window":"Testing whether the population mean (estimated using the sample mean) is likely to be equal to a hypothesized value, when the population standard deviation is known."
 },
-    "One sample Stdev test": {
+    "One sample Std Dev test": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/1sample_dev.html",
         "window":"Testing whether the population standard deviation (estimated using the sample) is likely to be equal to a hypothesized value. Both Chi sq and Bonett tests will be performed."
 },
@@ -69,7 +69,7 @@
         "link":"https://minijmp.readthedocs.io/en/latest/usage/2sample_prop.html",
         "window":"When your data contain only two categories, such as pass/fail, use the two proportions test to determine whether the population proportions of two groups differ."
 },
-    "Mutli-sample Stdev Test": {
+    "Mutli-sample Std Dev Test": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/multi_sample_dev.html",
         "window":"Test if standard deviations of all the samples are equal. Data need to be in separated columns. If data are stacked in one column, use Split Data Column in Data Menu. Select multiple columns with CTRL+click and SHIFT+click."
 },
@@ -91,6 +91,10 @@
 },
 "Crossed Gage R&R": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/grr.html",
-        "window":"Gage R&R (Repeatability and Reproducibility) is a statistical technique used to assess the reliability and consistency of a measurement system. It helps determine how much of the observed variation in measurements is due to the equipment and operators versus actual differences in the items being measured."
+        "window":"Gage R&R (Repeatability and Reproducibility) is a statistical tool used to assess measurement system reliability, evaluating both equipment precision and operator consistency. This study requires a balanced design where all operators measure all parts, with each part measured an equal number of times. The study can be conducted with one or multiple operators. Various algorithms are available, aligning with different commercial software."
+},
+"Nested Gage R&R": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/grr_nst.html",
+        "window":"Nested Gage R&R is used when parts cannot be measured by multiple operators, typically in destructive testing. Each part is measured by a single operator, potentially multiple times, with the requirement that all operators measure an equal number of parts to ensure statistical balance and reliability of the measurement system variation analysis."
 }
 }

@@ -12,7 +12,7 @@ def binomial(n, p, x=None, pvalue=None, print_out=False, print_port=print, ax=No
 
     if print_out:
         print = print_port
-        print("mean = %.2f\tvariance = %.2f\tstdev=%.2f" % (mean, var, stdev))
+        print("mean = %.2f\tvariance = %.2f\tSD=%.2f" % (mean, var, stdev))
         print(
             "skewness coefficient = %.2f\tkurtosis coefficient = %.2f" %
             (skew, kurt))

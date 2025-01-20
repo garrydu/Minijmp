@@ -165,12 +165,12 @@ class Minijmp(Minijmp_pre):
             '17Correlation Matrix': {'cmd': self.multi_cor},
             '22One Sample Mean t-test': {'cmd': self.mean_1sample},
             '23One Sample Mean Z-test': {'cmd': self.mean_1sampleZ},
-            '24One Sample Stdev': {'cmd': self.var_1sample},
+            '24One Sample SD': {'cmd': self.var_1sample},
             '25One Proportion Test': {'cmd': self.prop_1sample},
             '26Two Samples t-test': {'cmd': self.mean_2samples},
             '27Paired t-test': {'cmd': self.paired_t},
             '28Two Proportions Test': {'cmd': self.prop_2samples},
-            '29Multi-Sample Stdev Test': {'cmd': self.multi_var},
+            '29Multi-Sample SD Test': {'cmd': self.multi_var},
             '32One-Way ANOVA': {'cmd': self.anova_1way},
             #  '33Mean Comparison t': {'cmd': self.JMP_t_test},
             '34Two-Way ANOVA': {'cmd': self.anova_2way},
@@ -430,7 +430,7 @@ class Minijmp(Minijmp_pre):
         _ = Var1SampleDialog(
             self.table, app=self,
             df=self.table.model.df,
-            title='One sample Stdev test')
+            title='One sample Std Dev test')
         return
 
     def mean_2samples(self):
@@ -451,7 +451,7 @@ class Minijmp(Minijmp_pre):
         _ = MultiVarDialog(
             self.table, app=self,
             df=self.table.model.df,
-            title='Mutli-sample Stdev Test')
+            title='Mutli-sample Std Dev Test')
         return
 
     def prop_1sample(self):

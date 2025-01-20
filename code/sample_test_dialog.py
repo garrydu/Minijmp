@@ -38,7 +38,7 @@ class Mean1SampleDialog(Dialogs):
         w = tk.Entry(master, textvariable=self.sample_n,
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(master, text="Stdev")
+        w = tk.Label(master, text="Std Dev")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.sample_std,
                      bg='white', width=5)
@@ -125,7 +125,7 @@ class Mean1SampleZDialog(Dialogs):
         w.pack(side=LEFT, padx=2, pady=2)
         master = tk.LabelFrame(m, text='Known Value')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(master, text="Stdev")
+        w = tk.Label(master, text="Std Dev")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.s0,
                      bg='white', width=5)
@@ -183,7 +183,7 @@ class Var1SampleDialog(Dialogs):
         w = tk.Entry(master, textvariable=self.sample_n,
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(master, text="Stdev")
+        w = tk.Label(master, text="Std Dev")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.sample_std,
                      bg='white', width=5)
@@ -192,7 +192,7 @@ class Var1SampleDialog(Dialogs):
         master = tk.LabelFrame(m, text='Hypothesis Test')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.s0 = tk.StringVar(value="")
-        w = tk.Label(master, text="Stdev")
+        w = tk.Label(master, text="Std Dev")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.s0,
                      bg='white', width=5)
@@ -259,7 +259,7 @@ class Mean2SampleDialog(Dialogs):
         w = tk.Entry(master, textvariable=self.n1,
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(master, text="Stdev")
+        w = tk.Label(master, text="Std Dev")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.s1,
                      bg='white', width=5)
@@ -279,7 +279,7 @@ class Mean2SampleDialog(Dialogs):
         w = tk.Entry(master, textvariable=self.n2,
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(master, text="Stdev")
+        w = tk.Label(master, text="Std Dev")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.s2,
                      bg='white', width=5)

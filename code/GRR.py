@@ -68,7 +68,7 @@ def GRR_xbar(data, op_key="Operator", pt_key="Part", y_key="Y",
         print("\n---- GRR XBar/R (Minitab 20) ----")
         print("Gage Evaluation")
         t = PT()
-        t.field_names = ["Source", "Stdev", "6 x Std", "%SV"]
+        t.field_names = ["Source", "Std Dev", "6 x Std", "%SV"]
         t.add_row(["Ttl GRR(EV&AV)", "%.3f" % GRR, "%.3f" % (6 * GRR),
                    "%.2f" % (GRR / TTL * 100)])
         t.add_row(["EV(repeatability)", "%.3f" % EV, "%.3f" % (EV * 6),
@@ -175,7 +175,7 @@ def grr_anova_EMP(y=None, op=None, part=None, inter=True,
         print("\n---- GRR EMP (JMP 17) ----")
         print("Variance Components")
         t = PT()
-        t.field_names = ["Source", "Stdev", "VarComp", "%Contribution"]
+        t.field_names = ["Source", "Std Dev", "VarComp", "%Contribution"]
         t.add_row(["Ttl GRR", "%.3f" % GRR**.5, "%.3f" % GRR,
                    "%.2f" % (GRR / TTL * 100)])
         t.add_row(["Repeatability", "%.3f" % Rept**.5, "%.3f" % Rept,
@@ -234,7 +234,7 @@ def grr_anova_AIAG(y=None, op=None, part=None, inter=True,
         print("Number of Distinct Categories = %d" % (int((2 * PP / GRR)**.5)))
         print("\nVariance Components of GRR")
         t = PT()
-        t.field_names = ["Source", "Stdev", "VarComp", "%Contribution"]
+        t.field_names = ["Source", "Std Dev", "VarComp", "%Contribution"]
         t.add_row(["Ttl GRR", "%.3f" % GRR**.5, "%.3f" % GRR,
                    "%.2f" % (GRR / TTL * 100)])
         t.add_row(["Repeatability", "%.3f" % Rept**.5, "%.3f" % Rept,
