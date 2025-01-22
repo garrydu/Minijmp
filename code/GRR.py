@@ -68,7 +68,7 @@ def GRR_xbar(data, op_key="Operator", pt_key="Part", y_key="Y",
         print("\n---- GRR XBar/R (Minitab 20) ----")
         print("Gage Evaluation")
         t = PT()
-        t.field_names = ["Source", "Std Dev", "6 x Std", "%SV"]
+        t.field_names = ["Source", "Std Dev", "6 x SD", "%SV"]
         t.add_row(["Ttl GRR(EV&AV)", "%.3f" % GRR, "%.3f" % (6 * GRR),
                    "%.2f" % (GRR / TTL * 100)])
         t.add_row(["EV(repeatability)", "%.3f" % EV, "%.3f" % (EV * 6),
@@ -216,7 +216,7 @@ def grr_anova_AIAG(y=None, op=None, part=None, inter=True,
         print("\n---- GRR AIAG (JMP 17) ----")
         print("Variance Components")
         t = PT()
-        t.field_names = ["Source", "6 x Std", ""]
+        t.field_names = ["Source", "6 x SD", ""]
         t.add_row(["Repeatability", "%.2f" % (6 * Rept**.5),
                    "Equipment Variation"])
         if op is not None:
@@ -234,7 +234,7 @@ def grr_anova_AIAG(y=None, op=None, part=None, inter=True,
         print("Number of Distinct Categories = %d" % (int((2 * PP / GRR)**.5)))
         print("\nVariance Components of GRR")
         t = PT()
-        t.field_names = ["Source", "Std Dev", "VarComp", "%Contribution"]
+        t.field_names = ["Source", "SD", "VarComp", "%Contribution"]
         t.add_row(["Ttl GRR", "%.3f" % GRR**.5, "%.3f" % GRR,
                    "%.2f" % (GRR / TTL * 100)])
         t.add_row(["Repeatability", "%.3f" % Rept**.5, "%.3f" % Rept,
@@ -337,12 +337,12 @@ def grr_nested(y=None, op=None, part=None, print_out=False, print_port=print,
         print("\n---- Gage R&R Nested ANOVA ----\n\nGage R&R Nested for Response")
         t = PT()
         t.field_names = ["Source", "DF", "SS", "MS", "F Ratio", "P Value"]
-        t.add_row(["Operator", DFO, "%.3f" % SSO, "%.3f" % MSO,
+        t.add_row(["Operator", "%d" % DFO, "%.3f" % SSO, "%.3f" % MSO,
                    "%.3f" % FO, "%.3f" % p_o])
-        t.add_row(["Part(Operator)", DFPO, "%.3f" % SSPO, "%.3f" % MSPO,
+        t.add_row(["Part(Operator)", "%d" % DFPO, "%.3f" % SSPO, "%.3f" % MSPO,
                    "%.3f" % FPO, "%.3f" % p_po])
-        t.add_row(["Repeatability", DFR, "%.3f" % SSR, "%.3f" % MSR, " ", " "])
-        t.add_row(["Total", DFTTL, "%.3f" % SST, "", "", ""])
+        t.add_row(["Repeatability", "%d" % DFR, "%.3f" % SSR, "%.3f" % MSR, " ", " "])
+        t.add_row(["Total", "%d" % DFTTL, "%.3f" % SST, "", "", ""])
         print(str(t))
 
         print("\nVariance Components")
@@ -363,7 +363,7 @@ def grr_nested(y=None, op=None, part=None, print_out=False, print_port=print,
 
         print("\nGage Evaluation")
         t = PT()
-        t.field_names = ["Source", "StdDev(SD)", "6 x SD", "SD%"]
+        t.field_names = ["Source", "Std Dev(SD)", "6 x SD", "SV%"]
         t.align["Source"] = "l"
         t.add_row(["Total Gage R&R", "%.3f" % std_grr, "%.3f" % (6 * std_grr), "%.2f" % (100 * std_grr / std_ttl)])
         t.add_row(["  Repeatability", "%.3f" % std_repeat, "%.3f" % (6 * std_repeat), "%.2f" % (100 * std_repeat / std_ttl)])

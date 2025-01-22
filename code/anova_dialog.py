@@ -7,7 +7,7 @@ from pandas import DataFrame as DF
 #  from pandastable_local.dialogs import addListBox
 ########### Own Modules ###########
 from dialog import Dialogs, addListBox
-from utilities import number_list, stack_df_num_cols, is_void, group_df_to_list, hash_combined
+from utilities import number_list, stack_df_num_cols, is_void, group_df_to_list, hash_combined, is_number
 from one_way_ANOVA import one_way_anova, JMP_ANOVA_t_test
 from two_way_anova import two_way_anova
 from sb_misc import interval_plot
@@ -22,25 +22,25 @@ class Anova2WayDialog(Dialogs):
         self.xvar = tk.StringVar(value="")
         self.yvar = tk.StringVar(value="")
         w = tk.Label(f, text="A")
-        w.pack(side=LEFT, fill=X, padx=2,pady=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
-        w.pack(side=LEFT, padx=2,pady=2)
+        w.pack(side=LEFT, padx=2, pady=2)
         w = tk.Label(f, text="B")
-        w.pack(side=LEFT, fill=X, padx=2,pady=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.yvar,
             width=14)
-        w.pack(side=LEFT, padx=2,pady=2)
+        w.pack(side=LEFT, padx=2, pady=2)
 
         f = tk.LabelFrame(m, text='Response')
-        f.pack(side=TOP, fill=BOTH, padx=2,pady=2)
+        f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
         self.zvar = tk.StringVar(value="")
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.zvar,
             width=14)
-        w.pack(side=LEFT, padx=2,pady=2)
+        w.pack(side=LEFT, padx=2, pady=2)
 
         return
 
@@ -53,8 +53,9 @@ class Anova2WayDialog(Dialogs):
         V = []
         for a, b, y in zip(A, B, Y):
             V.append(
-                nan in [a, b, y])
-        two_way_anova(f(Y, V), factor_listA=f(A, V), factor_listB=f(B, V),
+                nan in [a, b, y] or (not is_number(y)))
+        two_way_anova([float(_) for _ in f(Y, V)],
+                      factor_listA=f(A, V), factor_listB=f(B, V),
                       print_out=True, print_port=self.app.print,
                       name_a=self.xvar.get(), name_b=self.yvar.get())
         return

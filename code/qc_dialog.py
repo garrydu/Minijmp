@@ -46,7 +46,7 @@ class GRR_Nested_Dialog(Dialogs):
         f = tk.LabelFrame(m, text='Optional Input')
         f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
         self.hist_std = tk.StringVar(value="")
-        w = tk.Label(f, text="Historical Process(total) StdDev")
+        w = tk.Label(f, text="Historical Process(total) Std Dev")
         w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = tk.Entry(f, textvariable=self.hist_std,
                      bg='white', width=10)
@@ -125,11 +125,11 @@ class GRRDialog(Dialogs):
         w = ttk.Combobox(
             f,
             values=[
-                "AIAG (JMP17)",
-                "EMP (JMP17)",
-                "XBAR/R (Minitab)"],
+                "AIAG (JMP17 ANOVA)",
+                "EMP (JMP17 ANOVA)",
+                "XBAR/R (Minitab22)"],
             textvariable=self.mvar,
-            width=14)
+            width=20)
         w.pack(side=LEFT, padx=2, pady=2)
         self.inter = tk.BooleanVar(value=True)
         w = tk.Checkbutton(f, text='Operator x Part Interaction',
