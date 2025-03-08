@@ -42,6 +42,12 @@ class Anova2WayDialog(Dialogs):
             width=14)
         w.pack(side=LEFT, padx=2, pady=2)
 
+        f = tk.LabelFrame(m, text='Options')
+        f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
+        self.inter = tk.BooleanVar(value=True)
+        w = tk.Checkbutton(f, text="With Interaction",
+                           variable=self.inter)
+        w.pack(side=LEFT, padx=2, pady=2)
         return
 
     def apply(self):
@@ -56,7 +62,7 @@ class Anova2WayDialog(Dialogs):
                 nan in [a, b, y] or (not is_number(y)))
         two_way_anova([float(_) for _ in f(Y, V)],
                       factor_listA=f(A, V), factor_listB=f(B, V),
-                      print_out=True, print_port=self.app.print,
+                      print_out=True, print_port=self.app.print, interaction=self.inter.get(),
                       name_a=self.xvar.get(), name_b=self.yvar.get())
         return
 

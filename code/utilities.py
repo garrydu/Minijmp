@@ -9,10 +9,19 @@ import statistics as stat
 from math import isnan
 import re
 from pandas import DataFrame as DF
+from prettytable import PrettyTable as PT
 ######### Own Modules ############
 # from binomial import binomial
 from chi_sq import chi2_test_stdev
 from t_test import t_test_1sample
+
+
+def gen_table(input_list):
+    t = PT()
+    t.field_names = input_list[0]
+    for l in input_list[1:]:
+        t.add_row(l)
+    return t
 
 
 def split_string(text, delimiters):

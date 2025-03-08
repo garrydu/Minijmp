@@ -8,12 +8,13 @@ Choose Stats> Two-Way ANOVA
 
 - **Factors:** These are the independent categorical variables in columns. The data must be stacked and can be either text or numerical.
 - **Response:** This is the dependent numerical variable in its column. It must be a quantitative variable representing amounts or counts, which can be divided to find a group mean. 
+- **With Interaction**: Toggle to include the interaction factor in the calculation. When the interaction p-value is not less than the significant level, it's a good idea to disable the interaction and run the study again.
 
 The Two-Way ANOVA results are consistent with both JMP 17 and Minitab 22. Note that the Two-Way ANOVA does not have a standalone menu entry in these two software packages but can be performed using general linear models with least squares methods.
 
 .. code-block:: none
 
-  ---- Two Way ANOVA With
+  ---- Two Way ANOVA With Interaction ----
   +----------+--------+
   |  Factor  | Levels |
   +----------+--------+

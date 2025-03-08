@@ -129,7 +129,7 @@ def two_way_anova(data, factor_listA=None, print_port=print, interaction=True,
         print = print_port
         print(
             "\n---- Two Way ANOVA " +
-            "With" if interaction else "Without" +
+            ("With" if interaction else "Without") +
             " Interaction ----")
         t = PT()
         t.field_names = ["Factor", "Levels"]

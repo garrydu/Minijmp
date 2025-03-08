@@ -4,12 +4,14 @@ import statistics as stats
 from scipy.stats import f as f_dist
 # ############# Own Modules ############
 from utilities import d2_2D as d2
+from utilities import gen_table
 from two_way_anova import two_way_anova
 from one_way_ANOVA import one_way_anova
 from utilities import grouping_by_labels
 
 
 def GRR_xbar(data, op_key="Operator", pt_key="Part", y_key="Y",
+             hist_std=None, use_hist=False, spec_gap=None,
              print_out=True, has_op_col=True, print_port=print):
 
     def EV_stdev(d, op_key="Operator", pt_key="Part", y_key="Y"):
@@ -65,21 +67,39 @@ def GRR_xbar(data, op_key="Operator", pt_key="Part", y_key="Y",
 
     if print_out:
         print = print_port
-        print("\n---- GRR XBar/R (Minitab 20) ----")
+        print("\n---- GRR XBar/R ----")
         print("Gage Evaluation")
-        t = PT()
-        t.field_names = ["Source", "Std Dev", "6 x SD", "%SV"]
-        t.add_row(["Ttl GRR(EV&AV)", "%.3f" % GRR, "%.3f" % (6 * GRR),
-                   "%.2f" % (GRR / TTL * 100)])
-        t.add_row(["EV(repeatability)", "%.3f" % EV, "%.3f" % (EV * 6),
-                   "%.2f" % (EV / TTL * 100)])
-        t.add_row(["AV(reproducibility)", "%.3f" % AV, "%.3f" % (AV * 6),
-                   "%.2f" % (AV / TTL * 100)])
-        t.add_row(["PV(Part to Part)", "%.3f" % PV, "%.3f" % (PV * 6),
-                   "%.2f" % (PV / TTL * 100)])
-        t.add_row(["Total Variation", "%.3f" % TTL, "%.3f" % (TTL * 6),
-                   "%.2f" % (100)])
-        print(str(t))
+        t = [
+            ["Source", "Std Dev", "6 x SD", "%SV"],
+            ["Ttl GRR(EV&AV)", "%.3f" % GRR, "%.3f" % (6 * GRR),
+             "%.2f" % (GRR / TTL * 100)],
+            ["EV(repeatability)", "%.3f" % EV, "%.3f" % (EV * 6),
+             "%.2f" % (EV / TTL * 100)],
+            ["AV(reproducibility)", "%.3f" % AV, "%.3f" % (AV * 6),
+             "%.2f" % (AV / TTL * 100)],
+            ["PV(Part to Part)", "%.3f" % PV, "%.3f" % (PV * 6),
+             "%.2f" % (PV / TTL * 100)],
+            ["Total Variation", "%.3f" % TTL, "%.3f" % (TTL * 6),
+             "%.2f" % (100)]]
+
+        if hist_std is not None:
+            t[0] += ["%Process"]
+            t[1] += ["%.2f" % (100 * GRR / hist_std)]
+            t[2] += ["%.2f" % (100 * EV / hist_std)]
+            t[3] += ["%.2f" % (100 * AV / hist_std)]
+            t[4] += ["%.2f" % (100 * PV / hist_std)]
+            t[5] += ["%.2f" % (100 * TTL / hist_std)]
+
+        if spec_gap is not None:
+            t[0] += ["%Tolerance"]
+            t[1] += ["%.2f" % (600 * GRR / spec_gap)]
+            t[2] += ["%.2f" % (600 * EV / spec_gap)]
+            t[3] += ["%.2f" % (600 * AV / spec_gap)]
+            t[4] += ["%.2f" % (600 * PV / spec_gap)]
+            t[5] += ["%.2f" % (600 * TTL / spec_gap)]
+
+        print(str(gen_table(t)))
+
         print("Number of Distinct Categories = %d" % (int(PV / GRR * 2**.5)))
         print("\nVariance Components")
         t = PT()
@@ -102,6 +122,7 @@ def GRR_xbar(data, op_key="Operator", pt_key="Part", y_key="Y",
 
 
 def grr_xbar_r(y=None, op=None, part=None,
+               hist_std=None, use_hist=False, spec_gap=None,
                print_out=False, print_port=print):
     """
     input in 1d list, op input is optional
@@ -114,6 +135,7 @@ def grr_xbar_r(y=None, op=None, part=None,
         has_op = True
         d["Operator"] = op
     return GRR_xbar(pd.DataFrame(d), has_op_col=has_op,
+                    hist_std=hist_std, use_hist=use_hist, spec_gap=spec_gap,
                     print_out=print_out, print_port=print_port)
 
 
@@ -170,9 +192,60 @@ def grr_anova_EMP(y=None, op=None, part=None, inter=True,
     GRR = Repd + Rept  # total var introduced by human and equipment
     TTL = GRR + PP + OPP
 
+#  Without the interaction, the analysis uses the following formula:
+#  DF = (abn – 1) – (a – 1) – (b – 1)
+#  With the interaction, the analysis uses the following formula:
+#  DF = (abn – 1) – (a – 1) – (b – 1) – [(a – 1) × (b – 1)]
+
+    a = len(set(part))
+    b = 1 if op is None else len(set(op))
+    #  n = len(y) / a / b
+    DF = (len(y) - 1) - (a - 1) - (b - 1)
+    if inter:
+        DF = DF - (a - 1) * (b - 1)
+
+#  Intraclass correlation (no bias)
+#  Part / (Part + Test re-test error)
+#  Intraclass correlation (with bias)
+#  Part / (Part + Test re-test error + Operator)
+#  Intraclass correlation (with bias and interaction)
+#  Part / (Part + Test re-test error + Operator + Part*Operator)
+#  Bias impact
+#  Intraclass correlation (no bias) – Intraclass correlation (with bias)
+#  Bias and interaction impact
+#  Intraclass correlation (no bias) – Intraclass correlation (with bias and interaction)
+
+    intraclass_no_bias = PP / (PP + Rept)
+    intraclass_w_bias = PP / (PP + Rept + Repd)
+    intraclass_bias_inter = PP / (PP + OPP + Rept + Repd)
+    bias_impact = intraclass_no_bias - intraclass_w_bias
+    bias_inter_impact = intraclass_no_bias - intraclass_bias_inter
+
+    guideline = """Classification Guidelines
+
+Classification    Intraclass     Attenuation of    Probability     Probability of
+                 Correlation    Process Signals    of Warning,     Warning, Tests*
+                                                   Test 1*
+----------------------------------------------------------------------------------
+First Class      0.80 - 1.00    Less than 11%     0.99 - 1.00     1.00
+Second Class     0.50 - 0.80    11 - 29%          0.88 - 0.99     1.00
+Third Class      0.20 - 0.50    29 - 55%          0.40 - 0.88     0.92 - 1.00
+Fourth Class     0.00 - 0.20    More than 55%     0.03 - 0.40     0.08 - 0.92
+
+* Probability of detecting a three-standard-deviation shift within 10 subgroups using test 1 or tests 1, 5, 6, and 8 of Nelson's Control Chart Rules. Find more info in HELP."""
+
+    def classification(rho):
+        if rho > 0.8:
+            return "First"
+        if rho > .5:
+            return "Second"
+        if rho > .2:
+            return "Third"
+        return "Fourth"
+
     if print_out:
         print = print_port
-        print("\n---- GRR EMP (JMP 17) ----")
+        print("\n---- GRR EMP (ANOVA) ----")
         print("Variance Components")
         t = PT()
         t.field_names = ["Source", "Std Dev", "VarComp", "%Contribution"]
@@ -191,12 +264,41 @@ def grr_anova_EMP(y=None, op=None, part=None, inter=True,
         t.add_row(["Total Variation", "%.3f" % TTL**.5, "%.3f" % TTL,
                    "%.2f" % (100)])
         print(str(t))
+
+        print("\nEMP Statistics")
+        t = PT()
+        t.field_names = ["Statistic", "Value", "Classification"]
+        t.add_row(["Test-retest error", "%.3f" % Rept**.5, ""])
+        t.add_row(["Degrees of freedom", "%d" % DF, ""])
+        t.add_row(["Probable error", "%.3f" % (.674490 * Rept**.5), ""])
+        t.add_row(["Intraclass Correlation (no bias)",
+                   "%.3f" % intraclass_no_bias,
+                   classification(intraclass_no_bias) + " Class"])
+        if op is not None:
+            t.add_row(["Intraclass Correlation (with bias)",
+                       "%.3f" % intraclass_w_bias,
+                       classification(intraclass_w_bias) + " Class"])
+        if inter:
+            t.add_row(["Intraclass Correlation (with bias and interaction)",
+                       "%.3f" % intraclass_bias_inter,
+                       classification(intraclass_bias_inter) + " Class"])
+        if op is not None:
+            t.add_row(["Bias Impact", "%.3f" % bias_impact, " "])
+        if inter:
+            t.add_row(["Bias and Interaction Impact", "%.3f" % bias_inter_impact, ""])
+        t.align["Statistic"] = "l"
+        print(str(t))
+
+        print("\n")
+        print(guideline)
+
     res = {"EV": Rept, "AV": Repd, "PV": PP, "RR": GRR, "TV": TTL,
            "INT": OPP}
     return res
 
 
 def grr_anova_AIAG(y=None, op=None, part=None, inter=True,
+                   hist_std=None, use_hist=False, spec_gap=None,
                    print_out=False, print_port=print):
     if op is None:
         inter = False
@@ -213,24 +315,69 @@ def grr_anova_AIAG(y=None, op=None, part=None, inter=True,
 
     if print_out:
         print = print_port
-        print("\n---- GRR AIAG (JMP 17) ----")
-        print("Variance Components")
-        t = PT()
-        t.field_names = ["Source", "6 x SD", ""]
-        t.add_row(["Repeatability", "%.2f" % (6 * Rept**.5),
-                   "Equipment Variation"])
-        if op is not None:
-            t.add_row(["Reproducibility", "%.2f" % (6 * Repd**.5),
-                       "Appraiser Variation"])
-            t.add_row(["Operator", "%.2f" % (6 * OP**.5), ""])
-            if inter:
-                t.add_row(["Op. x Part", "%.2f" % (6 * OPP**.5), ""])
-        t.add_row(["Gauge R&R", "%.2f" % (6 * GRR**.5), ""])
-        t.add_row(["Part Variation", "%.2f" % (6 * PP**.5),
-                   "Part Variation"])
-        t.add_row(["Total Variation", "%.2f" % (TTL**.5 * 6), ""])
-        print(str(t))
-        print("Gauge R&R / Total Variation = %.1f%%" % ((GRR / TTL)**.5 * 100))
+        print("\n---- GRR AIAG (ANOVA) ----")
+        print("Gage Evaluation")
+
+        def gen_t(GRR, EV, AV, OP, OPP, PV, TTL):
+
+            t = [
+                ["Source", "Std Dev", "6 x SD", "%SV"],
+                ["Ttl GRR(EV&AV)", "%.3f" % GRR, "%.3f" % (6 * GRR),
+                 "%.2f" % (GRR / TTL * 100)],
+                ["EV(repeatability)", "%.3f" % EV, "%.3f" % (EV * 6),
+                 "%.2f" % (EV / TTL * 100)],
+                ["AV(reproducibility)", "%.3f" % AV, "%.3f" % (AV * 6),
+                 "%.2f" % (AV / TTL * 100)],
+                ["Operator", "%.3f" % OP, "%.3f" % (OP * 6),
+                 "%.2f" % (OP / TTL * 100)],
+                ["Part x Operator", "%.3f" % OPP, "%.3f" % (OPP * 6),
+                 "%.2f" % (OPP / TTL * 100)],
+                ["PV(Part to Part)", "%.3f" % PV, "%.3f" % (PV * 6),
+                 "%.2f" % (PV / TTL * 100)],
+                ["Total Variation", "%.3f" % TTL, "%.3f" % (TTL * 6),
+                 "%.2f" % (100)]]
+
+            if hist_std is not None:
+                t[0] += ["%Process"]
+                t[1] += ["%.2f" % (100 * GRR / hist_std)]
+                t[2] += ["%.2f" % (100 * EV / hist_std)]
+                t[3] += ["%.2f" % (100 * AV / hist_std)]
+                t[4] += ["%.2f" % (100 * OP / hist_std)]
+                t[5] += ["%.2f" % (100 * OPP / hist_std)]
+                t[6] += ["%.2f" % (100 * PV / hist_std)]
+                t[7] += ["%.2f" % (100 * TTL / hist_std)]
+
+            if spec_gap is not None:
+                t[0] += ["%Tolerance"]
+                t[1] += ["%.2f" % (600 * GRR / spec_gap)]
+                t[2] += ["%.2f" % (600 * EV / spec_gap)]
+                t[3] += ["%.2f" % (600 * AV / spec_gap)]
+                t[4] += ["%.2f" % (100 * OP / spec_gap)]
+                t[5] += ["%.2f" % (100 * OPP / spec_gap)]
+                t[6] += ["%.2f" % (600 * PV / spec_gap)]
+                t[7] += ["%.2f" % (600 * TTL / spec_gap)]
+            return t if inter else t[:5] + t[6:]
+
+        print(str(gen_table(
+            gen_t(GRR**.5, Rept**.5, Repd**.5, OP**.5, OPP**.5, PP**.5, TTL**.5)
+        )))
+        #  print("Variance Components")
+        #  t = PT()
+        #  t.field_names = ["Source", "6 x SD", ""]
+        #  t.add_row(["Repeatability", "%.2f" % (6 * Rept**.5),
+        #             "Equipment Variation"])
+        #  if op is not None:
+        #      t.add_row(["Reproducibility", "%.2f" % (6 * Repd**.5),
+        #                 "Appraiser Variation"])
+        #      t.add_row(["Operator", "%.2f" % (6 * OP**.5), ""])
+        #      if inter:
+        #          t.add_row(["Op. x Part", "%.2f" % (6 * OPP**.5), ""])
+        #  t.add_row(["Gage R&R", "%.2f" % (6 * GRR**.5), ""])
+        #  t.add_row(["Part Variation", "%.2f" % (6 * PP**.5),
+        #             "Part Variation"])
+        #  t.add_row(["Total Variation", "%.2f" % (TTL**.5 * 6), ""])
+        #  print(str(t))
+        print("Gage R&R / Total Variation = %.1f%%" % ((GRR / TTL)**.5 * 100))
         print("Number of Distinct Categories = %d" % (int((2 * PP / GRR)**.5)))
         print("\nVariance Components of GRR")
         t = PT()
@@ -250,17 +397,35 @@ def grr_anova_AIAG(y=None, op=None, part=None, inter=True,
     return res
 
 
-def grr_master(y=None, op=None, part=None, mode="aiag",
-               inter=True, print_out=False, print_port=print):
+def grr_master(y=None, op=None, part=None, mode="aiag", alpha=0.05,
+               hist_std=None, use_hist=False, spec_gap=None,
+               inter="auto", print_out=False, print_port=print):
     mode = mode.upper()
     if "XBAR" in mode:
         return grr_xbar_r(y=y, op=op, part=part,
+                          hist_std=hist_std, use_hist=use_hist, spec_gap=spec_gap,
                           print_out=print_out, print_port=print_port)
+
+    if op is not None and inter.upper() == "AUTO":
+        res = two_way_anova(y, factor_listA=part, factor_listB=op,
+                            print_port=print_port, interaction=True,
+                            print_out=print_out, name_a="Part",
+                            name_b="Operator")
+        inter = (res['p AB'] <= alpha)
+        if print_out:
+            print = print_port
+            print("alpha to remove interaction term: %.3f" % alpha)
+    elif op is None:
+        inter = False
+    else:
+        inter = (inter.upper() == "ON")
+
     if "EMP" in mode:
         return grr_anova_EMP(y=y, op=op, part=part, inter=inter,
                              print_out=print_out, print_port=print_port)
     if "AIAG" in mode:
         return grr_anova_AIAG(y=y, op=op, part=part, inter=inter,
+                              hist_std=hist_std, use_hist=use_hist, spec_gap=spec_gap,
                               print_out=print_out, print_port=print_port)
 
 

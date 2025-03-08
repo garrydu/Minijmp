@@ -119,26 +119,59 @@ class GRRDialog(Dialogs):
 
         f = tk.LabelFrame(m, text='Algo Setting')
         f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
-        self.mvar = tk.StringVar(value="AIAG (JMP17)")
+        self.mvar = tk.StringVar(value="AIAG (ANOVA)")
         w = tk.Label(f, text="Method")
         w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f,
             values=[
-                "AIAG (JMP17 ANOVA)",
-                "EMP (JMP17 ANOVA)",
-                "XBAR/R (Minitab22)"],
+                "AIAG (ANOVA)",
+                "EMP (ANOVA)",
+                "XBAR/R"],
             textvariable=self.mvar,
-            width=20)
-        w.pack(side=LEFT, padx=2, pady=2)
-        self.inter = tk.BooleanVar(value=True)
-        w = tk.Checkbutton(f, text='Operator x Part Interaction',
-                           variable=self.inter)
+            width=14)
         w.pack(side=LEFT, padx=2, pady=2)
 
+        self.inter = tk.StringVar(value="Auto")
+        w = tk.Label(f, text='Operator x Part Interaction')
+        w.pack(side=LEFT, padx=2, pady=2)
+        w = ttk.Combobox(
+            f,
+            values=["Auto", "On", "Off"],
+            textvariable=self.inter,
+            width=5)
+        w.pack(side=LEFT, padx=2, pady=2)
+
+        f = tk.LabelFrame(m, text='AIAG and Xbar/R setting (optional)')
+        f.pack(side=TOP, fill=BOTH, padx=2, pady=2)
+        slave = tk.Frame(f)
+        slave.pack(side=TOP, fill=BOTH, padx=0, pady=2)
+
+        self.spec_gap = tk.StringVar(value="")
+        w = tk.Label(slave, text="USL - LSL")
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
+        w = tk.Entry(slave, textvariable=self.spec_gap,
+                     bg='white', width=15)
+        w.pack(side=LEFT, padx=2, pady=2)
+
+        self.hist_std = tk.StringVar(value="")
+        w = tk.Label(slave, text="Historical SD")
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
+        w = tk.Entry(slave, textvariable=self.hist_std,
+                     bg='white', width=15)
+        w.pack(side=LEFT, padx=2, pady=2)
+
+        #  s1 = "Use historical standard deviation to estimate process variation."
+        #  s2 = "Use parts in the study to estimate process variation."
+        #  self.hist_std_use = tk.StringVar(value=s1)
+        #  w = ttk.Combobox(
+        #      f,
+        #      values=[s1, s2],
+        #      textvariable=self.hist_std_use,
+        #      width=50)
+        #  w.pack(side=LEFT, padx=10, pady=2)
+
         self.ylabel = tk.StringVar(value="")
-        #  self.show_legend = tk.BooleanVar(value=True)
-        #  self.show_spec = tk.BooleanVar(value=True)
         master = tk.LabelFrame(m, text='Plot Setting')
         master.pack(side=TOP, fill=BOTH, padx=2)
         w = tk.Label(master, text="Y Label")
@@ -146,16 +179,14 @@ class GRRDialog(Dialogs):
         w = tk.Entry(master, textvariable=self.ylabel,
                      bg='white', width=15)
         w.pack(side=LEFT, padx=2, pady=2)
-        #  w = tk.Checkbutton(master, text='Show Spec Limits',
-        #                     variable=self.show_spec)
-        #  w.pack(side=LEFT, padx=2, pady=2)
-        #  w = tk.Checkbutton(master, text='Show Legend',
-        #                     variable=self.show_legend)
-        #  w.pack(side=LEFT, padx=2, pady=2)
 
+        self.add_alpha(m)
         return
 
     def apply(self):
+        alpha = self.alpha.get()
+        if alpha > 0.5 or alpha <= 0:
+            alpha = 0.05
         y = self.df[self.xvar.get()]
         p = self.df[self.yvar.get()]
         try:
@@ -174,12 +205,25 @@ class GRRDialog(Dialogs):
                 r[1].append(j)
                 r[2].append(k)
         #  print(r)
+
+        hist_std = get_number(self.hist_std)
+        if hist_std is not None:
+            hist_std = hist_std if hist_std >= 0 else None
+        spec_gap = get_number(self.spec_gap)
+        if spec_gap is not None:
+            spec_gap = spec_gap if spec_gap >= 0 else None
+        #  use_hist = ("hist" in self.hist_std_use.get())
+
         grr_master(
             y=r[0], part=r[1],
             op=r[2] if has_op else None,
             mode=self.mvar.get(),
             inter=self.inter.get(),
+            hist_std=hist_std,
+            spec_gap=spec_gap,
+            #  use_hist=use_hist,
             print_out=True,
+            alpha=alpha,
             print_port=self.app.print)
 
         pf = self.app.showPlotViewer()
