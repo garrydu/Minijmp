@@ -13,6 +13,7 @@ Choose Quality > Process Capability
 - **Spec Limits**: To perform the analysis, you must specify a lower (LSL) and upper (USL) specification limit to define your process requirements. Target of the process can also be specified. When leaving the Target value zero, the software will use the mean of LSL and USL as the target. 
 - **Show within sigma**: This is a way to evaluate potential (within) capability. Without subgroups, the software will take a moving window of 2 data points to form the pseudo subgroups for the analysis.
 - **Plot Settings**:
+
   - **X Label**: Customize the label of x axis. By default, the software will use the column name of the measurement input.
   - **Show Spec Limits**: Show vertical lines to mark the USL, LSL and Target in the plot. 
   - **Show Legend**: Legend will be only shown when `Show within Sigma` is enabled, by default. Use the selection to override. 

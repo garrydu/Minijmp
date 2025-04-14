@@ -12,14 +12,17 @@ To perform the study choose Quality > Process Capability with Subgroups
 - **Measurement**: The column containing the measurement result. The values must be numerical and continuous. The caculation assumes the data following normal distribution. Nonnormal distribution evaluation is not available yet.
 - **Spec Limits**: To perform the analysis, you must specify a lower (LSL) and upper (USL) specification limit to define your process requirements. Target of the process can also be specified. When leaving the Target value zero, the software will use the mean of LSL and USL as the target. 
 - **Subgroup**: Set the method to categorize the measurement data into Subgroups.
+
   - **Option 1: Use Subgroup Size**: Select **Use Subgroup Size** in **Option**, and set the size of each group in **Subgroup Size**. In this case each sub group has to have the same number of sample points. Each sub group will be extracted from the pool sequentially.
   - **Option 2: Use Subgroup ID**: In this case, there shall be a column containing the categorical data for the measurement data points. Select **Use Subgroup ID Col.** in **Option**, and select the column in **ID Col.**. The setting in **Subgroup Size** will be ignored in this case, and vise versa. 
 
 - **Within Subgroup Variation**: Select the approach to estimate the within Subgroup sigma.
+  
   - **Average of Unbiased SD**: Use the average of the standard deviation of each sub group divided by its C4 value.
   - **Average of Ranges**: The approach uses range of each group to estimate the underlying data population. The approach is more sensitive to outliers. 
 
 - **Plot Settings**:
+  
   - **X Label**: Customize the label of x axis. By default, the software will use the column name of the measurement input.
   - **Show Spec Limits**: Show vertical lines to mark the USL, LSL and Target in the plot. 
   - **Show Legend**: Legend of the curves of the overall and within distribution fitting.
@@ -106,7 +109,7 @@ Here is a hyperthetical example of within subgroup capability VS the overall cap
 
 Hyperthetically let's say the data were grouped by lots. As illustrated in the left-side graph, the shift and drift between subgroups are minimal compared to the variation within the subgroups themselves. Consequently, the within-subgroup and overall standard deviations are nearly identical, resulting in closely matched within Cpk and overall Cpk values (1.13 and 1.07, respectively). [ref. `LINK <https://blog.minitab.com/en/process-capability-statistics-cpk-vs-ppk>`_]
    
-.. image:: images/cpk_ppk_formulas_w640.png
+.. image:: images/different_cpk_ppk.png
    :align: center
 
 But if the same data points were regrouped, for example by operators, the within within subgroup Cpk can go up to 3.7. Using within subgroup indices helped to identify the main variation source of the process is operators. Potentially more training or alignment of their workstation may improve the overall process capability.
