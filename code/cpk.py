@@ -12,6 +12,7 @@ import statistics as stat
 from prettytable import PrettyTable as PT
 ############ Own Modules ##############
 from utilities import d2_values, scale_factor_f, c4_values, grouping_by_labels, calculate_d3, calculate_d2
+from utilities import gen_table, transpose_2D_list
 
 
 def cpl_cpu_95(cpx, n, df, alpha=0.05):
@@ -89,7 +90,7 @@ def cpk_calc(mean, std, T, usl, lsl, df, N, print_port=print,
 
 
 def nonconformance(data, t, lsl, usl, u, sw, so, print_out=True,
-                   print_port=print):
+                   print_port=print, within=True):
     N = len(data)
     below = len([i for i in data if i < lsl])
     above = len([i for i in data if i > usl])
@@ -100,25 +101,32 @@ def nonconformance(data, t, lsl, usl, u, sw, so, print_out=True,
     if print_out:
         print = print_port
         print("\n" + "Nonconformance (Observation and Expected)")
-        t = PT()
-        t.field_names = [
-            'Portion',
-            'Observed%',
-            "Expected Within%",
-            "Expected Overall%"]
-        t.add_row(["Below LSL", "%.2f" %
-                   (below / N * 100), "%.2f" %
-                   (wl * 100), "%.2f" %
-                   (ol * 100)])
-        t.add_row(["Above USL", "%.2f" %
-                   (above / N * 100), "%.2f" %
-                   (wu * 100), "%.2f" %
-                   (ou * 100)])
-        t.add_row(["Total Out", "%.2f" %
-                   ((below + above) / N * 100), "%.2f" %
-                   ((wl + wu) * 100), "%.2f" %
-                   ((ol + ou) * 100)])
-        print(str(t))
+        #  t = PT()
+        t = [['Portion', 'Below LSL', 'Above USL', 'Total Out'],
+             ['Observed%', "%.2f" % (below / N * 100), "%.2f" % (above / N * 100), "%.2f" % ((below + above) / N * 100)]]
+        if within:
+            t.append(['Expected Within%', "%.2f" % (wl * 100), "%.2f" % (wu * 100), "%.2f" % (wu * 100 + 100 * wl)])
+        t.append(['Expected Overall%', "%.2f" % (ol * 100), "%.2f" % (ou * 100), "%.2f" % ((ol + ou) * 100)])
+        print(str(gen_table(transpose_2D_list(t))))
+
+        #  t.field_names = [
+        #      'Portion',
+        #      'Observed%',
+        #      "Expected Within%",
+        #      "Expected Overall%"]
+        #  t.add_row(["Below LSL", "%.2f" %
+        #             (below / N * 100), "%.2f" %
+        #             (wl * 100), "%.2f" %
+        #             (ol * 100)])
+        #  t.add_row(["Above USL", "%.2f" %
+        #             (above / N * 100), "%.2f" %
+        #             (wu * 100), "%.2f" %
+        #             (ou * 100)])
+        #  t.add_row(["Total Out", "%.2f" %
+        #             ((below + above) / N * 100), "%.2f" %
+        #             ((wl + wu) * 100), "%.2f" %
+        #             ((ol + ou) * 100)])
+        #  print(str(t))
         #  print(
         #      "Above USL Obs. %.2f%%\tExp. Within %.2f%%\tExp. Overall %.2f%%" %
         #      (above / N * 100, wu * 100, ou * 100))
@@ -149,7 +157,7 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
         sub_grps = len(data)
 
         if use_range:
-            within_msg = "Within sigma estimated by averge of ranges over d2."
+            within_msg = "Within sigma estimated by the average of ranges over d2."
             std_within = stat.mean(
                 [(max(l) - min(l)) / d2_values(len(l)) for l in data])
             if balanced:
@@ -159,7 +167,7 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
             else:
                 df_sub = len(flat_list) - sub_grps
         else:
-            within_msg = "Within sigma estimated by averge of unbiased SD."
+            within_msg = "Within sigma estimated by the average of unbiased SD."
             std_within = stat.mean(
                 [stat.stdev(l) / c4_values(len(l)) for l in data])
             df_sub = len(flat_list) - sub_grps
@@ -168,7 +176,7 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
                 df_sub = scale_factor_f(n) * df_sub
 
     except BaseException:
-        within_msg = "Within sigma estimated by averge moving range."
+        within_msg = "Within sigma estimated by averaging moving ranges of 2."
         flat_list = data  # 1D for individual MR within
         std_within = stat.mean(
             [abs(i - j) for i, j in zip(data,
@@ -189,6 +197,10 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
         print = print_port
         print("\n---- Process Capabilities ----")
         for key in res:
+            if (not within) and key == "Within Sigma":
+                continue
+            if (not within) and key == "Stability Index":
+                continue
             if "N" in key:
                 print(key + " = %d" % int(res[key]))
             else:
@@ -221,6 +233,7 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
         mean,
         std_within,
         std_overall,
+        within=within,
         print_port=print_port,
         print_out=print_out)
     res["Flat List"] = flat_list

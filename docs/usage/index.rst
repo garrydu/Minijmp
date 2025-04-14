@@ -39,3 +39,4 @@ Quality Menu
 
    grr
    grr_nst
+   cpk

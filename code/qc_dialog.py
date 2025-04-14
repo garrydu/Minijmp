@@ -242,11 +242,11 @@ class CpkDialog(Dialogs):
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
         w = tk.Label(f, text="Measurement")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2, pady=2)
 
         master = tk.LabelFrame(m, text='Enter Spec Limits')
         master.pack(side=TOP, fill=BOTH, padx=2)
@@ -269,7 +269,7 @@ class CpkDialog(Dialogs):
                      bg='white', width=10)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        self.show_within = tk.BooleanVar(value=True)
+        self.show_within = tk.BooleanVar(value=False)
         w = tk.Checkbutton(
             m,
             text='Show within sigma of moving average of neighbor observations.',
@@ -306,6 +306,9 @@ class CpkDialog(Dialogs):
         lsl, tgt, usl = self.lsl.get(), self.target.get(), self.usl.get()
         if lsl < tgt < usl:
             pass
+        elif tgt == 0 and lsl < usl:
+            self.error("Missing target spec. Use the average of LSL and USL instead.")
+            tgt = (lsl + usl) / 2
         else:
             self.error("Spec limits input error.")
             return
@@ -336,11 +339,11 @@ class CpkSubDialog(Dialogs):
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
         w = tk.Label(f, text="Measurement")
-        w.pack(side=LEFT, fill=X, padx=2)
+        w.pack(side=LEFT, fill=X, padx=2, pady=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
-        w.pack(side=LEFT, padx=2)
+        w.pack(side=LEFT, padx=2, pady=2)
 
         master = tk.LabelFrame(m, text='Enter Spec Limits')
         master.pack(side=TOP, fill=BOTH, padx=2)

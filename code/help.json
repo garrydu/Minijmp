@@ -96,5 +96,9 @@
 "Nested Gage R&R": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/grr_nst.html",
         "window":"Nested Gage R&R is used when parts cannot be measured by multiple operators, typically in destructive testing. Each part is measured by a single operator, potentially multiple times, with the requirement that all operators measure an equal number of parts to ensure statistical balance and reliability of the measurement system variation analysis."
+},
+"Process Capability": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/cpk.html",
+        "window":"Process capability measurement is a statistical method used to evaluate how well a manufacturing process can produce parts within specified limits consistently. The main indices used for this measurement are Cp, Cpk, Pp, and Ppk. The function is to evaluate data without subgrouping, for example, lot, machine, etc.. Use the function of 'Cpk with subgroups' for subgrouped data instead."
 }
 }
