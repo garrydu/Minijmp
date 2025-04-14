@@ -68,7 +68,7 @@ The first part of the numerical prints includes general information of the study
 **Cp (Process Capability)**
 
 - Measures the **potential capability** of a process to produce output within specification limits, assuming the process is centered
-- Formula::
+- Formula:
   
   .. math::
   
@@ -86,7 +86,7 @@ Use Cpk to evaluate the capability of your process based on both the process loc
 Generally, higher Cpk values indicate a more capable process. Lower Cpk values indicate that your process may need improvement.
 
 - Measures **actual capability** by considering both process variation and centering
-- Formula::
+- Formula:
   
   .. math::
   

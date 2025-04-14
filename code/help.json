@@ -100,5 +100,9 @@
 "Process Capability": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/cpk.html",
         "window":"Process capability measurement is a statistical method used to evaluate how well a manufacturing process can produce parts within specified limits consistently. The main indices used for this measurement are Cp, Cpk, Pp, and Ppk. The function is to evaluate data without subgrouping, for example, lot, machine, etc.. Use the function of 'Cpk with subgroups' for subgrouped data instead."
+},
+"Process Capability with Subgroups": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/cpk_sub.html",
+        "window":"Process capability measurement is a statistical method used to evaluate how well a manufacturing process can produce parts within specified limits consistently. The function requires samples having subgroups, like lot, shift, equipment etc.. Use the function of 'Process Capability' for data without subgroups instead."
 }
 }
