@@ -70,40 +70,66 @@ The first part of the numerical prints includes general information of the study
 - Measures the **potential capability** of a process to produce output within specification limits, assuming the process is centered
 - Formula::
   
-    Cp = \frac{USL - LSL}{6\sigma}
+  .. math::
+  
+     Cp = \frac{USL - LSL}{6\sigma}
 
   where:
-  - USL = Upper Specification Limit
-  - LSL = Lower Specification Limit
-  - σ = process standard deviation
+  - :math:`USL` = Upper Specification Limit
+  - :math:`LSL` = Lower Specification Limit
+  - :math:`\sigma` = process standard deviation
 
 **Cpk (Process Capability Index)**
+
+Use Cpk to evaluate the capability of your process based on both the process location and the process spread. The capability indicates the actual performance of your process that your customer experiences over time.
+
+Generally, higher Cpk values indicate a more capable process. Lower Cpk values indicate that your process may need improvement.
+
 - Measures **actual capability** by considering both process variation and centering
 - Formula::
   
-    Cpk = \min\left(\frac{USL - \mu}{3\sigma}, \frac{\mu - LSL}{3\sigma}\right)
+  .. math::
+  
+     Cpk = \min\left(\frac{USL - \mu}{3\sigma}, \frac{\mu - LSL}{3\sigma}\right)
 
-  where μ = process mean
+  where :math:`\mu` = process mean
 
 
 **Cpu (Upper Capability Index)**
-- Evaluates **upper specification limit** performance::
+
+- Evaluates **upper specification limit** performance:
   
-    Cpu = \frac{USL - \mu}{3\sigma}
-- Focuses on risk of exceeding upper tolerance
+  .. math::
+  
+     Cpu = \frac{USL - \mu}{3\sigma}
 
 **Cpl (Lower Capability Index)**
-- Evaluates **lower specification limit** performance::
+
+- Evaluates **lower specification limit** performance:
   
-    Cpl = \frac{\mu - LSL}{3\sigma}
-- Focuses on risk of falling below lower tolerance
+  .. math::
+  
+     Cpl = \frac{\mu - LSL}{3\sigma}
 
 **Cpm (Process Capability Index for Target)**
-- Incorporates **deviation from target value** (T)::
+
+Cpm is a measure of the overall capability of the process. Cpm compares the specification spread to the spread of your process data while taking into account how much the data deviate from the target value.
+
+- Incorporates **deviation from target value** (T):
   
-    Cpm = \frac{USL - LSL}{6\sqrt{\sigma^2 + (\mu - T)^2}}
-- Penalizes processes where mean (μ) deviates from target (T)
+  .. math::
+  
+     Cpm = \frac{USL - LSL}{6\sqrt{\sigma^2 + (\mu - T)^2}} 
 
+- Penalizes processes where mean (μ) deviates from target (T). This formula ensures that processes with means far from the target—even if within specification limits—receive lower capability scores. For example, in industries like pharmaceuticals or manufacturing, where precise alignment with a target (e.g., drug dosage or part dimensions) is critical, Cpm helps identify processes that may meet tolerances but are suboptimally centered. A higher Cpm indicates not only reduced variability but also better adherence to the desired target, making it a stricter measure than Cp or Cpk for processes requiring exact alignment 
 
+The overall Cpk is also called as Ppk, for example in Minitab. The difference of Cpk and PpK lies in which sigma value was used in the caculation. Cpk or Cpk (within) uses the standard deviation, i.e. Sigma, of the subgroups, while the overall Cpk or Ppk uses the overall sigma that is the standard deviation of all the sample points. This difference applies to all other capability indices too.
 
+.. image:: images/cpk_ppk_formulas_w640.png
+   :align: center
 
+Nonconformance in process capability analysis refers to products or processes that fail to meet specified requirements. The result includes the stats of falling out of the upper and lower limites, and the total as well. The observed values indicate the portion of sample data that do not meet spec limits. The expected values are the estimate from the fitted normal distribution, which are the portion of the population that falling out of the limits, assuming population following the distribution fitted.
+
+When the `Show within sigma` option being checked, the software will use each pair of the neibhour data point to caculate standard deviation and use the average of the values to be the with subgroup sigma. The caculation requires that the data possesses a chronological order.
+
+The within sigma will be discussed in the next session. 
