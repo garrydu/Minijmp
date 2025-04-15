@@ -104,5 +104,9 @@
 "Process Capability with Subgroups": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/cpk_sub.html",
         "window":"Process capability measurement is a statistical method used to evaluate how well a manufacturing process can produce parts within specified limits consistently. The function requires samples having subgroups, like lot, shift, equipment etc.. Use the function of 'Process Capability' for data without subgroups instead."
+},
+"Normal Dist TI": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/ti.html",
+        "window":"A tolerance interval defines the upper and/or lower bounds within which a certain percent of the process output falls with a stated confidence. Computes an interval that contains at least the specified proportion of the population with (1-alpha) confidence, assuming Normal Distribution."
 }
 }

@@ -525,15 +525,15 @@ class TIDialog(Dialogs):
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        w = tk.Label(
-            m,
-            anchor="e",
-            justify=LEFT,
-            wraplength=300,
-            text="Computes an interval that contains at least the specified" +
-            " proportion of the population with (1-alpha) confidence, assuming" +
-            " Normal Distribution.")
-        w.pack(side=TOP, fill=BOTH, padx=2)
+        #  w = tk.Label(
+        #      m,
+        #      anchor="e",
+        #      justify=LEFT,
+        #      wraplength=300,
+        #      text="Computes an interval that contains at least the specified" +
+        #      " proportion of the population with (1-alpha) confidence, assuming" +
+        #      " Normal Distribution.")
+        #  w.pack(side=TOP, fill=BOTH, padx=2)
 
         master = tk.LabelFrame(m, text='Proportion Setting')
         master.pack(side=TOP, fill=BOTH, padx=2)
@@ -548,7 +548,10 @@ class TIDialog(Dialogs):
         return
 
     def apply(self):
-        data = number_list(self.df[self.xvar.get()])
+        try:
+            data = number_list(self.df[self.xvar.get()])
+        except BaseException:
+            data = None
 
         alpha = self.alpha.get()
         if alpha > 0.5 or alpha <= 0:

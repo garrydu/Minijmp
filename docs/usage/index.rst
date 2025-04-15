@@ -41,4 +41,5 @@ Quality Menu
    grr_nst
    cpk
    cpk_sub
+   ti
 
