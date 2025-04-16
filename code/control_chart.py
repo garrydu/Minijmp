@@ -148,18 +148,40 @@ def limit_line(ax, y, color='black', **kwargs):
         add_Y_refs(ax, "%.2f" % ys[-1], color=color, label=True, draw_line=False)
     return
 
-def additional_SD(ax, sd, cl):
-    if  isinstance(sd, (int,float)) and isinstance(cl,(int,float)):
-        limit_line(ax, cl+(sd-cl)/3*2, color='red', linestyle='dashed')
-        limit_line(ax, cl+(sd-cl)/3, color='red', linestyle='dashed')
-    else:
-        if isinstance(sd, list):
-            n=len(sd)
-        else:
-            n=len(cl)
-        if not isinstance(sd, list):
-            
 
+def additional_SD(ax, sd, cl, ucl=None):
+    if ucl is None:
+        if isinstance(sd, (int, float)) and isinstance(cl, (int, float)):
+            limit_line(ax, cl + (sd - cl) / 3 * 2, color='red', linestyle='dashed')
+            limit_line(ax, cl + (sd - cl) / 3, color='red', linestyle='dashed')
+        else:
+            if isinstance(sd, list):
+                n = len(sd)
+            else:
+                n = len(cl)
+            if not isinstance(sd, list):
+                sd = [sd] * n
+            if not isinstance(cl, list):
+                cl = [cl] * n
+            limit_line(ax, [cli + (sdi - cli) / 3 * 2 for cli, sdi in zip(cl, sd)], color='red', linestyle='dashed')
+            limit_line(ax, [cli + (sdi - cli) / 3 for cli, sdi in zip(cl, sd)], color='red', linestyle='dashed')
+    else:
+        if isinstance(ucl, (int, float)) and isinstance(cl, (int, float)):
+            limit_line(ax, max(0, cl - (ucl - cl) / 3 * 2), color='red', linestyle='dashed')
+            limit_line(ax, max(0, cl - (ucl - cl) / 3), color='red', linestyle='dashed')
+        else:
+            if isinstance(ucl, list):
+                n = len(ucl)
+            else:
+                n = len(cl)
+            if not isinstance(ucl, list):
+                ucl = [ucl] * n
+            if not isinstance(cl, list):
+                cl = [cl] * n
+            limit_line(ax, [max(0, cli - (sdi - cli) / 3 * 2) for cli, sdi in zip(cl, ucl)], color='red', linestyle='dashed')
+            limit_line(ax, [max(0, cli - (sdi - cli) / 3)for cli, sdi in zip(cl, ucl)], color='red', linestyle='dashed')
+
+    return
 
 
 def x_plot(data, bar1=None, pooled=False,
@@ -220,8 +242,8 @@ def x_plot(data, bar1=None, pooled=False,
         limit_line(axs[0], ucl1, color='red', linestyle='dashed')
         limit_line(axs[0], lcl1, color='red', linestyle='dashed')
         if all_SD_lines:
-            additional_SD(ax[0],ucl1,bar1)
-            additional_SD(ax[0],lcl1,bar1)
+            additional_SD(axs[0], ucl1, bar1)
+            additional_SD(axs[0], lcl1, bar1)
         add_Y_refs(ax=axs[0], y_values=refY1, label=True)
         axs[0].set(ylabel=ylabel1)
         axs[0].set_xlim(left=min_x, right=max_x)
@@ -236,8 +258,8 @@ def x_plot(data, bar1=None, pooled=False,
         limit_line(axs[1], ucl2, color='red', linestyle='dashed')
         limit_line(axs[1], lcl2, color='red', linestyle='dashed')
         if all_SD_lines:
-            additional_SD(ax[1],ucl2,bar2)
-            additional_SD(ax[1],lcl2,bar2)
+            additional_SD(axs[1], ucl2, bar2)
+            additional_SD(axs[1], lcl2, bar2, ucl=ucl2)
         axs[1].set_ylim(bottom=0)
         add_Y_refs(ax=axs[1], y_values=refY2, label=True)
         axs[1].set(ylabel=ylabel2)

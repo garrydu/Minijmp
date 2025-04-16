@@ -14,7 +14,38 @@ class IMRDialog(Dialogs):
     def createWidgets(self, m):
         self.input_data(m)
         self.more_settings(m)
+        self.ctrl_chart_setting(m)
         #  self.mr_range = tk.IntVar(value=2)
+        return
+
+    def ctrl_chart_setting(self, m):
+        f = tk.LabelFrame(m, text='Known Historical Parameters')
+        f.pack(side=TOP, fill=BOTH, padx=2)
+        self.mean = tk.StringVar(value="")
+        self.sigma = tk.StringVar(value="")
+
+        w = tk.Label(f, text="Process Mean")
+        w.pack(side=LEFT, fill=X, padx=2)
+        w = tk.Entry(f, textvariable=self.mean,
+                     bg='white', width=15)
+        w.pack(side=LEFT, padx=2, pady=2)
+        w = tk.Label(f, text="Process SD")
+        w.pack(side=LEFT, fill=X, padx=2)
+        w = tk.Entry(f, textvariable=self.sigma,
+                     bg='white', width=15)
+        w.pack(side=LEFT, padx=2, pady=2)
+
+        f = tk.LabelFrame(m, text='Misc.')
+        f.pack(side=TOP, fill=BOTH, padx=2)
+        self.pooled = tk.BooleanVar(value=False)
+        w = tk.Checkbutton(f, text='Pooled SD',
+                           variable=self.pooled)
+        w.pack(side=LEFT, padx=2, pady=2)
+        self.all_lines = tk.BooleanVar(value=False)
+        w = tk.Checkbutton(f, text='Add SD lines',
+                           variable=self.all_lines)
+        w.pack(side=LEFT, padx=2, pady=2)
+
         return
 
     def input_data(self, m):
@@ -154,6 +185,10 @@ class IMRDialog(Dialogs):
 
         x_plot(
             data, xLabels=xlabels,
+            mean=get_number(self.mean),
+            sigma=get_number(self.sigma),
+            pooled=self.pooled.get(),
+            all_SD_lines=self.all_lines.get(),
             xlabel=self.xvar.get() if self.xlabel.get() == "" else self.xlabel.get(),
             ylabel1=None if self.y1label.get() == "" else self.y1label.get(),
             ylabel2=None if self.y2label.get() == "" else self.y2label.get(),
