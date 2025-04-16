@@ -32,7 +32,7 @@ def split_string(text, delimiters):
 
 
 def add_Y_refs(ax, y_values=[], color='gray', linestyle='dashed', label=False,
-               on_top=True):
+               on_top=True, draw_line=True):
     zorder = 50 if on_top else None
     if isinstance(y_values, str):
         try:
@@ -43,8 +43,10 @@ def add_Y_refs(ax, y_values=[], color='gray', linestyle='dashed', label=False,
             return
     if isinstance(y_values, list):
         for y in y_values:
-            ax.axhline(y, color=color, linestyle=linestyle)
+            if draw_line:
+                ax.axhline(y, color=color, linestyle=linestyle)
             if label:
+                print("label x range", ax.get_xlim())
                 ax.text(ax.get_xlim()[1] * 1.01, y, f'{y}',
                         verticalalignment='center',
                         horizontalalignment='left',
@@ -265,6 +267,7 @@ def pearson_correlation(x, y, alpha=0.05, print_out=True, print_port=print):
 # n is the number of sample points.
 
 
+@lru_cache
 def c4_values(n):
     return (2 / (n - 1))**.5 * gamma(n / 2) / gamma((n - 1) / 2)
 

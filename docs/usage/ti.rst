@@ -23,6 +23,8 @@ To perform the study choose Quality > Tolerance Interval
 - **Specify Proportion to Cover**: The percentage of the population you want to capture. For example, to calculate at least 80% of the process output will fall into the interval, at given confidence level, input 0.8.
 - **Alpha**: Define the confidence level in the calculation. For example, to calculate at least a given potion of the process output to fall into the interval, at 80% confidence level, input 0.2. While for the most commmon 95% confidence level, keep the default 0.05 input.
   
+The result aligns with Minitab 22 and JMP 17.
+
 
 Unlike confidence intervals (which estimate where a population parameter lies) or prediction intervals (which predict where future observations will fall), tolerance intervals aim to capture a specific percentage of the entire population.
 

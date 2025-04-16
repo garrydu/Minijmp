@@ -26,6 +26,11 @@ for col in numeric_columns:
 # Set 'n' as the index
 df.set_index('n', inplace=True)
 
+
+# More const values for N>25
+# https://support.minitab.com/en-us/minitab/help-and-how-to/quality-and-process-improvement/control-charts/how-to/variables-charts-for-subgroups/xbar-r-chart/methods-and-formulas/unbiasing-constants-d2-d3-and-d4/
+# https://support.minitab.com/en-us/minitab/help-and-how-to/quality-and-process-improvement/control-charts/how-to/variables-charts-for-subgroups/xbar-r-chart/methods-and-formulas/unbiasing-constants-c4-and-c5/
+
 if __name__=="__main__":
 	print(df.head())
 	print(df.info())

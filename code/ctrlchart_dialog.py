@@ -14,7 +14,7 @@ class IMRDialog(Dialogs):
     def createWidgets(self, m):
         self.input_data(m)
         self.more_settings(m)
-        self.mr_range = tk.IntVar(value=2)
+        #  self.mr_range = tk.IntVar(value=2)
         return
 
     def input_data(self, m):
@@ -147,6 +147,11 @@ class IMRDialog(Dialogs):
 
     def apply(self):
         data, xlabels, fig, ax, axs = self.get_data()
+        try:
+            mr_range = self.mr_range.get()
+        except BaseException:
+            mr_range = 2
+
         x_plot(
             data, xLabels=xlabels,
             xlabel=self.xvar.get() if self.xlabel.get() == "" else self.xlabel.get(),
@@ -157,7 +162,7 @@ class IMRDialog(Dialogs):
             chart_two_only=self.chart_two_only,
             refY1=self.y1ref.get(), refY2=self.y2ref.get(),
             print_out=True, plot_type=self.plot_type,
-            mr_range=self.mr_range.get(),
+            mr_range=mr_range,  # self.mr_range.get(),
             fig=fig, ax=ax, axs=axs,
             print_port=self.app.print)
 
@@ -539,7 +544,7 @@ class UDialog(CDialog):
             n_list, data, xlabels = [], [], []
             for i, j, k in zip(x, ids, n):
                 if is_number(i) and is_number(k):
-                    data.append(float(i) )
+                    data.append(float(i))
                     xlabels.append(j)
                     n_list.append(float(k))
 
