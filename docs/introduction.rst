@@ -37,7 +37,7 @@ For installation instructions, see below. For usage guidelines, please refer to 
 Installation
 ------------
 
-Currently, the only available method is to download the `source code <https://github.com/garrydu/Minijmp/tree/main>`_ and run it using Python 3.8+. This approach works across all major platforms (**Linux, Windows, and MacOS**). Compiled releases will be available in the future.
+Currently, the only available method is to download the `source code <https://github.com/garrydu/Minijmp/tree/main>`_ and run it using Python 3.8. This approach works across all major platforms (**Linux, Windows, and MacOS**). Compiled releases will be available in the future.
 
 It is highly recommended to run Minijmp in a **VIRTUAL ENV**. The software requires specific Numpy versions compatible with Scipy. (Note: Virtual environment activation instructions are not included here.)
 
@@ -54,4 +54,4 @@ Run the software::
 Dependencies
 ~~~~~~~~~~~~
 
-The code requires Python 3.8.10 or higher. PandasTable is already included in the source code. Due to significant modifications to the original PandasTable class, it's maintained within the package to avoid code complexity. For all other dependencies, please refer to the requirements.txt file.
+The code requires Python 3.8.10 or higher (however known issues with 3.12 loading tk). PandasTable is already included in the source code. Due to significant modifications to the original PandasTable class, it's maintained within the package to avoid code complexity. For all other dependencies, please refer to the requirements.txt file.

@@ -47,6 +47,7 @@ python start.py
 ### Trouble Shooting
 
 Confirm the python version is not lower  than 3.8.
+Known issues with python 3.12 when loading tk.
 
 ```
 python --version
@@ -57,5 +58,5 @@ In some system, may try to specify `python3` to boot the program, in case `pytho
 
 ### Dependencies
 
-The code requires Python 3.8.10 or higher. PandasTable is already included in the source code. Due to significant modifications to the original PandasTable class, it's maintained within the package to avoid code complexity. For all other dependencies, please refer to the requirements.txt file.
+The code requires Python 3.8.10 or higher (however known issues with 3.12 loading tk). PandasTable is already included in the source code. Due to significant modifications to the original PandasTable class, it's maintained within the package to avoid code complexity. For all other dependencies, please refer to the requirements.txt file.
 
