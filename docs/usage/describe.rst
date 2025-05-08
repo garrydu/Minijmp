@@ -9,7 +9,7 @@ To start, choose stats>Describe.
 
 - **Stats Summary:** Choose the column of data to get the statistical summary.
 
-- **Percentiles for Quantiles:** The default percentiles to calculate can be changed in the input box. The numbers are in percentage. For example, 100 is 100%. Separate the numbers with a comma, while space is optional.
+- **Percentiles:** The default percentiles to calculate can be changed in the input box. The numbers are in percentage. For example, 100 is 100%. Separate the numbers with a comma, while space is optional.
 
 The sample output is:
 

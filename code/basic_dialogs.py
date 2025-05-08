@@ -135,7 +135,7 @@ class DescribeDialog(Dialogs):
 
         self.pct = tk.StringVar(
             value="100, 99.5, 97.5, 90, 75, 50,25, 10, 2.5, 0.5, 0")
-        f = tk.LabelFrame(m, text='Percentiles for Quantiles')
+        f = tk.LabelFrame(m, text='Percentiles')
         f.pack(side=TOP, fill=BOTH, padx=2)
         w = tk.Entry(f, textvariable=self.pct,
                      bg='white', width=35)
