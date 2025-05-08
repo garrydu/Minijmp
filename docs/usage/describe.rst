@@ -22,11 +22,11 @@ The statistical items on the top table are locked by default, while the percenti
 
 - **Mean:** The average of all valid inputted numbers.
 
-- **SD:** The standard deviation of all valid inputs. The formula for standard deviation is :math:`\sigma = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \mu)^2}{n}}`.
+- **SD:** The standard deviation of all valid inputs. The formula for standard deviation is :math:`\sigma = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \mu)^2}{n - 1}}`.
 
 - **SE Mean:** The standard error of the mean quantifies the variability of sample means around the true population mean. :math:`\text{SEM} = \frac{\sigma}{\sqrt{n}}`
 
-- **Variance:** The variance of the inputted numbers, which is the square of the standard deviation. The standard deviation is always the square root of the variance. The formula for variance is :math:`\sigma^2 = \frac{\sum_{i=1}^{n} (x_i - \mu)^2}{n}`. The relationship between standard deviation and variance is :math:`\sigma = \sqrt{\sigma^2}`.
+- **Variance:** The variance of the inputted numbers, which is the square of the standard deviation. The standard deviation is always the square root of the variance. The formula for variance is :math:`\sigma^2 = \frac{\sum_{i=1}^{n} (x_i - \mu)^2}{n - 1}`. The relationship between standard deviation and variance is :math:`\sigma = \sqrt{\sigma^2}`.
 
 - **CoefVar:** The coefficient of variation (CV) is a statistical measure that represents the ratio of the standard deviation to the mean. The formula for coefficient of variation is :math:`CV = \left(\frac{\sigma}{\mu}\right) \times 100`.
 
