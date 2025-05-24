@@ -42,4 +42,4 @@ Quality Menu
    cpk
    cpk_sub
    ti
-
+   ctrl_chart_imr

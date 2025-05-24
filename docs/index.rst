@@ -6,7 +6,7 @@ Minijmp
    :end-line: 13
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 3 
    :caption: Contents:
 
    introduction

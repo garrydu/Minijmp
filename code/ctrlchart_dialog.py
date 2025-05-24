@@ -37,15 +37,20 @@ class IMRDialog(Dialogs):
 
         f = tk.LabelFrame(m, text='Misc.')
         f.pack(side=TOP, fill=BOTH, padx=2)
-        self.pooled = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(f, text='Pooled SD',
-                           variable=self.pooled)
-        w.pack(side=LEFT, padx=2, pady=2)
+        self.pooled_SD(f)
         self.all_lines = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(f, text='Add SD lines',
+        w = tk.Checkbutton(f, text='All SD lines',
                            variable=self.all_lines)
         w.pack(side=LEFT, padx=2, pady=2)
 
+        return
+
+    def pooled_SD(self, m):
+        self.pooled = tk.BooleanVar(value=False)
+        w = tk.Checkbutton(m, text='Pooled SD',
+                           variable=self.pooled)
+        w.pack(side=LEFT, padx=2, pady=2)
+        w.config(state="disabled")
         return
 
     def input_data(self, m):
@@ -88,17 +93,17 @@ class IMRDialog(Dialogs):
         w.pack(side=LEFT, fill=X, padx=2)
         if label1 is None:
             w = tk.Entry(master, textvariable=self.y2ref,
-                         bg='white', width=15)
+                         bg='white', width=13)
         else:
             w = tk.Entry(master, textvariable=self.y1ref,
-                         bg='white', width=15)
+                         bg='white', width=13)
         w.pack(side=LEFT, padx=2, pady=2)
         if label2 is None or label1 is None:
             return
         w = tk.Label(master, text="Y pos for chart 2")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.y2ref,
-                     bg='white', width=15)
+                     bg='white', width=13)
         w.pack(side=LEFT, padx=2, pady=2)
         return
 
@@ -133,21 +138,26 @@ class IMRDialog(Dialogs):
         self.xlabel = tk.StringVar(value="")
         self.xlabelID = tk.StringVar(value="")
 
-        w = tk.Label(master, text="X Label")
+        slave = tk.Frame(master)
+        slave.pack(side=TOP, fill=X)
+        w = tk.Label(slave, text="X Label")
         w.pack(side=LEFT, fill=X, padx=2)
-        w = tk.Entry(master, textvariable=self.xlabel,
+        w = tk.Entry(slave, textvariable=self.xlabel,
                      bg='white', width=15)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        w = tk.Label(master, text="Axes Label Col.")
+        w = tk.Label(slave, text="Axes Label Col.")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
-            master, values=self.cols, textvariable=self.xlabelID,
+            slave, values=self.cols, textvariable=self.xlabelID,
             width=14)
         w.pack(side=LEFT, padx=2)
-        w = tk.Label(master, text="Max Axes Labels")
+        slave = tk.Frame(master)
+        slave.pack(side=TOP, fill=X)
+        #  slave.pack(side=TOP)
+        w = tk.Label(slave, text="Max Axes Labels")
         w.pack(side=LEFT, fill=X, padx=2)
-        w = tk.Entry(master, textvariable=self.max_x_labels,
+        w = tk.Entry(slave, textvariable=self.max_x_labels,
                      bg='white', width=15)
         w.pack(side=LEFT, padx=2, pady=2)
         return
@@ -255,6 +265,13 @@ class MRDialog(IMRDialog):
 
 
 class XBRDialog(IMRDialog):
+    def pooled_SD(self, m):
+        self.pooled = tk.BooleanVar(value=False)
+        w = tk.Checkbutton(m, text='Pooled SD',
+                           variable=self.pooled)
+        w.pack(side=LEFT, padx=2, pady=2)
+        #  w.config(state="disabled")
+        return
 
     def input_data(self, m):
         f = tk.LabelFrame(m, text='Input Column')
