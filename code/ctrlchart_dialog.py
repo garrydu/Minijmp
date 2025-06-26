@@ -19,7 +19,7 @@ class IMRDialog(Dialogs):
         return
 
     def ctrl_chart_setting(self, m):
-        f = tk.LabelFrame(m, text='Known Historical Parameters')
+        f = tk.LabelFrame(m, text='Known Historical Parameters (optional)')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.mean = tk.StringVar(value="")
         self.sigma = tk.StringVar(value="")

@@ -437,7 +437,9 @@ def quantiles(input_data,
     data = sorted([i for i in input_data])
     N = len(data)
     # x input is percentile
-    def p(x): return (N + 1) * x / 100
+
+    def p(x):
+        return (N + 1) * x / 100
 
     def value(i):
         if i <= 1:

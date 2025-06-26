@@ -19,7 +19,7 @@ Choose Stats > One Proportion Test
 - **Hypothesized Proportion:** The hypothesized proportion of the population to be tested, expressed as a number between 0 and 1.
 - **Alpha:** Sets the range of confidence intervals to be calculated as (1-alpha)100%. For instance, if alpha is set to 0.05, a 95% confidence interval will be displayed.
 
-The results consist of two parts. The first part replicates Minitab 22, unlike most software that uses version 20. The second part employs the chi-square method available in JMP 17, as a similar binomial proportion test was not found in JMP.
+The results consist of two parts. The first part replicates Minitab 22, unlike most of this software that uses version 20. The second part employs the chi-square method available in JMP 17, as a similar binomial proportion test was not found in JMP.
 
 The results have been calibrated to Minitab 22 and JMP 17 for the two parts separately.
 
