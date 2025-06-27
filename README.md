@@ -6,7 +6,7 @@ Minijmp is a free, open-source program that works like Minitab Express, but come
 
 
 ## Current Features
-The software was developed based on [PandasTable](https://github.com/dmnfarrell/pandastable) (by D. Farrell), utilizing its spreadsheet UI and DataFrame backend. Minijmp replicates approximately 70% of Minitab Express's statistical functions (Ver. 0.1) and includes features like orthogonal regression, GRR, and Cpk calculations. It also has JMP features I like, such as the comparison of means under JMP ANOVA, and Hoeffding's D correlation.
+The software is built on [PandasTable](https://github.com/dmnfarrell/pandastable) (by D. Farrell), utilizing its spreadsheet UI and DataFrame backend. Minijmp replicates approximately 70% of Minitab Express's statistical functions (version 0.1) and adds features like orthogonal regression, GRR, and Cpk calculations. It also includes JMP features I appreciate, such as mean comparison under JMP ANOVA and Hoeffding's D correlation.
 
 All mathematical calculations have been calibrated against both Minitab and JMP. Since these software packages sometimes produce different results (e.g., in variance tests), Minijmp either:
 - Provides options to choose between different algorithms, or
@@ -18,7 +18,7 @@ A quick overview of available functions (as of version 0.1) is shown below. More
 
 ## Documentation
 
-For installation instructions, see below. For usage guidelines, please refer to [the manual](https://minijmp.readthedocs.io/en/latest/) (under construction).
+For installation instructions, see below. For usage guidelines, please refer to [the manual](https://minijmp.readthedocs.io/en/latest/) (currently under construction).
 
 Much more information available at [https://minijmp.readthedocs.io](https://minijmp.readthedocs.io)
 
@@ -26,35 +26,33 @@ Much more information available at [https://minijmp.readthedocs.io](https://mini
 
 ## Installation
 
-Currently, the only available method is to download the source code and run it using Python 3.8+. This approach works across all major platforms (**Linux, Windows, and MacOS**). Compiled releases will be available in the future.
+Currently, the only available method is to download the source code and run it using Python 3.8 or higher. This approach works across all major platforms (**Linux, Windows, and MacOS**). Compiled releases will be available in the future.
 
-It is highly recommended to run Minijmp in a **VIRTUAL ENV.**. The software requires specific Numpy versions compatible with Scipy. (Note: Virtual environment activation instructions are not included here.)
+It is highly recommended to run Minijmp in a **virtual environment**. The software requires specific Numpy versions compatible with Scipy. (Note: Virtual environment activation instructions are not included here.)
 
-Install the required python libraries. 
+Install the required Python libraries:
 
 ```
 cd Minijmp
 pip3 install -r requirements.txt
 ```
 
-Run the software.
+Run the software:
 
 ```
 cd Minijmp
 python start.py
 ```
 
-### Trouble Shooting
+### Troubleshooting
 
-Confirm the python version is not lower  than 3.8.
-Known issues with python 3.12 when loading tk.
+Ensure your Python version is 3.8 or higher. There are known issues with Python 3.12 when loading Tk.
 
 ```
 python --version
 ```
 
-In some system, may try to specify `python3` to boot the program, in case `python` links to old versions.
-
+On some systems, you may need to use `python3` to start the program if `python` points to an older version.
 
 ### Dependencies
 
