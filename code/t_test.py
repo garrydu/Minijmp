@@ -52,7 +52,7 @@ def t_test_1sample(data_list, u0, print_out=False,
         print("P-value is the prob of that population mean equals the specified value, which the samples came from.")
         print(
             pct +
-            " range of population mean which the samples came from: (%.3f, %.3f)" %
+            " confidence interval for population mean: (%.3f, %.3f)" %
             u0_95range)
         print("H0 u==u0, H1 u>u0 p value = %.3f" % p_g)
         print(pct + " Lower bound of population mean: %.3f" % u0_lower)
@@ -115,7 +115,7 @@ def z_test_1sample(
         print("P-value is the prob of that population mean equals the specified value, which the samples came from.")
         print(
             pct +
-            " range of population mean which the samples came from: (%.3f, %.3f)" %
+            " confidence interval for population mean: (%.3f, %.3f)" %
             CI_95)
         print("H0 u==u0, H1 u>u0 p value = %.3f" % p_u)
         print(pct + " Lower bound of population mean: %.3f" % CI_l)
