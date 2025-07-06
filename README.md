@@ -44,6 +44,8 @@ cd Minijmp
 python start.py
 ```
 
+Installation guide for MacOS 15 [LINK](MacOSInstall.md)
+
 ### Troubleshooting
 
 Ensure your Python version is 3.8 or higher. There are known issues with Python 3.12 when loading Tk.
