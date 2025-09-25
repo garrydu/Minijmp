@@ -112,5 +112,13 @@
 "Control Chart I/MR": {
         "link":"https://minijmp.readthedocs.io/en/latest/usage/ctrl_chart_imr.html",
         "window":"An I/MR control chart is a process control tool designed for situations where data is collected one observation at a time, without traditional subgrouping. Instead, it uses a moving window to group neighboring data points into pseudo subgroups. To use the chart, select the 'value' as the process measurement to be controlled, and specify the moving range to determine how many neighboring points are included in each pseudo subgroup."
+},
+"Control Chart I": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/ctrl_chart_i.html",
+        "window":"An Individuals control chart is a process control tool designed for situations where data is collected one observation at a time, without traditional subgrouping. This function will solely draw the control chart with individual observations without a moving range control chart. To use the chart, select the 'value' as the process measurement to be controlled." 
+},
+"Control Chart MR": {
+        "link":"https://minijmp.readthedocs.io/en/latest/usage/ctrl_chart_mr.html",
+        "window":"An MR control chart is a process control tool designed for situations where data is collected one observation at a time, without traditional subgrouping. It uses a moving window to group neighboring data points into pseudo subgroups. To use the chart, select the 'value' as the process measurement to be controlled, and specify the moving range to determine how many neighboring points are included in each pseudo subgroup."
 }
 }
