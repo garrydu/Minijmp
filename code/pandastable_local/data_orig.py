@@ -290,7 +290,7 @@ class TableModel(object):
 
     def getColumnType(self, columnIndex):
         """Get the column type"""
-        coltype = self.df.dtypes[columnIndex]
+        coltype = self.df.dtypes.iloc[columnIndex]
         return coltype
 
     def getColumnCount(self):
@@ -329,7 +329,7 @@ class TableModel(object):
         #print (df.loc[rowindex,colindex])
         if value == '':
             value = np.nan
-        dtype = self.df.dtypes[col]
+        dtype = df.dtypes[colindex]
         #try to cast to column type
         try:
             if dtype == 'float64':
