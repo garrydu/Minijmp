@@ -94,7 +94,7 @@ According to AIAG guidelines, the criteria are listed below. The **Gage R&R / To
 .. list-table:: Measurement System Acceptability Criteria
    :header-rows: 1
    :widths: 30 30 40
-   :class tight-table
+   :class: tight-table
 
    * - Percentage of Process Variation
      - Percentage of variance components

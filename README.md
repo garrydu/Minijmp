@@ -1,7 +1,6 @@
 # Minijmp
 ![Main Screenshot](docs/images/main.png "Screenshot")
 
-
 Minijmp is a free, open-source program that works like Minitab Express, but comes with extra tools you'd usually find in JMP or Minitab. As of early 2024, I couldn't find any free programs that could do what JMP and Minitab do, so I decided to build one myself while working on statistics with Python.
 
 

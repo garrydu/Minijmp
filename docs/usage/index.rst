@@ -43,3 +43,5 @@ Quality Menu
    cpk_sub
    ti
    ctrl_chart_imr
+   ctrl_chart_i
+   ctrl_chart_mr

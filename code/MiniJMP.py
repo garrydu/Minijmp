@@ -1,4 +1,5 @@
 from tkinter import Frame, Menu, BOTH, Toplevel, END, Tk, PhotoImage
+from PIL import Image, ImageTk
 import pickle
 import os
 import platform
@@ -682,7 +683,9 @@ class Minijmp(Minijmp_pre):
 def main():
     # Create the main window
     root = Tk()
-    icon = PhotoImage(file="icon.png")
+    img = Image.open("icon.png")
+    icon = ImageTk.PhotoImage(img)
+    #  icon = PhotoImage(file="icon.png")
     root.iconphoto(True, icon)
 
     # Create an instance of the custom frame
