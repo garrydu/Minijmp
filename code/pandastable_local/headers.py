@@ -75,12 +75,17 @@ class ColumnHeader(Canvas):
             self.bind('<Control-Button-1>', self.handle_left_ctrl_click)
             self.bind("<Double-Button-1>", self.handle_double_click)
             self.bind('<Leave>', self.leave)
+            print("OS type", self.table.ostyp)
             if self.table.ostyp == 'darwin':
                 # For mac we bind Shift, left-click to right click
+                self.bind("<ButtonPress-2>", self.handle_right_click)
                 self.bind("<Button-2>", self.handle_right_click)
-                self.bind('<Shift-Button-1>', self.handle_right_click)
+                self.bind("<ButtonPress-3>", self.handle_right_click)
+                self.bind("<Button-3>", self.handle_right_click)
+               # self.bind('<Shift-Button-1>', self.handle_right_click)
             else:
                 self.bind("<Button-3>", self.handle_right_click)
+                self.bind("<ButtonPress-3>", self.handle_right_click)
             self.thefont = self.table.thefont
             self.wrap = False
             self.setDefaults()
@@ -282,6 +287,11 @@ class ColumnHeader(Canvas):
         else:
             self.handle_left_click(event)
         self.rightmenu = self.popupMenu(event)
+
+            # ADD THESE 3 LINES HERE
+        # if self.table.ostyp == "darwin":
+        #     self.rightmenu.update()
+        #     self.rightmenu.activate()
         return
 
     def handle_mouse_drag(self, event):
@@ -657,9 +667,13 @@ class RowHeader(Canvas):
 
             if self.table.ostyp == 'darwin':
                 # For mac we bind Shift, left-click to right click
+                self.bind("<ButtonPress-2>", self.handle_right_click)
                 self.bind("<Button-2>", self.handle_right_click)
-                self.bind('<Shift-Button-1>', self.handle_right_click)
+                self.bind("<ButtonPress-3>", self.handle_right_click)
+                self.bind("<Button-3>", self.handle_right_click)
+                # self.bind('<Shift-Button-1>', self.handle_right_click)
             else:
+                self.bind("<ButtonPress-3>", self.handle_right_click)
                 self.bind("<Button-3>", self.handle_right_click)
             self.bind('<B1-Motion>', self.handle_mouse_drag)
             self.bind('<Shift-Button-1>', self.handle_left_shift_click)
@@ -804,6 +818,10 @@ class RowHeader(Canvas):
         if hasattr(self, 'rightmenu'):
             self.rightmenu.destroy()
         self.rightmenu = self.popupMenu(event, outside=1)
+        # # ADD THESE 3 LINES HERE
+        # if self.table.ostyp == "darwin":
+        #     self.rightmenu.update()
+        #     self.rightmenu.activate()
         return
 
     def handle_mouse_drag(self, event):
