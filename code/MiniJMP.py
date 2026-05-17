@@ -106,9 +106,10 @@ class Minijmp(Minijmp_pre):
                 'cmd': lambda: self._call('zoomOut')}, '03Wrap Columns': {
                 'cmd': lambda: self._call('setWrap')}, '04sep': '', '05Dark Theme': {
                     'cmd': lambda: self._call(
-                        'setTheme', name='dark')}, '06Bold Theme': {
-                            'cmd': lambda: self._call(
-                                'setTheme', name='bold')}, '07Default Theme': {
+                        'setTheme', name='dark')}, 
+                        # '06Bold Theme': {'cmd': lambda: self._call(
+                        #         'setTheme', name='bold')}, 
+                                '07Light Theme': {
                                     'cmd': lambda: self._call(
                                         'setTheme', name='default')}, }
         self.view_menu = self.createPulldown(self.menu, self.view_menu)

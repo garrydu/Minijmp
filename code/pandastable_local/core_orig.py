@@ -70,6 +70,18 @@ themes = {
         'rowselectedcolor': '#E4DED4',
         'colselectedcolor': '#e4e3e4'}}
 
+
+def darwin_system_theme_name():
+    """Return 'dark' or 'default' from macOS system appearance, else None."""
+
+    if util.checkOS() != 'darwin':
+        return None
+    import subprocess
+    r = subprocess.run(
+        ['defaults', 'read', '-g', 'AppleInterfaceStyle'],
+        capture_output=True, text=True)
+    return 'dark' if r.returncode == 0 else 'default'
+
 #  config_path = os.path.join(os.path.expanduser("~"), '.pandastable')
 #  logfile = os.path.join(config_path, 'error.log')
 #  if not os.path.exists(config_path):
@@ -223,7 +235,7 @@ class Table(Canvas):
         #print (self.thefont)
         return
 
-    def setTheme(self, name='light'):
+    def setTheme(self, name='default'):
         """Set theme"""
 
         style = themes[name]
@@ -232,6 +244,15 @@ class Table(Canvas):
                 self.__dict__[s] = style[s]
         self.redraw()
         return
+
+    def apply_system_theme(self):
+        """On macOS, call setTheme to match system light/dark appearance."""
+
+        name = darwin_system_theme_name()
+        if name is None:
+            return None
+        self.setTheme(name)
+        return name
 
     def mouse_wheel(self, event):
         """Handle mouse wheel scroll for windows"""
@@ -343,6 +364,8 @@ class Table(Canvas):
         self.currheight = self.parentframe.winfo_height()
         if hasattr(self, 'pf'):
             self.pf.updateData()
+        if util.checkOS() == 'darwin':
+            self.apply_system_theme()
         return
 
     def hideRowHeader(self):
@@ -502,8 +525,8 @@ class Table(Canvas):
                 align = self.align
             if prec != 0:
                 if coldata.dtype == 'float64':
-                    coldata = coldata.apply(
-                        lambda x: self.setPrecision(x, prec), 1)
+                    coldata = coldata.astype(object).apply(
+                        lambda x: self.setPrecision(x, prec))
             coldata = coldata.astype(object).fillna('')
             offset = rows[0]
             for row in self.visiblerows:
@@ -3865,6 +3888,7 @@ class Table(Canvas):
 
         options = config.load_options()
         config.apply_options(options, self)
+        self.apply_system_theme()
         return
 
     def getFonts(self):

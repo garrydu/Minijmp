@@ -131,7 +131,12 @@ class DataExplore(Frame):
         if plf == 'linux':
             style.theme_use('default')
         elif plf == 'darwin':
-            style.theme_use('clam')
+            if 'aqua' in available_themes:
+                style.theme_use('aqua')
+            else:
+                style.theme_use('clam')
+        elif plf == 'windows' and 'vista' in available_themes:
+            style.theme_use('vista')
 
         self.bg = bg = self.style.lookup('TLabel.label', 'background')
         style.configure('Horizontal.TScale', background=bg)

@@ -250,25 +250,134 @@ def addButton(frame, name, callback, img=None, tooltip=None,
         ToolTip.createToolTip(b, tooltip)
     return
 
+def dialog_style(master):
+    """Return a ttk.Style for this window; aqua on macOS follows system light/dark."""
+
+    style = Style(master)
+    plf = util.checkOS()
+    themes = style.theme_names()
+    if plf == 'darwin' and 'aqua' in themes:
+        style.theme_use('aqua')
+    elif plf == 'windows' and 'vista' in themes:
+        style.theme_use('vista')
+    elif plf == 'linux':
+        style.theme_use('default')
+    return style
+
+
+def system_is_dark():
+    """True when the OS is using a dark appearance (macOS)."""
+
+    from .core_orig import darwin_system_theme_name
+    return darwin_system_theme_name() == 'dark'
+
+
+def selection_colors(dark=None):
+    """Contrast selection background/foreground for tk Text and Listbox."""
+
+    if dark is None:
+        dark = system_is_dark()
+    if dark:
+        return '#3B7EDD', '#FFFFFF'
+    return '#0078D4', '#FFFFFF'
+
+
+def text_widget_colors(style):
+    """Colors for classic tk.Text; selection uses explicit contrast colors."""
+
+    bg = (style.lookup('TEntry', 'fieldbackground')
+          or style.lookup('TFrame', 'background'))
+    fg = style.lookup('TLabel', 'foreground')
+    selbg, selfg = selection_colors()
+    return {
+        'background': bg,
+        'foreground': fg,
+        'insertbackground': fg,
+        'selectbackground': selbg,
+        'selectforeground': selfg,
+        'inactiveselectbackground': selbg,
+    }
+
+
+def listbox_colors(style):
+    """Colors for classic tk.Listbox from the active ttk theme."""
+
+    bg = (style.lookup('TEntry', 'fieldbackground')
+          or style.lookup('TFrame', 'background'))
+    fg = style.lookup('TLabel', 'foreground')
+    selbg, selfg = selection_colors()
+    return {
+        'background': bg,
+        'foreground': fg,
+        'selectbackground': selbg,
+        'selectforeground': selfg,
+    }
+
+
+def apply_dialog_theme(toplevel, parent=None):
+    """Apply system-aware colors to a dialog Toplevel and classic tk children."""
+
+    style = dialog_style(toplevel)
+    bg = style.lookup('TFrame', 'background')
+    fg = style.lookup('TLabel', 'foreground')
+    if bg:
+        try:
+            toplevel.configure(background=bg)
+        except TclError:
+            pass
+    for w in toplevel.winfo_children():
+        _style_tk_widget(w, style, bg, fg)
+    return style
+
+
+def _style_tk_widget(w, style, bg, fg):
+    """Best-effort styling for tk widgets that have no ttk equivalent."""
+
+    cls = w.winfo_class()
+    try:
+        if cls == 'Listbox':
+            w.configure(**listbox_colors(style))
+        elif cls == 'Text':
+            w.configure(**text_widget_colors(style))
+        elif cls in ('Frame', 'Labelframe', 'Label', 'Button',
+                     'Checkbutton', 'Entry', 'Radiobutton'):
+            if bg:
+                w.configure(background=bg)
+            if fg and cls not in ('Button',):
+                w.configure(foreground=fg)
+    except TclError:
+        pass
+    for child in w.winfo_children():
+        _style_tk_widget(child, style, bg, fg)
+    return
+
+
 def applyStyle(w):
     """Apply style to individual widget to prevent widget color issues on linux"""
 
     plf = util.checkOS()
-    if plf in ['linux','darwin']:
-        bg = Style().lookup('TLabel.label', 'background')
-        w.configure(fg='black', bg=bg,
-                     activeforeground='white', activebackground='#0174DF')
+    if plf in ('linux', 'darwin', 'windows'):
+        style = dialog_style(w)
+        bg = style.lookup('TLabel', 'background')
+        fg = style.lookup('TLabel', 'foreground')
+        if bg:
+            w.configure(
+                fg=fg or 'black', bg=bg,
+                activeforeground='white', activebackground='#0174DF')
     return
 
 def setWidgetStyles(widgets):
     """set styles of list of widgets"""
 
-    style = Style()
-    bg = style.lookup('TLabel.label', 'background')
+    if not widgets:
+        return
+    style = dialog_style(widgets[0].winfo_toplevel())
+    bg = style.lookup('TLabel', 'background')
+    fg = style.lookup('TLabel', 'foreground')
     for w in widgets:
         try:
-            w.configure(fg='black', bg=bg)
-        except:
+            w.configure(fg=fg or 'black', bg=bg)
+        except Exception:
             pass
     return
 
@@ -373,12 +482,7 @@ class MultipleValDialog(Dialog):
             if self.tooltips != None:
                 ToolTip.createToolTip(self.entries[i], self.tooltips[i])
             r+=1
-        s=Style()
-        bg = s.lookup('TLabel.label', 'background')
-        self.configure(background=bg)
-        master.configure(background=bg)
-        self.option_add("*background", bg)
-        self.option_add("*foreground", 'black')
+        apply_dialog_theme(self)
         return self.entries[0] # initial focus
 
     def apply(self):
@@ -795,6 +899,8 @@ class BaseDialog(Frame):
         self.main.resizable(width=False, height=False)
         self.df = df
         self.result = None
+        self.ui_style = dialog_style(self.main)
+        apply_dialog_theme(self.main, parent)
         return
 
     def createWidgets(self, m):
@@ -808,13 +914,14 @@ class BaseDialog(Frame):
 
     def buttonsFrame(self):
         bf = Frame(self.main)
-        bf.pack(side=TOP,fill=BOTH)
-        b = Button(bf, text="Apply", command=self.apply)
-        b.pack(side=LEFT,fill=X,expand=1,pady=2)
-        b = Button(bf, text="Close", command=self.quit)
-        b.pack(side=LEFT,fill=X,expand=1,pady=2)
-        b = Button(bf, text="Help", command=self.help)
-        b.pack(side=LEFT,fill=X,expand=1,pady=2)
+        bf.pack(side=TOP, fill=BOTH)
+        Button(bf, text="Apply", command=self.apply).pack(
+            side=LEFT, fill=X, expand=1, pady=2)
+        Button(bf, text="Close", command=self.quit).pack(
+            side=LEFT, fill=X, expand=1, pady=2)
+        Button(bf, text="Help", command=self.help).pack(
+            side=LEFT, fill=X, expand=1, pady=2)
+        apply_dialog_theme(self.main)
         return
 
     def apply(self):
@@ -1074,8 +1181,13 @@ class EasyListbox(Listbox):
                                  yscrollcommand = yscrollcommand,
                                  selectmode = MULTIPLE, exportselection=0)
         self.bind("<<ListboxSelect>>", self.triggerListItemSelected)
-        self.configure(background='white', foreground='black',
-                       selectbackground='#0174DF', selectforeground='white')
+        try:
+            style = dialog_style(self.winfo_toplevel())
+            self.configure(**listbox_colors(style))
+        except Exception:
+            self.configure(background='white', foreground='black',
+                           selectbackground='#0174DF',
+                           selectforeground='white')
         return
 
     def triggerListItemSelected(self, event):

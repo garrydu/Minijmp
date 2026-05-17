@@ -48,6 +48,7 @@ class Table(Table_orig):
         ###
         options = config.load_options()
         config.apply_options(options, self)
+        self.apply_system_theme()
         return
 
 

@@ -1,8 +1,12 @@
-from tkinter import BOTH, Toplevel, VERTICAL, LEFT, Frame, Text, TOP, END, BOTTOM, filedialog, Scrollbar
+from tkinter import BOTH, Toplevel, VERTICAL, LEFT, TOP, END, BOTTOM, filedialog
+from tkinter import ttk
+import tkinter as tk
 import os
 #####################################
 from pandastable_local.plotting import addButton
 from pandastable_local import images
+from pandastable_local.dialogs import (
+    apply_dialog_theme, dialog_style, text_widget_colors)
 ############# Own Modules ###########
 from plots import plot_viewer
 
@@ -16,7 +20,7 @@ class txt_viewer(plot_viewer):
             self.table.tOut = self  # opaque ref
 
         if self.parent is not None:
-            Frame.__init__(self, parent)
+            ttk.Frame.__init__(self, parent)
             self.main = self.master
         else:
             self.main = Toplevel()
@@ -26,36 +30,39 @@ class txt_viewer(plot_viewer):
             g = '720x700'
             self.main.geometry(g)
         self.orient = VERTICAL
-        self.style = None
+        self.ui_style = dialog_style(self.main)
         self.setupGUI()
+        self._apply_theme()
         self.currentdir = os.path.expanduser('~')
+        return
+
+    def _apply_theme(self):
+        """Match output window to system light/dark appearance."""
+
+        apply_dialog_theme(self.main)
+        self.T.configure(**text_widget_colors(self.ui_style))
         return
 
     def setupGUI(self):
         """Add GUI elements"""
 
-        self.m = Frame(self.main)
+        self.m = ttk.Frame(self.main)
         self.m.pack(fill=BOTH, expand=1)
-        self.plotfr = Frame(self.m)
-        self.T = Text(self.plotfr, bg='white')
-        #  self.T.pack(fill=BOTH, expand=1)
-        self.vsb = Scrollbar(
+        self.plotfr = ttk.Frame(self.m)
+        self.T = tk.Text(self.plotfr)
+        self.vsb = ttk.Scrollbar(
             self.plotfr,
             orient="vertical",
             command=self.T.yview)
         self.T.configure(yscrollcommand=self.vsb.set)
         self.vsb.pack(side="right", fill="y")
         self.T.pack(side="left", fill="both", expand=True)
-        #  self.T.bind("<Key>", lambda e: "break")
-        #  self.T.config(state='disabled')
         self.plotfr.pack(side=TOP, fill=BOTH, expand=1)
 
-        # frame for controls
-        self.ctrlfr = Frame(self.main)
+        self.ctrlfr = ttk.Frame(self.main)
         self.ctrlfr.pack(side=BOTTOM, fill=BOTH)
 
-        # button frame
-        bf = Frame(self.ctrlfr, padx=2)  # padding=2)
+        bf = ttk.Frame(self.ctrlfr, padding=2)
         bf.pack(side=TOP, fill=BOTH)
         side = LEFT
         addButton(bf, 'Clear', self.clear, images.plot_clear(),

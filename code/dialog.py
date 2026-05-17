@@ -1,5 +1,8 @@
-from pandastable_local.dialogs import BaseDialog, EasyListbox, FindReplaceDialog
-from tkinter import Frame, TOP, LEFT, X, BOTH, Listbox, Label, Scrollbar, VERTICAL, N, S, E, W, END, EXTENDED
+from pandastable_local.dialogs import (
+    BaseDialog, EasyListbox, FindReplaceDialog,
+    apply_dialog_theme, dialog_style, listbox_colors)
+from tkinter import Frame, TOP, LEFT, X, BOTH, Listbox, Scrollbar, VERTICAL, N, S, E, W, END, EXTENDED
+from tkinter import ttk
 import tkinter as tk
 import numpy as np
 from prettytable import PrettyTable as PT
@@ -62,7 +65,7 @@ class Dialogs(BaseDialog):
 
         BaseDialog.__init__(self, parent, df, title)
         self.app = app
-        m = Frame(self.main)
+        m = ttk.Frame(self.main)
         m.pack(side=TOP)
 
         self.cols = list(self.df.columns)
@@ -77,18 +80,19 @@ class Dialogs(BaseDialog):
         self.add_window_help(m)
         self.createWidgets(m)
         self.buttonsFrame()
+        apply_dialog_theme(self.main)
         print("Gen new dialog", self.title)
         return
 
     def add_window_help(self, m):
-        f = tk.LabelFrame(m, text='')
+        f = ttk.LabelFrame(m, text='')
         f.pack(side=TOP, fill=BOTH, padx=2)
         txt = self.app.dialog_help_msg(key=self.title)
         #  print("Receive txt", txt)
         if len(txt) == 0:
             return
         txt = txt + " [Click HELP for more info.]"
-        w = tk.Label(
+        w = ttk.Label(
             f,
             anchor="w",
             justify=LEFT,
@@ -102,14 +106,14 @@ class Dialogs(BaseDialog):
         return
 
     def buttonsFrame(self):
-        bf = Frame(self.main)
+        bf = ttk.Frame(self.main)
         bf.pack(side=TOP, fill=BOTH)
-        b = tk.Button(bf, text="OK", command=self.ok)
-        b.pack(side=LEFT, fill=X, expand=1, pady=2)
-        b = tk.Button(bf, text="Cancel", command=self.quit)
-        b.pack(side=LEFT, fill=X, expand=1, pady=2)
-        b = tk.Button(bf, text="Help", command=self.help)
-        b.pack(side=LEFT, fill=X, expand=1, pady=2)
+        ttk.Button(bf, text="OK", command=self.ok).pack(
+            side=LEFT, fill=X, expand=1, pady=2)
+        ttk.Button(bf, text="Cancel", command=self.quit).pack(
+            side=LEFT, fill=X, expand=1, pady=2)
+        ttk.Button(bf, text="Help", command=self.help).pack(
+            side=LEFT, fill=X, expand=1, pady=2)
         return
 
     def ok(self):
@@ -128,23 +132,17 @@ class Dialogs(BaseDialog):
         self.x_min = tk.StringVar(value="Auto")
         self.x_max = tk.StringVar(value="Auto")
 
-        master = tk.LabelFrame(m, text='X Axis')
+        master = ttk.LabelFrame(m, text='X Axis')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(master, text="Label")
-        w.pack(side=LEFT, fill=X, padx=2)
-        w = tk.Entry(master, textvariable=self.xlabel,
-                     bg='white', width=15)
-        w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(master, text="Min")
-        w.pack(side=LEFT, fill=X, padx=2)
-        w = tk.Entry(master, textvariable=self.x_min,
-                     bg='white', width=5)
-        w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(master, text="Max")
-        w.pack(side=LEFT, fill=X, padx=2)
-        w = tk.Entry(master, textvariable=self.x_max,
-                     bg='white', width=5)
-        w.pack(side=LEFT, padx=2, pady=2)
+        ttk.Label(master, text="Label").pack(side=LEFT, fill=X, padx=2)
+        ttk.Entry(master, textvariable=self.xlabel, width=15).pack(
+            side=LEFT, padx=2, pady=2)
+        ttk.Label(master, text="Min").pack(side=LEFT, fill=X, padx=2)
+        ttk.Entry(master, textvariable=self.x_min, width=5).pack(
+            side=LEFT, padx=2, pady=2)
+        ttk.Label(master, text="Max").pack(side=LEFT, fill=X, padx=2)
+        ttk.Entry(master, textvariable=self.x_max, width=5).pack(
+            side=LEFT, padx=2, pady=2)
         return
 
     def add_y_plot_settings(self, m):
@@ -152,23 +150,17 @@ class Dialogs(BaseDialog):
         self.y_min = tk.StringVar(value="Auto")
         self.y_max = tk.StringVar(value="Auto")
 
-        master = tk.LabelFrame(m, text='Y Axis')
+        master = ttk.LabelFrame(m, text='Y Axis')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(master, text="Label")
-        w.pack(side=LEFT, fill=X, padx=2)
-        w = tk.Entry(master, textvariable=self.ylabel,
-                     bg='white', width=15)
-        w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(master, text="Min")
-        w.pack(side=LEFT, fill=X, padx=2)
-        w = tk.Entry(master, textvariable=self.y_min,
-                     bg='white', width=5)
-        w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(master, text="Max")
-        w.pack(side=LEFT, fill=X, padx=2)
-        w = tk.Entry(master, textvariable=self.y_max,
-                     bg='white', width=5)
-        w.pack(side=LEFT, padx=2, pady=2)
+        ttk.Label(master, text="Label").pack(side=LEFT, fill=X, padx=2)
+        ttk.Entry(master, textvariable=self.ylabel, width=15).pack(
+            side=LEFT, padx=2, pady=2)
+        ttk.Label(master, text="Min").pack(side=LEFT, fill=X, padx=2)
+        ttk.Entry(master, textvariable=self.y_min, width=5).pack(
+            side=LEFT, padx=2, pady=2)
+        ttk.Label(master, text="Max").pack(side=LEFT, fill=X, padx=2)
+        ttk.Entry(master, textvariable=self.y_max, width=5).pack(
+            side=LEFT, padx=2, pady=2)
         return
 
     def add_misc_plot_settings(self, m):
@@ -176,30 +168,24 @@ class Dialogs(BaseDialog):
         self.show_legend = tk.BooleanVar(value=False)
         self.ax_margin = tk.DoubleVar(value=0.1)
 
-        master = tk.LabelFrame(m, text='Plot Setting')
+        master = ttk.LabelFrame(m, text='Plot Setting')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Checkbutton(master, text='Show Grid',
-                           variable=self.grid)
-        w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(master, text='Show Legend',
-                           variable=self.show_legend)
-        w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(master, text="Margin")
-        w.pack(side=LEFT, fill=X, padx=2)
-        w = tk.Entry(master, textvariable=self.ax_margin,
-                     bg='white', width=5)
-        w.pack(side=LEFT, padx=2, pady=2)
+        ttk.Checkbutton(master, text='Show Grid',
+                        variable=self.grid).pack(side=LEFT, padx=2, pady=2)
+        ttk.Checkbutton(master, text='Show Legend',
+                        variable=self.show_legend).pack(side=LEFT, padx=2, pady=2)
+        ttk.Label(master, text="Margin").pack(side=LEFT, fill=X, padx=2)
+        ttk.Entry(master, textvariable=self.ax_margin, width=5).pack(
+            side=LEFT, padx=2, pady=2)
         return
 
     def add_alpha(self, m):
         self.alpha = tk.DoubleVar(value=0.05)
-        master = tk.LabelFrame(m, text='Alpha for CI and etc.')
+        master = ttk.LabelFrame(m, text='Alpha for CI and etc.')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(master, text="Alpha")
-        w.pack(side=LEFT, fill=X, padx=2)
-        w = tk.Entry(master, textvariable=self.alpha,
-                     bg='white', width=5)
-        w.pack(side=LEFT, padx=2, pady=2)
+        ttk.Label(master, text="Alpha").pack(side=LEFT, fill=X, padx=2)
+        ttk.Entry(master, textvariable=self.alpha, width=5).pack(
+            side=LEFT, padx=2, pady=2)
         return
 
     def get_plot_settings(self):
@@ -254,17 +240,22 @@ class superEasyListbox(EasyListbox):
                          yscrollcommand=yscrollcommand,
                          selectmode=EXTENDED, exportselection=0)
         self.bind("<<ListboxSelect>>", self.triggerListItemSelected)
-        self.configure(background='white', foreground='black',
-                       selectbackground='#0174DF', selectforeground='white')
+        try:
+            style = dialog_style(self.winfo_toplevel())
+            self.configure(**listbox_colors(style))
+        except Exception:
+            self.configure(background='white', foreground='black',
+                           selectbackground='#0174DF',
+                           selectforeground='white')
         return
 
 
 def addListBox(parent, values=[], width=10, height=6, label=''):
     """Add an EasyListBox"""
 
-    frame = Frame(parent)
-    Label(frame, text=label).grid(row=0)
-    yScroll = Scrollbar(frame, orient=VERTICAL)
+    frame = ttk.Frame(parent)
+    ttk.Label(frame, text=label).grid(row=0)
+    yScroll = ttk.Scrollbar(frame, orient=VERTICAL)
     yScroll.grid(row=1, column=1, sticky=N + S)
 
     def listItemSelected(index):
