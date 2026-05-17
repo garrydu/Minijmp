@@ -2522,7 +2522,7 @@ class Table(Canvas):
             # get categories
             optionlist = list(df[colname].cat.categories[:50])
             dropmenu = OptionMenu(self, self.dropvar, val, *optionlist)
-            self.dropvar.trace('w', self.handleEntryMenu)
+            util.trace_write(self.dropvar, self.handleEntryMenu)
             self.create_window(x1, y1,
                                width=120, height=30,
                                window=dropmenu, anchor='nw',

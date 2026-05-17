@@ -194,7 +194,7 @@ class PlotViewer(Frame):
                 v.set(val)
                 Label(bf, text=n).pack(side=LEFT,fill=X,padx=2)
                 b = Entry(bf,textvariable=v, width=5)
-                v.trace("w", partial(self.setGlobalOption, n))
+                util.trace_write(v, partial(self.setGlobalOption, n))
             b.pack(side=LEFT,padx=2)
         addButton(bf, 'Hide', self.toggle_options, images.prefs(),
                   'show/hide plot options', side=RIGHT)

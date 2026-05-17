@@ -151,3 +151,13 @@ def checkOS():
         return 'darwin'
     if "win" in _platform:
         return 'windows'
+
+
+def trace_write(var, callback):
+    """Register a write trace on a tkinter Variable (Python 3.8+ and legacy)."""
+
+    if hasattr(var, 'trace_add'):
+        var.trace_add('write', callback)
+    else:
+        var.trace('w', callback)
+    return

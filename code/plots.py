@@ -1,5 +1,5 @@
 from pandastable_local.plotting import PlotViewer, addButton, addFigure
-from pandastable_local import handlers, images
+from pandastable_local import handlers, images, util
 from matplotlib.figure import Figure
 #  from tkinter.ttk import Frame
 from tkinter import BOTH, Toplevel, VERTICAL, TOP, BOTTOM, LEFT, BooleanVar, Checkbutton, IntVar, Label, X, Entry, Frame
@@ -85,7 +85,7 @@ class plot_viewer(PlotViewer):
                 v.set(val)
                 Label(bf, text=n).pack(side=LEFT, fill=X, padx=2)
                 b = Entry(bf, textvariable=v, width=5)
-                v.trace("w", partial(self.setGlobalOption, n))
+                util.trace_write(v, partial(self.setGlobalOption, n))
             b.pack(side=LEFT, padx=2)
         dr = handlers.DragHandler(self)
         dr.connect()
