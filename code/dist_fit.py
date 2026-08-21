@@ -36,19 +36,19 @@ def print_table(fit_name, para_names, paras, abl, a2, p, print_port=print):
     print = print_port
     print("\n---- Fitted " + fit_name + " Distribution ----")
     t = PT()
-    t.field_names = ['Parameter', 'Estimate']
+    t.field_names = ['参数', '估计值']
     for i, j in zip(para_names, paras):
         t.add_row([i, "%.3f" % j])
     print(str(t))
     t = PT()
-    t.field_names = ['Measures', '-2*LogLikelihood', 'AICc', 'BIC']
+    t.field_names = ['度量', '-2×对数似然', 'AICc', 'BIC']
     t.add_row(["Value", "%.2f" % abl[0], "%.2f" % abl[1], "%.2f" % abl[2]])
     print(str(t))
     t = PT()
-    t.field_names = [' ', 'A-sq', 'Approx. p-value']
+    t.field_names = [' ', 'A-sq（AD检验统计量）', '近似 P 值']
     t.add_row(["Anderson-Darling", "%.2f" % a2, "%.3f" % p])
     print(str(t))
-    print("H0: The data is from the distribution. Small p-value rejects H0.")
+    print('原假设 H0: 数据服从该分布。P 值越小越拒绝 H0。')
     return
 
 
@@ -156,8 +156,8 @@ def fit_t(data, print_out=True, print_port=print):
     #  optimized_params = result.x
     #  minimum_value = result.fun
     #
-    #  print("Optimized Parameters:", optimized_params)
-    #  print("Minimum Value of the Function:", minimum_value)
+    #  print('优化参数：', optimized_params)
+    #  print('函数最小值：', minimum_value)
     #
 
 
@@ -247,7 +247,7 @@ def compare_dist(
             if print_out:
                 print = print_port
                 print("---- " + name + " ----")
-                print("Error: Check input values.")
+                print('错误：请检查输入值。')
             pass
     delta_AICc = [i - min(aiccs) for i in aiccs]
     rel_likelihood = [exp(-.5 * i) for i in delta_AICc]
@@ -259,14 +259,14 @@ def compare_dist(
         print = print_port
         print("\n---- Compare Distributions ----")
         t = PT()
-        t.field_names = ['Distribution', 'AICc', 'AICc Weight', 'BIC',
-                         '-2*LogLikelihood']
+        t.field_names = ['分布', 'AICc', 'AICc 权重', 'BIC',
+                         '-2×对数似然']
         for r in res:
             t.add_row([r[0],
                        "%.2f" % r[1][1], "%.3f" % r[-1],
                        "%.2f" % r[1][2], "%.2f" % r[1][0]])
         print(str(t))
-        print("Note: The AICc weight is the probability that a given model is the best model among a set of candidate models.")
+        print('说明：AICc 权重是给定模型在一组候选模型中为最佳模型的概率。')
     return res
 
 

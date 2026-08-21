@@ -1,3 +1,4 @@
+import zh_i18n  # 中文字体配置（必须最先导入）
 from tkinter import Frame, Menu, BOTH, Toplevel, END, Tk, PhotoImage
 from PIL import Image, ImageTk
 import pickle
@@ -71,168 +72,189 @@ class Minijmp(Minijmp_pre):
         file_menu = Menu(self.menu, tearoff=0)
         # add recent first
         #  self.createRecentMenu(file_menu)
-        filemenuitems = {'01New Project': {'cmd': self.new_file},
-                         '02Open Project': {'cmd': self.load_file},
-                         '04Save': {'cmd': self.save_file},
-                         '05Save As': {'cmd': self.save_as_file},
+        filemenuitems = {'01新建项目': {'cmd': self.new_file},
+                         '02打开项目': {'cmd': self.load_file},
+                         '04保存': {'cmd': self.save_file},
+                         '05另存为': {'cmd': self.save_as_file},
                          '06sep': '',
-                         '07Import CSV': {'cmd': self.import_csv},
-                         '10Import Excel': {'cmd': self.load_excel},
-                         '10Export CSV': {'cmd': lambda: self._call('doExport')},
+                         '07导入CSV': {'cmd': self.import_csv},
+                         '10导入Excel': {'cmd': self.load_excel},
+                         '10导出CSV': {'cmd': lambda: self._call('doExport')},
                          '11sep': '',
-                         '12Quit': {'cmd': self.quit}}
+                         '12退出': {'cmd': self.quit}}
 
         self.file_menu = self.createPulldown(
             self.menu, filemenuitems, var=file_menu)
-        self.menu.add_cascade(label='File', menu=self.file_menu['var'])
+        self.menu.add_cascade(label='文件', menu=self.file_menu['var'])
 
-        editmenuitems = {'01Undo (C-Z)': {'cmd': self.undo},
-                         '02Redo': {'cmd': lambda: self._call('redo')},
-                         '03Paste w/o header (C-V)': {'cmd': lambda: self._call('paste')},
-                         '04Paste w/ header': {'cmd': lambda: self._call('paste_header')},
-                         '05Copy Table': {'cmd': self.copyTable},
-                         '06Copy Selected (C-C)': {'cmd': lambda: self._call('copy')},
-                         '07Del selected & move up': {'cmd': lambda: self._call('clearDataUp')},
-                         '08Clear Selected (DEL)': {'cmd': lambda: self._call('clearData')},
-                         '13Find/Replace (C-F)': {'cmd': self.findText},
+        editmenuitems = {'01撤销 (Ctrl-Z)': {'cmd': self.undo},
+                         '02重做': {'cmd': lambda: self._call('redo')},
+                         '03无表头粘贴 (Ctrl-V)': {'cmd': lambda: self._call('paste')},
+                         '04含表头粘贴': {'cmd': lambda: self._call('paste_header')},
+                         '05复制表格': {'cmd': self.copyTable},
+                         '06复制选中 (Ctrl-C)': {'cmd': lambda: self._call('copy')},
+                         '07删除选中并上移': {'cmd': lambda: self._call('clearDataUp')},
+                         '08清除选中 (DEL)': {'cmd': lambda: self._call('clearData')},
+                         '13查找/替换 (Ctrl-F)': {'cmd': self.findText},
                          '20sep': 'ddddd',
-                         '24Preferences': {'cmd': self.currentTablePrefs}}
+                         '24首选项': {'cmd': self.currentTablePrefs}}
         self.edit_menu = self.createPulldown(self.menu, editmenuitems)
-        self.menu.add_cascade(label='Edit', menu=self.edit_menu['var'])
+        self.menu.add_cascade(label='编辑', menu=self.edit_menu['var'])
 
         self.view_menu = {
-            '01Zoom In': {
-                'cmd': lambda: self._call('zoomIn')}, '02Zoom Out': {
-                'cmd': lambda: self._call('zoomOut')}, '03Wrap Columns': {
-                'cmd': lambda: self._call('setWrap')}, '04sep': '', '05Dark Theme': {
+            '01放大': {
+                'cmd': lambda: self._call('zoomIn')}, '02缩小': {
+                'cmd': lambda: self._call('zoomOut')}, '03自动换行': {
+                'cmd': lambda: self._call('setWrap')}, '04sep': '', '05深色主题': {
                     'cmd': lambda: self._call(
                         'setTheme', name='dark')}, 
                         # '06Bold Theme': {'cmd': lambda: self._call(
                         #         'setTheme', name='bold')}, 
-                                '07Light Theme': {
+                                '07浅色主题': {
                                     'cmd': lambda: self._call(
                                         'setTheme', name='default')}, }
         self.view_menu = self.createPulldown(self.menu, self.view_menu)
-        self.menu.add_cascade(label='View', menu=self.view_menu['var'])
+        self.menu.add_cascade(label='视图', menu=self.view_menu['var'])
 
         self.data_menu = {
-            '01Create Categorical': {'cmd': lambda: self._call('createCategorical')},
-            '02Apply Function': {'cmd': lambda: self._call('applyColumnFunction')},
-            '03Resample/Transform': {'cmd': lambda: self._call('applyTransformFunction')},
-            '04Value Counts': {'cmd': lambda: self._call('valueCounts')},
-            '05String Operation': {'cmd': lambda: self._call('applyStringMethod')},
-            '06Date/Time Conversion': {'cmd': lambda: self._call('convertDates')},
-            '22Filter Rows': {'cmd': lambda: self._call('queryBar')},
-            '32Split Data Column': {'cmd': lambda: self._call('splitColumn')},
-            '33Stack Selected Columns': {'cmd': lambda: self._call('stackColumn')},
-            '34Sort All Columns': {'cmd': lambda: self._call('sortAll')},
-            '35Sort Selected Colunms': {'cmd': lambda: self._call('sortSelected')},
-            '42Copy Row 1 to Headers': {'cmd': lambda: self._call('row1ToHeader')},
+            '01创建分类变量': {'cmd': lambda: self._call('createCategorical')},
+            '02应用函数': {'cmd': lambda: self._call('applyColumnFunction')},
+            '03重采样/变换': {'cmd': lambda: self._call('applyTransformFunction')},
+            '04值计数': {'cmd': lambda: self._call('valueCounts')},
+            '05字符串操作': {'cmd': lambda: self._call('applyStringMethod')},
+            '06日期/时间转换': {'cmd': lambda: self._call('convertDates')},
+            '22筛选行': {'cmd': lambda: self._call('queryBar')},
+            '32拆分数据列': {'cmd': lambda: self._call('splitColumn')},
+            '33堆叠选中列': {'cmd': lambda: self._call('stackColumn')},
+            '34排序所有列': {'cmd': lambda: self._call('sortAll')},
+            '35排序选中列': {'cmd': lambda: self._call('sortSelected')},
+            '42第1行复制为表头': {'cmd': lambda: self._call('row1ToHeader')},
             '30sep': '', '40sep': ''}
         self.data_menu = self.createPulldown(self.menu, self.data_menu)
-        self.menu.add_cascade(label='Data', menu=self.data_menu['var'])
+        self.menu.add_cascade(label='数据', menu=self.data_menu['var'])
 
         self.table_menu = {
             #  '01Describe Table': {'cmd': self.describe},
-            '02Convert Column Names': {'cmd': lambda: self._call('convertColumnNames')},
-            '03Convert Numeric': {'cmd': lambda: self._call('convertNumeric')},
-            '04Clean Data': {'cmd': lambda: self._call('cleanData')},
-            '05Find Duplicates': {'cmd': lambda: self._call('findDuplicates')},
+            '02转换列名': {'cmd': lambda: self._call('convertColumnNames')},
+            '03转换为数值': {'cmd': lambda: self._call('convertNumeric')},
+            '04清理数据': {'cmd': lambda: self._call('cleanData')},
+            '05查找重复': {'cmd': lambda: self._call('findDuplicates')},
             #  '06Correlation Matrix': {'cmd': lambda: self._call('corrMatrix')},
             #  '07Concatenate Tables': {'cmd': self.concat},
-            '08Table to Text': {'cmd': lambda: self._call('showasText')},
-            '09Table Info': {'cmd': lambda: self._call('showInfo')},
+            '08表格转文本': {'cmd': lambda: self._call('showasText')},
+            '09表格信息': {'cmd': lambda: self._call('showInfo')},
             '10sep': '',
-            '11Transform Values': {'cmd': lambda: self._call('transform')},
-            '12Group-Aggregate': {'cmd': lambda: self._call('aggregate')},
-            '13Cross Tabulation': {'cmd': lambda: self._call('crosstab')},
-            '14Merge/Concat Tables': {'cmd': lambda: self._call('doCombine')},
-            '15Pivot Table': {'cmd': lambda: self._call('pivot')},
-            '16Melt Table': {'cmd': lambda: self._call('melt')},
-            '17Time Series Resampling': {'cmd': lambda: self._call('resample')}
+            '11变换数值': {'cmd': lambda: self._call('transform')},
+            '12分组-聚合': {'cmd': lambda: self._call('aggregate')},
+            '13交叉表': {'cmd': lambda: self._call('crosstab')},
+            '14合并表格': {'cmd': lambda: self._call('doCombine')},
+            '15数据透视表': {'cmd': lambda: self._call('pivot')},
+            '16表格重塑(Melt)': {'cmd': lambda: self._call('melt')},
+            '17时间序列重采样': {'cmd': lambda: self._call('resample')}
         }
         self.table_menu = self.createPulldown(self.menu, self.table_menu)
-        self.menu.add_cascade(label='Tools', menu=self.table_menu['var'])
+        self.menu.add_cascade(label='工具', menu=self.table_menu['var'])
 
         self.stats_menu = {
-            '01Describe': {'cmd': self.describe},
-            '02Describe MutliVar': {'cmd': self.multi_describe},
-            '04Normality': {'cmd': self.norm_test},
-            '05Confidence Intervals': {'cmd': self.confidence_interval},
-            '06Fit Distributions': {'cmd': self.fit_dist},
-            '13Correlation': {'cmd': self.correlation},
-            '16Orthogonal Regression': {'cmd': self.ortho_fit},
-            '14Linear Regression': {'cmd': self.linear_fit},
-            '15Residual Plots': {'cmd': self.resid},
-            '17Correlation Matrix': {'cmd': self.multi_cor},
-            '22One Sample Mean t-test': {'cmd': self.mean_1sample},
-            '23One Sample Mean Z-test': {'cmd': self.mean_1sampleZ},
-            '24One Sample SD': {'cmd': self.var_1sample},
-            '25One Proportion Test': {'cmd': self.prop_1sample},
-            '26Two Samples t-test': {'cmd': self.mean_2samples},
-            '27Paired t-test': {'cmd': self.paired_t},
-            '28Two Proportions Test': {'cmd': self.prop_2samples},
-            '29Multi-Sample SD Test': {'cmd': self.multi_var},
-            '32One-Way ANOVA': {'cmd': self.anova_1way},
+            '01描述统计': {'cmd': self.describe},
+            '02多变量描述统计': {'cmd': self.multi_describe},
+            '04正态性检验': {'cmd': self.norm_test},
+            '05置信区间': {'cmd': self.confidence_interval},
+            '06分布拟合': {'cmd': self.fit_dist},
+            '13相关分析': {'cmd': self.correlation},
+            '16正交回归': {'cmd': self.ortho_fit},
+            '14线性回归': {'cmd': self.linear_fit},
+            '15残差图': {'cmd': self.resid},
+            '17相关矩阵': {'cmd': self.multi_cor},
+            '22单样本均值 t 检验': {'cmd': self.mean_1sample},
+            '23单样本均值 Z 检验': {'cmd': self.mean_1sampleZ},
+            '24单样本标准差检验': {'cmd': self.var_1sample},
+            '25单比例检验': {'cmd': self.prop_1sample},
+            '26双样本 t 检验': {'cmd': self.mean_2samples},
+            '27配对 t 检验': {'cmd': self.paired_t},
+            '28双比例检验': {'cmd': self.prop_2samples},
+            '29多样本标准差检验': {'cmd': self.multi_var},
+            '32单因素方差分析': {'cmd': self.anova_1way},
             #  '33Mean Comparison t': {'cmd': self.JMP_t_test},
-            '34Two-Way ANOVA': {'cmd': self.anova_2way},
-            '42Contingency table & Chi2': {'cmd': self.chi2table},
-            '43Proportion Chi Square': {'cmd': self.chi2prop},
+            '34双因素方差分析': {'cmd': self.anova_2way},
+            '42列联表与卡方检验': {'cmd': self.chi2table},
+            '43比例卡方检验': {'cmd': self.chi2prop},
             '06sep': '', '20sep': '', '30sep': '', '40sep': ''}
         self.stats_menu = self.createPulldown(self.menu, self.stats_menu)
-        self.menu.add_cascade(label='Stats', menu=self.stats_menu['var'])
+        self.menu.add_cascade(label='统计', menu=self.stats_menu['var'])
+
+        # ================= DOE 菜单（对标 Minitab） =================
+        self.doe_menu = {
+            '01创建因子设计': {'cmd': self.doe_factorial},
+            '02创建响应曲面设计': {'cmd': self.doe_rsm},
+            '03创建混料设计': {'cmd': self.doe_mixture},
+            '04创建田口设计': {'cmd': self.doe_taguchi},
+            '05创建最优设计': {'cmd': self.doe_optimal},
+            '06sep': '',
+            '10分析因子设计': {'cmd': self.doe_analyze_fact},
+            '11分析响应曲面': {'cmd': self.doe_analyze_rsm},
+            '12分析混料设计': {'cmd': self.doe_analyze_mix},
+            '13分析田口设计': {'cmd': self.doe_analyze_tag},
+            '20sep': '',
+            '21因子图': {'cmd': self.doe_plots},
+            '22等值线/曲面图': {'cmd': self.doe_contour},
+            '23响应优化器': {'cmd': self.doe_optimizer},
+            '30sep': ''}
+        self.doe_menu = self.createPulldown(self.menu, self.doe_menu)
+        self.menu.add_cascade(label='DOE', menu=self.doe_menu['var'])
+        # ============================================================
 
         self.quality_menu = {
-            '01Crossed Gage R&R': {'cmd': self.grr},
-            '02Nested Gage R&R': {'cmd': self.grr_nst},
-            '07Process Capability (Cpk)': {'cmd': self.cpk},
-            '08Cpk with Subgroups': {'cmd': self.cpksub},
-            '22Tolerance Interval': {'cmd': self.ti_norm},
-            '32Control Chart I/MR': {'cmd': self.cChartIMR},
-            '33Control Chart I': {'cmd': self.cChartI},
-            '34Control Chart MR': {'cmd': self.cChartMR},
-            '35Control Chart xBar/R': {'cmd': self.cChartXBR},
-            '36Control Chart xBar/S': {'cmd': self.cChartXBS},
-            '42Control Chart NP': {'cmd': self.cChartNP},
-            '43Control Chart P': {'cmd': self.cChartP},
-            '44Control Chart C': {'cmd': self.cChartC},
-            '45Control Chart U': {'cmd': self.cChartU},
+            '01交叉量具 R&R': {'cmd': self.grr},
+            '02嵌套量具 R&R': {'cmd': self.grr_nst},
+            '07过程能力 (Cpk)': {'cmd': self.cpk},
+            '08分组过程能力 (Cpk)': {'cmd': self.cpksub},
+            '22公差区间': {'cmd': self.ti_norm},
+            '32控制图 I/MR': {'cmd': self.cChartIMR},
+            '33控制图 I': {'cmd': self.cChartI},
+            '34控制图 MR': {'cmd': self.cChartMR},
+            '35控制图 xBar/R': {'cmd': self.cChartXBR},
+            '36控制图 xBar/S': {'cmd': self.cChartXBS},
+            '42控制图 NP': {'cmd': self.cChartNP},
+            '43控制图 P': {'cmd': self.cChartP},
+            '44控制图 C': {'cmd': self.cChartC},
+            '45控制图 U': {'cmd': self.cChartU},
             '06sep': '', '20sep': '', '30sep': '', '40sep': ''}
         self.quality_menu = self.createPulldown(self.menu, self.quality_menu)
-        self.menu.add_cascade(label='Quality', menu=self.quality_menu['var'])
+        self.menu.add_cascade(label='质量', menu=self.quality_menu['var'])
 
         self.plots_menu = {
-            '01Plot Wizard (Legacy)': {'cmd': self.plot_selected},
-            '53Store plot': {'cmd': self.addPlot},
-            '54Clear plots': {'cmd': self.updatePlotsMenu},
-            '55PDF report': {'cmd': self.pdfReport},
-            '12Histogram & Dist. Fit': {'cmd': self.singleHisto},
-            '13Histogram w/ Groups': {'cmd': self.multiHisto},
-            '14Histogram 2D': {'cmd': self.xyHisto},
-            '15Box Plot Multiple Y': {'cmd': self.singleBox},
-            '16Box Plot w/ Groups': {'cmd': self.multiBox},
-            '18Count Plot w/ Grps': {'cmd': self.countPlot},
-            '20Line Plot w/ Grps': {'cmd': self.linePlot},
-            '22Dot Plot w/ Groups': {'cmd': self.dotPlot},
+            '01绘图向导（旧版）': {'cmd': self.plot_selected},
+            '53保存图表': {'cmd': self.addPlot},
+            '54清除图表': {'cmd': self.updatePlotsMenu},
+            '55PDF报告': {'cmd': self.pdfReport},
+            '12直方图与分布拟合': {'cmd': self.singleHisto},
+            '13分组直方图': {'cmd': self.multiHisto},
+            '14二维直方图': {'cmd': self.xyHisto},
+            '15多Y箱线图': {'cmd': self.singleBox},
+            '16分组箱线图': {'cmd': self.multiBox},
+            '18分组计数图': {'cmd': self.countPlot},
+            '20分组线图': {'cmd': self.linePlot},
+            '22分组点图': {'cmd': self.dotPlot},
             '30sep': '',
-            '32Display Probability': {'cmd': self.distDPPlot},
-            '33Prob. Plot Compare': {'cmd': self.dist2XPlot},
+            '32概率分布图': {'cmd': self.distDPPlot},
+            '33概率图比较': {'cmd': self.dist2XPlot},
             '02sep': '', '50sep': '', '60sep': ''}
         self.plots_menu = self.createPulldown(self.menu, self.plots_menu)
-        self.menu.add_cascade(label='Plots', menu=self.plots_menu['var'])
+        self.menu.add_cascade(label='图表', menu=self.plots_menu['var'])
         self.plot_menu_orig_len = len(self.plots_menu)
 
         self.debug_menu = {
-            '01Print DF': {'cmd': self.printDF},
+            '01打印数据框': {'cmd': self.printDF},
             '06sep': ''}
         self.debug_menu = self.createPulldown(self.menu, self.debug_menu)
-        self.menu.add_cascade(label='Debug', menu=self.debug_menu['var'])
+        self.menu.add_cascade(label='调试', menu=self.debug_menu['var'])
 
-        self.help_menu = {'01Online Help': {'cmd': self.online_documentation},
-                          '02View Error Log': {'cmd': self.showErrorLog},
-                          '03About': {'cmd': self.about}}
+        self.help_menu = {'01在线帮助': {'cmd': self.online_documentation},
+                          '02查看错误日志': {'cmd': self.showErrorLog},
+                          '03关于': {'cmd': self.about}}
         self.help_menu = self.createPulldown(self.menu, self.help_menu)
-        self.menu.add_cascade(label='Help', menu=self.help_menu['var'])
+        self.menu.add_cascade(label='帮助', menu=self.help_menu['var'])
 
         self.main.config(menu=self.menu)
         return
@@ -243,7 +265,7 @@ class Minijmp(Minijmp_pre):
             file_name_with_extension = os.path.basename(self.pickle_fname)
             self.main.title(file_name_with_extension + " - Minijmp")
         else:
-            self.main.title("Untitled - Minijmp")
+            self.main.title("未命名 - Minijmp")
         return
 
     def new_file(self):
@@ -347,6 +369,62 @@ class Minijmp(Minijmp_pre):
         self.tOut.add_txt(txt + end)
         self.tOut.to_end()
         return
+
+    # ================= DOE 菜单方法（懒加载，加快启动） =================
+    def _doe_dialog(self, dlg_name, title):
+        import doe.dialogs as _doe_dlgs
+        Dlg = getattr(_doe_dlgs, dlg_name)
+        _ = Dlg(self.table, app=self, df=self.table.model.df, title=title)
+        return
+
+    def doe_factorial(self):
+        self._doe_dialog('FactorialDesignDialog', '创建因子设计')
+        return
+
+    def doe_rsm(self):
+        self._doe_dialog('RSMDesignDialog', '创建响应曲面设计')
+        return
+
+    def doe_mixture(self):
+        self._doe_dialog('MixtureDesignDialog', '创建混料设计')
+        return
+
+    def doe_taguchi(self):
+        self._doe_dialog('TaguchiDesignDialog', '创建田口设计')
+        return
+
+    def doe_optimal(self):
+        self._doe_dialog('OptimalDesignDialog', '创建最优设计')
+        return
+
+    def doe_analyze_fact(self):
+        self._doe_dialog('AnalyzeFactorialDialog', '分析因子设计')
+        return
+
+    def doe_analyze_rsm(self):
+        self._doe_dialog('AnalyzeRSMDialog', '分析响应曲面')
+        return
+
+    def doe_analyze_mix(self):
+        self._doe_dialog('AnalyzeMixtureDialog', '分析混料设计')
+        return
+
+    def doe_analyze_tag(self):
+        self._doe_dialog('AnalyzeTaguchiDialog', '分析田口设计')
+        return
+
+    def doe_plots(self):
+        self._doe_dialog('FactorialPlotsDialog', '因子图')
+        return
+
+    def doe_contour(self):
+        self._doe_dialog('ContourSurfaceDialog', '等值线/曲面图')
+        return
+
+    def doe_optimizer(self):
+        self._doe_dialog('ResponseOptimizerDialog', '响应优化器')
+        return
+    # ===================================================
 
     def linear_fit(self):
 

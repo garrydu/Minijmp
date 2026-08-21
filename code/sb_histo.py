@@ -94,7 +94,7 @@ def histo_n_fit(df=None, xkey=None,
                     legend=False)
         rvx = np.linspace(x_min, x_max, 100)
         rvy = rv.pdf(rvx)
-        ax2.plot(rvx, rvy, color=fit_color, linewidth=2, label="Fitted Dist.",
+        ax2.plot(rvx, rvy, color=fit_color, linewidth=2, label="拟合分布",
                  zorder=3)
 
     if xlabel is not None:

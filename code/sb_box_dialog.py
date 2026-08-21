@@ -11,37 +11,37 @@ from sb_boxplot import single_boxplot, multi_boxplot
 
 class singleBoxDialog(SBDialog):
     def createWidgets(self, m):
-        f = tk.LabelFrame(m, text='Data in one column')
+        f = tk.LabelFrame(m, text='数据在单列中')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Data Col.")
+        w = tk.Label(f, text="数据列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.grouping = tk.StringVar(value="")
-        w = tk.Label(f, text="Group Col.")
+        w = tk.Label(f, text="分组列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.grouping,
             width=14)
         w.pack(side=LEFT, padx=2)
 
-        f = tk.LabelFrame(m, text='Data in its own column')
+        f = tk.LabelFrame(m, text='数据在独立列中')
         f.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(f, text="Overriding selections above"
+        w = tk.Label(f, text="覆盖以上选择"
                      + "\nESC to deselect.")  # ,
         w.pack(side=LEFT, fill=X, padx=10)
         f.pack(side=TOP, fill=BOTH, padx=2)
         w, self.grpvar = addListBox(
-            f, values=self.cols, width=20, label='columns')
+            f, values=self.cols, width=20, label='列')
         w.pack(side=LEFT, fill=X, padx=10)
 
         self.xlabel = tk.StringVar(value="")
-        master = tk.LabelFrame(m, text='X Axis')
+        master = tk.LabelFrame(m, text='X 轴')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(master, text="Label")
+        w = tk.Label(master, text="标签")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.xlabel,
                      bg='white', width=15)
@@ -58,17 +58,17 @@ class singleBoxDialog(SBDialog):
         self.show_legend = tk.BooleanVar(value=False)
         self.ax_margin = tk.DoubleVar(value=0.1)
 
-        master = tk.LabelFrame(m, text='Plot Setting')
+        master = tk.LabelFrame(m, text='图表设置')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Checkbutton(master, text='Show Grid',
+        w = tk.Checkbutton(master, text='显示网格',
                            variable=self.grid)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(master, text='Show Legend',
+        w = tk.Checkbutton(master, text='显示图例',
                            variable=self.show_legend)
         w.pack(side=LEFT, padx=2, pady=2)
         stat_list = ['Half', 'Full', '1/4']
         self.stat = tk.StringVar(value=stat_list[0])
-        w = tk.Label(master, text="Box Width")
+        w = tk.Label(master, text="箱宽")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             master, values=stat_list, textvariable=self.stat,
@@ -84,33 +84,33 @@ class singleBoxDialog(SBDialog):
         return
 
     def add_box_settings(self, m):
-        master = tk.LabelFrame(m, text='Extended Features')
+        master = tk.LabelFrame(m, text='扩展功能')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.swarm = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Swarm Dots',
+        w = tk.Checkbutton(master, text='蜂群点',
                            variable=self.swarm)
         w.pack(side=LEFT, padx=2, pady=2)
         self.swarm_only = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Swarm Only',
+        w = tk.Checkbutton(master, text='仅蜂群点',
                            variable=self.swarm_only)
         w.pack(side=LEFT, padx=2, pady=2)
         self.flier = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Hide Fliers',
+        w = tk.Checkbutton(master, text='隐藏离群点',
                            variable=self.flier)
         w.pack(side=LEFT, padx=2, pady=2)
         self.logY = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Log Y',
+        w = tk.Checkbutton(master, text='Y轴对数',
                            variable=self.logY)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        master = tk.LabelFrame(m, text='Professional Settings')
+        master = tk.LabelFrame(m, text='专业设置')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.native = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Native X Scale',
+        w = tk.Checkbutton(master, text='原始X刻度',
                            variable=self.native)
         w.pack(side=LEFT, padx=2, pady=2)
         self.whis = tk.StringVar(value="1.5")
-        w = tk.Label(master, text="Whisker Length or Percentiles")
+        w = tk.Label(master, text="须线长度或百分位数")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.whis,
                      bg='white', width=10)
@@ -143,17 +143,17 @@ class singleBoxDialog(SBDialog):
         return
 
     def add_y_refs(self, m):
-        master = tk.LabelFrame(m, text='Horizontal ref lines (optional)')
+        master = tk.LabelFrame(m, text='水平参考线（可选）')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.yref = tk.StringVar(value="")
 
-        w = tk.Label(master, text="Y positions (sep by ,)")
+        w = tk.Label(master, text="Y位置（逗号分隔）")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.yref,
                      bg='white', width=15)
         w.pack(side=LEFT, padx=2, pady=2)
         self.yref_label = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Show Label',
+        w = tk.Checkbutton(master, text='显示标签',
                            variable=self.yref_label)
         w.pack(side=LEFT, padx=2, pady=2)
 
@@ -221,27 +221,27 @@ class singleBoxDialog(SBDialog):
 
 class multiBoxDialog(singleBoxDialog):
     def createWidgets(self, m):
-        f = tk.LabelFrame(m, text='Data have to be stacked')
+        f = tk.LabelFrame(m, text='数据必须为堆叠格式')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Data Col.")
+        w = tk.Label(f, text="数据列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.grouping = tk.StringVar(value="")
-        w = tk.Label(f, text="Group Col.")
+        w = tk.Label(f, text="分组列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.grouping,
             width=14)
         w.pack(side=LEFT, padx=2)
 
-        f = tk.LabelFrame(m, text='Subgrouping')
+        f = tk.LabelFrame(m, text='子分组')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.hue = tk.StringVar(value="")
-        w = tk.Label(f, text="Subgrouping Col. (Hue)")
+        w = tk.Label(f, text="子分组列 (Hue)")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.hue,
@@ -249,9 +249,9 @@ class multiBoxDialog(singleBoxDialog):
         w.pack(side=LEFT, padx=2)
 
         self.xlabel = tk.StringVar(value="")
-        master = tk.LabelFrame(m, text='X Axis')
+        master = tk.LabelFrame(m, text='X 轴')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(master, text="Label")
+        w = tk.Label(master, text="标签")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.xlabel,
                      bg='white', width=15)
@@ -271,46 +271,46 @@ class multiBoxDialog(singleBoxDialog):
         return
 
     def add_box_settings(self, m):
-        master = tk.LabelFrame(m, text='Extended Features')
+        master = tk.LabelFrame(m, text='扩展功能')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.swarm = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Swarm Dots',
+        w = tk.Checkbutton(master, text='蜂群点',
                            variable=self.swarm)
         w.pack(side=LEFT, padx=2, pady=2)
         self.flier = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Hide Fliers',
+        w = tk.Checkbutton(master, text='隐藏离群点',
                            variable=self.flier)
         w.pack(side=LEFT, padx=2, pady=2)
         self.logY = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Log Y Scale',
+        w = tk.Checkbutton(master, text='Y轴对数刻度',
                            variable=self.logY)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        master = tk.LabelFrame(m, text='Swarm Dots Setting')
+        master = tk.LabelFrame(m, text='蜂群点设置')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.swarm_only = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Swarm Only',
+        w = tk.Checkbutton(master, text='仅蜂群点',
                            variable=self.swarm_only)
         w.pack(side=LEFT, padx=2, pady=2)
         self.swarm_dodge = tk.BooleanVar(value=True)
-        w = tk.Checkbutton(master, text='Seperate',
+        w = tk.Checkbutton(master, text='分开',
                            variable=self.swarm_dodge)
         w.pack(side=LEFT, padx=2, pady=2)
         self.swarm_size = tk.DoubleVar(value=5)
-        w = tk.Label(master, text="Size")
+        w = tk.Label(master, text="大小")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.swarm_size,
                      bg='white', width=15)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        master = tk.LabelFrame(m, text='Professional Settings')
+        master = tk.LabelFrame(m, text='专业设置')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.native = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Native X Scale',
+        w = tk.Checkbutton(master, text='原始X刻度',
                            variable=self.native)
         w.pack(side=LEFT, padx=2, pady=2)
         self.whis = tk.StringVar(value="1.5")
-        w = tk.Label(master, text="Whisker Length or Percentiles")
+        w = tk.Label(master, text="须线长度或百分位数")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.whis,
                      bg='white', width=10)

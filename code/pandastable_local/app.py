@@ -353,7 +353,7 @@ class DataExplore(Frame):
                 var.add_separator()
             else:
                 command = dict[item]['cmd']
-                label = '%-25s' % (item[2:])
+                label = item[2:]
                 if 'img' in dict[item]:
                     img = dict[item]['img']
                 else:

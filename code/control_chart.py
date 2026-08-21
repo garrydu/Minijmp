@@ -13,7 +13,7 @@ except ImportError:
 def x_mR(x, mr, k=3, sigma=None, mean=None):  # , print_out=True, xLabels=None,max_xlabels=25):
 
     # Define list variable for moving ranges
-    print("mr", mr)
+    print('移动极差 mr', mr)
     MR = [np.nan] * (mr - 1)
     for i in range(mr - 1, len(x)):
         l = x[i - mr + 1:i + 1]
@@ -331,7 +331,7 @@ def x_plot(data, bar1=None, pooled=False,
 def p_np_plot(p=None, n=1,
               bar1=None, ucl1=None, lcl1=None, xLabels=None,
               print_out=False, max_label_num=25, print_port=print,
-              ylabel="P", NP=False,
+              ylabel="比例 P", NP=False,
               xlabel=None, ax=None, fig=None, refY=None,
               filename=None):
 
@@ -414,7 +414,7 @@ def p_np_plot(p=None, n=1,
 def cu_plot(c=None, n=1,
             bar1=None, ucl1=None, lcl1=None, xLabels=None,
             print_out=False, max_label_num=25, print_port=print,
-            ylabel="P", C=False,
+            ylabel="每单位缺陷数", C=False,
             xlabel=None, ax=None, fig=None, refY=None,
             filename=None):
     p = c

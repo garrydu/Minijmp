@@ -153,14 +153,14 @@ def linear_fit(x, y, print_out=True, print_port=print):
 
     if print_out:
         print("\n---- Linear Regression ----")
-        print("Summary of Fit")
+        print('拟合汇总')
         print(f"RSquare {R_sq:.3f}\t\t\tRSquare Adj {R_sq_adj:.3f}")
         print(
             f"Root Mean Square Error {S:.3f}\tMean of Response {y_est_u:.3f}")
         print("N = %d" % len(x))
         print("\nParameter Estimates")
         t = PT()
-        t.field_names = ["Item", "Est.", "Std Error", "t Ratio", "Prob > |t|"]
+        t.field_names = ['项目', '估计值', '标准误差', 't 值', '概率 > |t|']
         t.add_row(["Slope", "%.3f" %
                    b1, "%.3f" %
                    SEb1, "%.3f" %
@@ -176,10 +176,10 @@ def linear_fit(x, y, print_out=True, print_port=print):
         #  print(f"t ratio {slope_t:.3f}\tProb>|t| {p_slope:.3f}")
         #  print(f"Intercept Est. {b0:.3f}\tStd Error {SEb0:.3f}")
         #  print(f"t ratio {int_t:.3f}\tProb>|t| {p_int:.3f}")
-        print("p values above are the probabilities of each term == 0.")
+        print('以上 P 值是各项等于 0 的概率。')
         print("\nAnalysis of Variances")
         t = PT()
-        t.field_names = ["Item", "DF", "Sum of Sq.", "Mean Sq."]
+        t.field_names = ['项目', '自由度 DF', '平方和', '均方']
         t.add_row(["Model", "1", "%.3f" % SSR, "%.3f" % MSR])
         t.add_row(["Error", "%d" % (n - 2), "%.3f" % SSE, "%.3f" % MSE])
         t.add_row(["Total", "%d" % (n - 1), "%.3f" % SST, " "])
@@ -188,19 +188,19 @@ def linear_fit(x, y, print_out=True, print_port=print):
         #  print("Error DF %d\tSum of Sq %.3f\tMean Sq %.3f" % (n - 2, SSE, MSE))
         #  print("Total DF %d\tSum of Sq %.3f" % (n - 1, SST))
         print(f"F Ratio {F_reg:.3f}\tProb > F {p_reg:.3f}")
-        print("p value is the probability of slope == 0.")
+        print('P 值是斜率等于 0 的概率。')
         if p_lack>=0:
             print("\nLack of Fit")
             t = PT()
-            t.field_names = ["Item", "DF", "Sum of Sq.", "Mean Sq."]
+            t.field_names = ['项目', '自由度 DF', '平方和', '均方']
             t.add_row(["Lack of fit", "%d" % DFLF, "%.3f" % SSLF, "%.3f" % MSLF])
             t.add_row(["Pure Error", "%d" % DFPE, "%.3f" % SSPE, "%.3f" % MSPE])
             t.add_row(["Total", "%d" % (n - 1), "%.3f" % SST, " "])
             print(str(t))
             print(
                 f"F Ratio {F_lack:.3f}\tProb > F {p_lack:.3f}\tMax R Square {max_r_sq:.3f}")
-            print("H0: The model correctly specified the relationship.")
-            #  print("p value is the probability of the true relationship is linear.")
+            print('原假设 H0: 模型正确描述了该关系。')
+            #  print('P 值是真实关系为线性的概率。')
         #  print(f"Max R Square {max_r_sq:.3f}")
         print("\nNormality of Residuals")
         print("Shapiro-Wilk Statistics %.3f\tp-value %.3f" %
@@ -208,7 +208,7 @@ def linear_fit(x, y, print_out=True, print_port=print):
         print(
             "Anderson Darling Stats. %.3f\tp-value %.3f" %
             (ntest_e["AD s"], ntest_e["AD p"]))
-        print("p values are the probabilities of true dist is normal.")
+        print('P 值是真实分布为正态的概率。')
 
     return {"slope": b1, "intercept": b0,
             "R Square": R_sq, "R Square Adj": R_sq_adj,

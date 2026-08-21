@@ -93,16 +93,16 @@ def cont_dist(dist=None, pvalue=None, x=None, print_out=True, plot_out=False,
             if "equal_tail" in res:
                 x = res["equal_tail"]["x_left"]
                 ax.vlines(x, 0, rv.pdf(x), colors='r', linestyles='dashed',
-                          label="Equal Tail")
+                          label="等尾")
                 x = res["equal_tail"]["x_right"]
                 ax.vlines(x, 0, rv.pdf(x), colors='r', linestyles='dashed')
                 if "x_left" in res:
                     x = res["x_left"]
                     ax.vlines(x, 0, rv.pdf(x), colors='g', linestyles='dotted',
-                              label="Left Tail")
+                              label="左尾")
                     x = res["x_right"]
                     ax.vlines(x, 0, rv.pdf(x), colors='blue', linestyles='dotted',
-                              label="Right Tail")
+                              label="右尾")
                 ax.legend(loc='best', frameon=False)
 
             #  plt.show()

@@ -14,13 +14,13 @@ class SBDialog(Dialogs):
         #  self.palette = 'pastel'
         bf = Frame(self.main)
         bf.pack(side=TOP, fill=BOTH)
-        b = Button(bf, text="Plot", command=self.preview)
+        b = Button(bf, text="图表", command=self.preview)
         b.pack(side=LEFT, fill=X, expand=1, pady=2)
-        #  b = Button(bf, text="Done", command=self.done)
+        #  b = Button(bf, text="完成", command=self.done)
         #  b.pack(side=LEFT, fill=X, expand=1, pady=2)
-        b = Button(bf, text="Close", command=self.quit)
+        b = Button(bf, text="关闭", command=self.quit)
         b.pack(side=LEFT, fill=X, expand=1, pady=2)
-        b = Button(bf, text="Help", command=self.help)
+        b = Button(bf, text="帮助", command=self.help)
         b.pack(side=LEFT, fill=X, expand=1, pady=2)
         self.no_preview = True
         return
@@ -94,17 +94,17 @@ class SBDialog(Dialogs):
         return
 
     def add_y_refs(self, m):
-        master = tk.LabelFrame(m, text='Horizontal ref lines (optional)')
+        master = tk.LabelFrame(m, text='水平参考线（可选）')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.yref = tk.StringVar(value="")
 
-        w = tk.Label(master, text="Y positions (sep by ,)")
+        w = tk.Label(master, text="Y位置（逗号分隔）")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.yref,
                      bg='white', width=15)
         w.pack(side=LEFT, padx=2, pady=2)
         self.yref_label = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Show Label',
+        w = tk.Checkbutton(master, text='显示标签',
                            variable=self.yref_label)
         w.pack(side=LEFT, padx=2, pady=2)
 
@@ -120,9 +120,9 @@ class SBDialog(Dialogs):
             "RdYlGn", "Spectral"
         ]
 
-        f = tk.LabelFrame(m, text='Color Palettes')
+        f = tk.LabelFrame(m, text='颜色调色板')
         f.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(f, text="Palettes")
+        w = tk.Label(f, text="调色板")
         w.pack(side=LEFT, fill=X, padx=2)
         # Dropdown menu to select a palette
         self.palette = tk.StringVar(value=palettes[0])

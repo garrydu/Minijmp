@@ -128,18 +128,18 @@ def two_way_anova(data, factor_listA=None, print_port=print, interaction=True,
     if print_out:
         print = print_port
         print(
-            "\n---- Two Way ANOVA " +
-            ("With" if interaction else "Without") +
-            " Interaction ----")
+            "\n---- 双因素方差分析（" +
+            ("含" if interaction else "不含") +
+            "交互作用）----")
         t = PT()
-        t.field_names = ["Factor", "Levels"]
+        t.field_names = ['因子', '水平']
         t.add_row([name_a, a])
         t.add_row([name_b, b])
         print(str(t))
         print("\nAnalysis of Variance")
         t = PT()
-        t.field_names = ["Source", "DF", "Adj SS", "Adj MS",
-                         "F-value", "p-value"]
+        t.field_names = ['来源', '自由度 DF', '校正平方和 (Adj SS)', '校正均方 (Adj MS)',
+                         'F 值', 'P 值']
         t.add_row([name_a, DFA, "%.3f" %
                    SSA, "%.3f" %
                    MSA, "%.3f" %
@@ -158,10 +158,10 @@ def two_way_anova(data, factor_listA=None, print_port=print, interaction=True,
                        MSAB, "%.3f" %
                        FAB, "%.3f" %
                        PAB])
-        t.add_row(["Error", DFE, "%.3f" % SSE, "%.3f" % MSE, " ", " "])
-        t.add_row(["Total", DFT, "%.3f" % SST, " ", " ", " "])
+        t.add_row(["误差", DFE, "%.3f" % SSE, "%.3f" % MSE, " ", " "])
+        t.add_row(["总计", DFT, "%.3f" % SST, " ", " ", " "])
         print(str(t))
-        #  print("Note: The algo is same to Minitab 20, not JMP 17.")
+        #  print('说明：算法与 Minitab 20 一致，而非 JMP 17。')
 
     return {"N": n, "SSE": SSE, "MSE": MSE, "SSA": SSA, "MSA": MSA,
             "SSB": SSB, "SSAB": SSAB, "MSB": MSB, "MSAB": MSAB, "DF A": DFA,

@@ -19,27 +19,27 @@ class IMRDialog(Dialogs):
         return
 
     def ctrl_chart_setting(self, m):
-        f = tk.LabelFrame(m, text='Known Historical Parameters (optional)')
+        f = tk.LabelFrame(m, text='已知历史参数（可选）')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.mean = tk.StringVar(value="")
         self.sigma = tk.StringVar(value="")
 
-        w = tk.Label(f, text="Process Mean")
+        w = tk.Label(f, text="过程均值")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(f, textvariable=self.mean,
                      bg='white', width=15)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(f, text="Process SD")
+        w = tk.Label(f, text="过程标准差")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(f, textvariable=self.sigma,
                      bg='white', width=15)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        f = tk.LabelFrame(m, text='Misc.')
+        f = tk.LabelFrame(m, text='其他')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.pooled_SD(f)
         self.all_lines = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(f, text='All SD lines',
+        w = tk.Checkbutton(f, text='显示所有标准差线',
                            variable=self.all_lines)
         w.pack(side=LEFT, padx=2, pady=2)
 
@@ -47,24 +47,24 @@ class IMRDialog(Dialogs):
 
     def pooled_SD(self, m):
         self.pooled = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(m, text='Pooled SD',
+        w = tk.Checkbutton(m, text='合并标准差',
                            variable=self.pooled)
         w.pack(side=LEFT, padx=2, pady=2)
         w.config(state="disabled")
         return
 
     def input_data(self, m):
-        f = tk.LabelFrame(m, text='Input Column')
+        f = tk.LabelFrame(m, text='输入列')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Values")
+        w = tk.Label(f, text="数值")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.mr_range = tk.IntVar(value=2)
-        w = tk.Label(f, text="Moving Range")
+        w = tk.Label(f, text="移动极差")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(f, textvariable=self.mr_range,
                      bg='white', width=5)
@@ -84,12 +84,12 @@ class IMRDialog(Dialogs):
         return
 
     def y_refs(self, m, label1=None, label2=None):
-        master = tk.LabelFrame(m, text='Y ref lines (optional)')
+        master = tk.LabelFrame(m, text='Y参考线（可选）')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.y1ref = tk.StringVar(value=label1)
         self.y2ref = tk.StringVar(value=label2)
 
-        w = tk.Label(master, text="Y positions (sep by ,)")
+        w = tk.Label(master, text="Y位置（逗号分隔）")
         w.pack(side=LEFT, fill=X, padx=2)
         if label1 is None:
             w = tk.Entry(master, textvariable=self.y2ref,
@@ -100,7 +100,7 @@ class IMRDialog(Dialogs):
         w.pack(side=LEFT, padx=2, pady=2)
         if label2 is None or label1 is None:
             return
-        w = tk.Label(master, text="Y pos for chart 2")
+        w = tk.Label(master, text="图2的Y位置")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.y2ref,
                      bg='white', width=13)
@@ -108,12 +108,12 @@ class IMRDialog(Dialogs):
         return
 
     def y_options(self, m, label1=None, label2=None):
-        master = tk.LabelFrame(m, text='Y axis setting (optional)')
+        master = tk.LabelFrame(m, text='Y轴设置（可选）')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.y1label = tk.StringVar(value=label1)
         self.y2label = tk.StringVar(value=label2)
 
-        w = tk.Label(master, text="Y Label")
+        w = tk.Label(master, text="Y轴标签")
         w.pack(side=LEFT, fill=X, padx=2)
         if label1 is None:
             w = tk.Entry(master, textvariable=self.y2label,
@@ -124,7 +124,7 @@ class IMRDialog(Dialogs):
         w.pack(side=LEFT, padx=2, pady=2)
         if label2 is None or label1 is None:
             return
-        w = tk.Label(master, text="Y Label for chart 2")
+        w = tk.Label(master, text="图2的Y轴标签")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.y2label,
                      bg='white', width=15)
@@ -132,7 +132,7 @@ class IMRDialog(Dialogs):
         return
 
     def x_options(self, m):
-        master = tk.LabelFrame(m, text='X axis setting (optional)')
+        master = tk.LabelFrame(m, text='X轴设置（可选）')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.max_x_labels = tk.DoubleVar(value=25)
         self.xlabel = tk.StringVar(value="")
@@ -140,13 +140,13 @@ class IMRDialog(Dialogs):
 
         slave = tk.Frame(master)
         slave.pack(side=TOP, fill=X)
-        w = tk.Label(slave, text="X Label")
+        w = tk.Label(slave, text="X轴标签")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(slave, textvariable=self.xlabel,
                      bg='white', width=15)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        w = tk.Label(slave, text="Axes Label Col.")
+        w = tk.Label(slave, text="轴标签列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             slave, values=self.cols, textvariable=self.xlabelID,
@@ -155,7 +155,7 @@ class IMRDialog(Dialogs):
         slave = tk.Frame(master)
         slave.pack(side=TOP, fill=X)
         #  slave.pack(side=TOP)
-        w = tk.Label(slave, text="Max Axes Labels")
+        w = tk.Label(slave, text="最大轴标签数")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(slave, textvariable=self.max_x_labels,
                      bg='white', width=15)
@@ -216,10 +216,10 @@ class IMRDialog(Dialogs):
 
 class IDialog(IMRDialog):
     def input_data(self, m):
-        f = tk.LabelFrame(m, text='Input Column')
+        f = tk.LabelFrame(m, text='输入列')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Values")
+        w = tk.Label(f, text="数值")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
@@ -267,32 +267,32 @@ class MRDialog(IMRDialog):
 class XBRDialog(IMRDialog):
     def pooled_SD(self, m):
         self.pooled = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(m, text='Pooled SD',
+        w = tk.Checkbutton(m, text='合并标准差',
                            variable=self.pooled)
         w.pack(side=LEFT, padx=2, pady=2)
         #  w.config(state="disabled")
         return
 
     def input_data(self, m):
-        f = tk.LabelFrame(m, text='Input Column')
+        f = tk.LabelFrame(m, text='输入列')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Values")
+        w = tk.Label(f, text="数值")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
         w.pack(side=LEFT, padx=2)
-        ff = tk.LabelFrame(f, text='Grouping By')
+        ff = tk.LabelFrame(f, text='分组依据')
         ff.pack(side=RIGHT, fill=X, padx=2)
         self.gsize = tk.StringVar(value="")
         self.gid = tk.StringVar(value="")
-        w = tk.Label(ff, text="Size")
+        w = tk.Label(ff, text="大小")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(ff, textvariable=self.gsize,
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Label(ff, text="ID Col.")
+        w = tk.Label(ff, text="ID列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             ff, values=self.cols, textvariable=self.gid,
@@ -311,12 +311,12 @@ class XBRDialog(IMRDialog):
         gsize = get_number(self.gsize)
         xid = self.xvar.get()
         if xid not in list(self.df):
-            self.error("Can't get data.")
+            self.error("无法获取数据。")
             return
         if gsize is None:
             gid = self.gid.get()
             if gid not in list(self.df):
-                self.error("Can't get valid a grouping method.")
+                self.error("无法获取有效的分组方式。")
                 return
             data, keys = grouping_by_labels(self.df[xid],
                                             self.df[gid], return_keys=True)
@@ -352,17 +352,17 @@ class XBSDialog(XBRDialog):
 
 class NPDialog(IMRDialog):
     def input_data(self, m):
-        f = tk.LabelFrame(m, text='Input Column')
+        f = tk.LabelFrame(m, text='输入列')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Y, n Defective")
+        w = tk.Label(f, text="Y, n 不合格数")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.N = tk.IntVar(value=200)
-        w = tk.Label(f, text="n Trials")
+        w = tk.Label(f, text="试验次数 n")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(f, textvariable=self.N,
                      bg='white', width=10)
@@ -410,14 +410,14 @@ class NPDialog(IMRDialog):
         print(NP)
         if self.y1label.get() == "":
             if NP:
-                ylabel = "Count (" + self.xvar.get() + ")"
+                ylabel = "计数 (" + self.xvar.get() + ")"
             else:
-                ylabel = "Proportion (" + self.xvar.get() + ")"
+                ylabel = "比例 (" + self.xvar.get() + ")"
         else:
             ylabel = self.y1label.get()
         if self.xlabel.get() == "":
             if self.xlabelID.get() == "":
-                xlabel = "Subgroup"
+                xlabel = "子组"
             else:
                 xlabel = self.xlabelID.get()
         else:
@@ -440,17 +440,17 @@ class NPDialog(IMRDialog):
 
 class PDialog(NPDialog):
     def input_data(self, m):
-        f = tk.LabelFrame(m, text='Input Column')
+        f = tk.LabelFrame(m, text='输入列')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Y, n Defective")
+        w = tk.Label(f, text="Y, n 不合格数")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.N = tk.StringVar(value="")
-        w = tk.Label(f, text="n Trials")
+        w = tk.Label(f, text="试验次数 n")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.N,
@@ -491,10 +491,10 @@ class PDialog(NPDialog):
 
 class CDialog(NPDialog):
     def input_data(self, m):
-        f = tk.LabelFrame(m, text='Input Column')
+        f = tk.LabelFrame(m, text='输入列')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Y, n Defective")
+        w = tk.Label(f, text="Y, n 不合格数")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
@@ -525,14 +525,14 @@ class CDialog(NPDialog):
         C = ("C" == self.plot_type)
         if self.y1label.get() == "":
             if C:
-                ylabel = "Count (" + self.xvar.get() + ")"
+                ylabel = "计数 (" + self.xvar.get() + ")"
             else:
-                ylabel = "Count per unit for " + self.xvar.get()
+                ylabel = "每单位计数 " + self.xvar.get()
         else:
             ylabel = self.y1label.get()
         if self.xlabel.get() == "":
             if self.xlabelID.get() == "":
-                xlabel = "Subgroup"
+                xlabel = "子组"
             else:
                 xlabel = self.xlabelID.get()
         else:

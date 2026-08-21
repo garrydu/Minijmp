@@ -203,7 +203,7 @@ def chi_square(data, print_out=True, print_port=print,
         print("\n---- Chi square test ----")
         print("df = %d" % df)
         t = PT()
-        t.field_names = ["Test", "Chi sq", "P > ChiSq"]
+        t.field_names = ['检验', '卡方', 'P > 卡方']
         t.add_row(["Likelihood Ratio", "%.3f" % LR, "%.3f" % p_LR])
         t.add_row(["Pearson", "%.3f" % chi_sq, "%.3f" % p])
         print(str(t))
@@ -282,7 +282,7 @@ def multi_pop_var_test(data, labels, print_out=False, print_port=print,
         print("\n---- Multi Sample Standard Deviation Test ----")
         t = PT()
         pct = "%.2f%%" % (100 - 100 * alpha)
-        t.field_names = ["Sample", "N", "SD", pct + " CI of std", "MAD to Mean", "MAD to Median"]
+        t.field_names = ['样本', '样本量 N', '标准差', pct + '标准差置信区间', '均值绝对差 (MAD to Mean)', '中位数绝对差 (MAD to Median)']
         for i in range(len(data)):
             chi2_r = chi2_test_stdev(
                 data[i],
@@ -406,16 +406,16 @@ def var_1sample(data=None, sample_n=None, sample_std=None,
         print("N = %d\tSD: s = %.3f" % (chi2_res['n'], chi2_res['stdev']))
         print("s0 = %.3f" % s0)
         t = PT()
-        t.field_names = [' ', 'Chi Sq', 'Bonett']
+        t.field_names = [' ', '卡方', 'Bonett']
         t.add_row(['P-value *', "%.3f" % chi2_res['p'], "%.3f" % bonett_res['Bonett p']])
         pct = "%.1f%%" % (100 - 100 * alpha)
         t.add_row(['SD CI ' + pct, '(%.3f, %.3f)' % chi2_res['CI 95'], '(%.3f, %.3f)' % bonett_res['Bonett CI']])
         t.add_row([pct + ' upper bound', "%.3f" % chi2_res['CI upper'], "%.3f" % bonett_res['One tail upper boundary']])
         t.add_row([pct + ' lower bound', "%.3f" % chi2_res['CI lower'], "%.3f" % bonett_res['One tail lower boundary']])
         print(str(t))
-        print("* H0 s==s0, H1 s!=s0")
-        print("The Bonett method is valid for any continuous distribution.")
-        print("The chi-square method is valid only for the normal distribution.")
+        print('* 原假设 H0: s==s0, 备择假设 H1: s!=s0')
+        print('Bonett 方法适用于任意连续分布。')
+        print('卡方方法仅适用于正态分布。')
     return res
 
 
