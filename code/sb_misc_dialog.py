@@ -11,45 +11,45 @@ from sbplot_dialog import SBDialog
 
 class countPlotDialog(singleBoxDialog):
     def createWidgets(self, m):
-        f = tk.LabelFrame(m, text='Data in one column')
+        f = tk.LabelFrame(m, text='数据在单列中')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Data Col.")
+        w = tk.Label(f, text="数据列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.grouping = tk.StringVar(value="")
-        w = tk.Label(f, text="Group Col.(optional)")
+        w = tk.Label(f, text="分组列（可选）")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.grouping,
             width=14)
         w.pack(side=LEFT, padx=2)
 
-        f = tk.LabelFrame(m, text='Data in its own column')
+        f = tk.LabelFrame(m, text='数据在独立列中')
         f.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(f, text="Overriding selections above"
+        w = tk.Label(f, text="覆盖以上选择"
                      + "\nESC to deselect.")  # ,
         #  anchor="e", justify=LEFT, wraplength=100)
         w.pack(side=LEFT, fill=X, padx=10)
         f.pack(side=TOP, fill=BOTH, padx=2)
         w, self.grpvar = addListBox(
-            f, values=self.cols, width=20, label='columns')
+            f, values=self.cols, width=20, label='列')
         w.pack(side=LEFT, fill=X, padx=10)
 
         self.xlabel = tk.StringVar(value="")
-        master = tk.LabelFrame(m, text='Plot Settings')
+        master = tk.LabelFrame(m, text='图表设置')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(master, text="Label")
+        w = tk.Label(master, text="标签")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.xlabel,
                      bg='white', width=15)
         w.pack(side=LEFT, padx=2, pady=2)
         stat_list = ['count', 'probability', 'proportion', 'percent']
         self.stat = tk.StringVar(value=stat_list[0])
-        w = tk.Label(master, text="Stats.")
+        w = tk.Label(master, text="统计量")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             master, values=stat_list, textvariable=self.stat,
@@ -67,12 +67,12 @@ class countPlotDialog(singleBoxDialog):
         self.show_legend = tk.BooleanVar(value=False)
         self.ax_margin = tk.DoubleVar(value=0.1)
 
-        master = tk.LabelFrame(m, text='Plot Setting')
+        master = tk.LabelFrame(m, text='图表设置')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Checkbutton(master, text='Show Grid',
+        w = tk.Checkbutton(master, text='显示网格',
                            variable=self.grid)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(master, text='Show Legend',
+        w = tk.Checkbutton(master, text='显示图例',
                            variable=self.show_legend)
         w.pack(side=LEFT, padx=2, pady=2)
         return
@@ -136,38 +136,38 @@ class countPlotDialog(singleBoxDialog):
 
 class linePlotDialog(SBDialog):
     def createWidgets(self, m):
-        f = tk.LabelFrame(m, text='Y Data in one column')
+        f = tk.LabelFrame(m, text='Y数据在单列中')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Y Data Col.")
+        w = tk.Label(f, text="Y数据列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.grouping = tk.StringVar(value="")
-        w = tk.Label(f, text="Group Col.(optional)")
+        w = tk.Label(f, text="分组列（可选）")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.grouping,
             width=14)
         w.pack(side=LEFT, padx=2)
 
-        f = tk.LabelFrame(m, text='Y Data in its own column')
+        f = tk.LabelFrame(m, text='Y数据在独立列中')
         f.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(f, text="Overriding selections above"
+        w = tk.Label(f, text="覆盖以上选择"
                      + "\nESC to deselect.")  # ,
         #  anchor="e", justify=LEFT, wraplength=100)
         w.pack(side=LEFT, fill=X, padx=10)
         f.pack(side=TOP, fill=BOTH, padx=2)
         w, self.grpvar = addListBox(
-            f, values=self.cols, width=20, label='columns')
+            f, values=self.cols, width=20, label='列')
         w.pack(side=LEFT, fill=X, padx=10)
 
-        f = tk.LabelFrame(m, text='X Data')
+        f = tk.LabelFrame(m, text='X数据')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.yvar = tk.StringVar(value="")
-        w = tk.Label(f, text="X Data Col.")
+        w = tk.Label(f, text="X数据列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.yvar,
@@ -239,38 +239,38 @@ class linePlotDialog(SBDialog):
 
 class dotPlotDialog(SBDialog):
     def createWidgets(self, m):
-        f = tk.LabelFrame(m, text='Y Data in one column')
+        f = tk.LabelFrame(m, text='Y数据在单列中')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Y Data Col.")
+        w = tk.Label(f, text="Y数据列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.grouping = tk.StringVar(value="")
-        w = tk.Label(f, text="Group Col.(optional)")
+        w = tk.Label(f, text="分组列（可选）")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.grouping,
             width=14)
         w.pack(side=LEFT, padx=2)
 
-        f = tk.LabelFrame(m, text='Y Data in its own column')
+        f = tk.LabelFrame(m, text='Y数据在独立列中')
         f.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(f, text="Overriding selections above"
+        w = tk.Label(f, text="覆盖以上选择"
                      + "\nESC to deselect.")  # ,
         #  anchor="e", justify=LEFT, wraplength=100)
         w.pack(side=LEFT, fill=X, padx=10)
         f.pack(side=TOP, fill=BOTH, padx=2)
         w, self.grpvar = addListBox(
-            f, values=self.cols, width=20, label='columns')
+            f, values=self.cols, width=20, label='列')
         w.pack(side=LEFT, fill=X, padx=10)
 
-        f = tk.LabelFrame(m, text='X Data')
+        f = tk.LabelFrame(m, text='X数据')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.yvar = tk.StringVar(value="")
-        w = tk.Label(f, text="X Data Col.")
+        w = tk.Label(f, text="X数据列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.yvar,

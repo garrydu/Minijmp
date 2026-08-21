@@ -95,7 +95,7 @@ def getDictfromTkVars(opts, tkvars, widgets):
 def pickColor(parent, oldcolor):
 
     import tkinter.colorchooser
-    ctuple, newcolor = tkinter.colorchooser.askcolor(title='pick a color',
+    ctuple, newcolor = tkinter.colorchooser.askcolor(title='选择颜色',
                                                      initialcolor=oldcolor,
                                                      parent=parent)
     if ctuple == None:
@@ -646,11 +646,11 @@ class ImportDialog(Frame):
         self.update()
 
         optsframe.pack(side=TOP,fill=BOTH)
-        b = Button(bf, text="Update preview", command=self.update)
+        b = Button(bf, text="更新预览", command=self.update)
         b.pack(side=TOP,fill=X,pady=2)
-        b = Button(bf, text="Import", command=self.doImport)
+        b = Button(bf, text="导入", command=self.doImport)
         b.pack(side=TOP,fill=X,pady=2)
-        b = Button(bf, text="Cancel", command=self.quit)
+        b = Button(bf, text="取消", command=self.quit)
         b.pack(side=TOP,fill=X,pady=2)
         self.main.wait_window()
         return
@@ -761,7 +761,7 @@ class CombineDialog(Frame):
         w = Combobox(f, values=ops,
                  textvariable=self.opvar,width=14 )
         w.set('merge')
-        Label(f,text='operation:').pack()
+        Label(f,text='操作：').pack()
         w.pack()
 
         #buttons to add for each op.
@@ -794,11 +794,11 @@ class CombineDialog(Frame):
 
         bf = Frame(wf)
         bf.pack(side=TOP,fill=BOTH)
-        b = Button(bf, text="Apply", command=self.apply)
+        b = Button(bf, text="应用", command=self.apply)
         b.pack(side=LEFT,fill=X,expand=1,pady=1)
-        b = Button(bf, text="Close", command=self.quit)
+        b = Button(bf, text="关闭", command=self.quit)
         b.pack(side=LEFT,fill=X,expand=1,pady=1)
-        b = Button(bf, text="Help", command=self.help)
+        b = Button(bf, text="帮助", command=self.help)
         b.pack(side=LEFT,fill=X,expand=1,pady=1)
         self.main.wait_window()
         return
@@ -852,9 +852,9 @@ class CombineDialog(Frame):
         newtable.show()
         bf = Frame(f)
         bf.grid(row=4,column=0,columnspan=2,sticky='news',padx=2,pady=2)
-        b = Button(bf, text="Copy Table", command=lambda : self.result.to_clipboard(sep=','))
+        b = Button(bf, text="复制表格", command=lambda : self.result.to_clipboard(sep=','))
         b.pack(side=RIGHT)
-        b = Button(bf, text="Replace Current Table", command=self.replaceTable)
+        b = Button(bf, text="替换当前表格", command=self.replaceTable)
         b.pack(side=RIGHT)
         return
 
@@ -907,7 +907,7 @@ class BaseDialog(Frame):
         """Override this"""
 
         cols = list(self.df.columns)
-        f = LabelFrame(m, text='frame')
+        f = LabelFrame(m, text='框架')
         f.pack(side=LEFT,fill=BOTH,padx=2)
         self.buttonsFrame()
         return
@@ -915,11 +915,11 @@ class BaseDialog(Frame):
     def buttonsFrame(self):
         bf = Frame(self.main)
         bf.pack(side=TOP, fill=BOTH)
-        Button(bf, text="Apply", command=self.apply).pack(
+        Button(bf, text="应用", command=self.apply).pack(
             side=LEFT, fill=X, expand=1, pady=2)
-        Button(bf, text="Close", command=self.quit).pack(
+        Button(bf, text="关闭", command=self.quit).pack(
             side=LEFT, fill=X, expand=1, pady=2)
-        Button(bf, text="Help", command=self.help).pack(
+        Button(bf, text="帮助", command=self.help).pack(
             side=LEFT, fill=X, expand=1, pady=2)
         apply_dialog_theme(self.main)
         return
@@ -951,20 +951,20 @@ class CrosstabDialog(BaseDialog):
         cols = list(self.df.columns)
         funcs = ['mean','median','sum','size','count','std','first','last',
                  'min','max','var']
-        f = LabelFrame(m, text='crosstab')
+        f = LabelFrame(m, text='交叉表')
         f.pack(side=LEFT,fill=BOTH,padx=2)
-        w,self.colsvar = addListBox(f, values=cols,width=14, label='columns')
+        w,self.colsvar = addListBox(f, values=cols,width=14, label='列')
         w.pack(side=LEFT,padx=2)
         self.vars = OrderedDict()
-        w,self.rowsvar = addListBox(f, values=cols,width=14,label='rows')
+        w,self.rowsvar = addListBox(f, values=cols,width=14,label='行')
         w.pack(side=LEFT,padx=2)
         valcols = list(self.df.select_dtypes(include=[np.float64,np.int32,np.int64]))
-        w,self.valsvar = addListBox(f, values=valcols,width=14,label='values')
+        w,self.valsvar = addListBox(f, values=valcols,width=14,label='值')
         w.pack(side=LEFT,padx=2)
-        w,self.funcvar = addListBox(f, values=funcs,width=14,label='functions')
+        w,self.funcvar = addListBox(f, values=funcs,width=14,label='函数')
         w.pack(side=LEFT,padx=2)
         self.marginsvar = BooleanVar()
-        w = Checkbutton(self.main,text='add row/column subtotals',
+        w = Checkbutton(self.main,text='添加行/列小计',
                          variable=self.marginsvar)
         w.pack(padx=2,pady=2)
         self.buttonsFrame()
@@ -1011,13 +1011,13 @@ class AggregateDialog(BaseDialog):
         f = Frame(self.main)
         f.pack(side=TOP)
         self.mapcolfuncs = BooleanVar()
-        w = Checkbutton(f,text='map columns to functions',
+        w = Checkbutton(f,text='将列映射到函数',
                          variable=self.mapcolfuncs)
         w.pack(padx=2,pady=2)
         ToolTip.createToolTip(w, 'do 1-1 mapping of cols to functions')
         self.keepcols = BooleanVar()
         self.keepcols.set(False)
-        w = Checkbutton(f,text='set grouping column as index',
+        w = Checkbutton(f,text='将分组列设为索引',
                          variable=self.keepcols)
         w.pack(padx=2,pady=2)
 
@@ -1031,16 +1031,16 @@ class AggregateDialog(BaseDialog):
         funcs = ['mean','median','sum','size','count','std','first','last',
                  'min','max','var']
 
-        f = LabelFrame(m, text='group by')
+        f = LabelFrame(m, text='分组依据')
         f.pack(side=LEFT,fill=BOTH,padx=2)
-        w,self.grpvar = addListBox(f, values=cols,width=14, label='columns')
+        w,self.grpvar = addListBox(f, values=cols,width=14, label='列')
         w.pack()
         self.vars = OrderedDict()
-        f = LabelFrame(m, text='aggregate on')
+        f = LabelFrame(m, text='聚合于')
         f.pack(side=LEFT,fill=BOTH,padx=2)
-        w,self.aggvar = addListBox(f, values=cols,width=14,label='columns')
+        w,self.aggvar = addListBox(f, values=cols,width=14,label='列')
         w.pack(side=LEFT,padx=2)
-        w,self.funcvar = addListBox(f, values=funcs,width=14,label='functions')
+        w,self.funcvar = addListBox(f, values=funcs,width=14,label='函数')
         w.pack(side=LEFT,padx=2)
         self.buttonsFrame()
         return
@@ -1255,11 +1255,11 @@ class SimpleEditor(Frame):
         st.config(font=font)
         btnform = Frame(self)
         btnform.pack(fill=BOTH)
-        Button(btnform, text='Save',  command=self.onSave).pack(side=LEFT)
-        #Button(frm, text='Cut',   command=self.onCut).pack(side=LEFT)
-        #Button(frm, text='Paste', command=self.onPaste).pack(side=LEFT)
-        Button(btnform, text='Find',  command=self.onFind).pack(side=LEFT)
-        Button(btnform, text='Clear',  command=self.onClear).pack(side=LEFT)
+        Button(btnform, text='保存',  command=self.onSave).pack(side=LEFT)
+        #Button(frm, text='剪切',   command=self.onCut).pack(side=LEFT)
+        #Button(frm, text='粘贴', command=self.onPaste).pack(side=LEFT)
+        Button(btnform, text='查找',  command=self.onFind).pack(side=LEFT)
+        Button(btnform, text='清除',  command=self.onClear).pack(side=LEFT)
         self.target=''
         return
 
@@ -1309,13 +1309,13 @@ class FindReplaceDialog(Frame):
 
         sf = self
         sfont = "Helvetica 10 bold"
-        Label(sf, text='Enter Search String:', font=sfont).pack(side=TOP,fill=X)
+        Label(sf, text='输入搜索字符串：', font=sfont).pack(side=TOP,fill=X)
         self.searchvar = StringVar()
         e = Entry(sf, textvariable=self.searchvar)
         util.trace_write(self.searchvar, self.updated)
         e.bind('<Return>', self.find)
         e.pack(fill=BOTH,side=TOP,expand=1,padx=2,pady=2)
-        Label(sf, text='Replace With:', font=sfont).pack(side=TOP,fill=X)
+        Label(sf, text='替换为：', font=sfont).pack(side=TOP,fill=X)
         self.replacevar = StringVar()
         e = Entry(sf, textvariable=self.replacevar)
         e.pack(fill=BOTH,side=TOP,expand=1,padx=2,pady=2)
@@ -1444,7 +1444,7 @@ class QueryDialog(Frame):
 
         qf = self
         sfont = "Helvetica 10 bold"
-        Label(qf, text='Enter String Query:', font=sfont).pack(side=TOP,fill=X)
+        Label(qf, text='输入字符串查询：', font=sfont).pack(side=TOP,fill=X)
         self.queryvar = StringVar()
         e = Entry(qf, textvariable=self.queryvar, font="Courier 12 bold")
         e.bind('<Return>', self.query)
@@ -1459,7 +1459,7 @@ class QueryDialog(Frame):
         addButton(f, 'close', self.close, images.cross(), 'close', side=LEFT)
         self.applyqueryvar = BooleanVar()
         self.applyqueryvar.set(True)
-        c = Checkbutton(f, text='show filtered only', variable=self.applyqueryvar,
+        c = Checkbutton(f, text='仅显示筛选', variable=self.applyqueryvar,
                       command=self.query)
         c.pack(side=LEFT,padx=2)
         addButton(f, 'color rows', self.colorResult, images.color_swatch(), 'color filtered rows', side=LEFT)

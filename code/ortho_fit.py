@@ -107,7 +107,7 @@ def orthogonal_fit(x, y, error_ratio=1.0, alpha=0.05,
 
     if print_residual:
         t = PT()
-        t.field_names = ['Obs', 'X', 'X Fit', 'Y', 'Y Fit', 'Resid', 'Std Resid']
+        t.field_names = ['观测', 'X', 'X 拟合', 'Y', 'Y 拟合', '残差', '标准化残差']
         for i, xx in enumerate(x):
             t.add_row(['%d' % (i + 1), '%.2f' % xx, '%.2f' % x_est[i],
                        '%.2f' % y[i], '%.2f' % y_est[i], '%.2f' % vt_est[i],

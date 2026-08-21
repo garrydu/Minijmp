@@ -150,7 +150,7 @@ def hoeffding(x, y, print_out=False, print_port=print):
         print("\n---- Hoeffding's D Correlation ----")
         print("Hoeffding's D: " + "%.3f" % D)
         print("Hoeffding's D p-value: " + "%.3f" % p)
-        print("H0: The two variables are independent.")
+        print('原假设 H0: 两个变量相互独立。')
         #  print("
     return {"cor": D, "p": p}
 

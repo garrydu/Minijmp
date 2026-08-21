@@ -165,3 +165,9 @@ cython_debug/
 *.Identifier
 # WI editor generated
 working_draft
+
+# 开发临时目录与汉化备份
+_dev/
+*.zhbak
+code/pandastable_local/zh_*.py
+code/pandastable_local/zh_*.txt

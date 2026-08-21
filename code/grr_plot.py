@@ -57,7 +57,7 @@ def grr_plot(y=None, part=None, op=None,
         n = len(list(df["OP"].unique()))
         axs = create_inset_grid(ax, n)
         for subax, operator in zip(axs, list(df["OP"].unique())):
-            subplot(df[df["OP"] == operator], subax, title="OP=" + str(operator))
+            subplot(df[df["OP"] == operator], subax, title="操作员 OP=" + str(operator))
             subax.set_ylim(bottom, top)
             subax.tick_params(axis='y', which='both', left=False, labelleft=False)
             subax.grid(axis='y')

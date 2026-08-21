@@ -49,7 +49,7 @@ def one_way_anova(data, labels, print_out=False, print_port=print,
         pct = "%.2f%%" % (100 - 100 * alpha)
         print("\n---- Oneway Anova ----\nAnalysis of Variance")
         t = PT()
-        t.field_names = ["Source", "DF", "Adj. SS", "Adj. MS", "F Ratio", "P Value"]
+        t.field_names = ['来源', '自由度 DF', '校正平方和 (Adj. SS)', '校正均方 (Adj. MS)', 'F 值', 'P 值']
         t.add_row(["Between", df_between, "%.3f" % SSB, "%.3f" % MSB,
                    "%.3f" % F, "%.3f" % p])
         t.add_row(["Within", df_within, "%.3f" % SSW, "%.3f" % MSW, " ", " "])
@@ -57,7 +57,7 @@ def one_way_anova(data, labels, print_out=False, print_port=print,
         print(str(t))
         print("\nMeans of Oneway Anova")
         t = PT()
-        t.field_names = ["Level", "N", "Mean", "SE Mean", pct + " CI of Mean"]
+        t.field_names = ['水平', '样本量 N', '均值', '均值标准误', pct + '均值置信区间']
         for i in range(k):
             t.add_row([groups[i], ns[i], "%.3f" % means[i],
                        "%.3f" % stds[i], "(%.3f, %.3f)" % CIs[i]])
@@ -183,8 +183,8 @@ def JMP_ANOVA_t_test(data, labels, print_out=False, print_port=print,
 
     if print_out:
         print = print_port
-        print("\n---- Means Comparisons ----")
-        print("t test p value matrix, H0: u1 == u2, H1: u1 != u2")
+        print("\n---- 均值比较 ----")
+        print('t 检验 P 值矩阵，H0: u1 == u2, H1: u1 != u2')
         t = PT()
         l = [" "]
         for i in range(k - 1):
@@ -199,9 +199,9 @@ def JMP_ANOVA_t_test(data, labels, print_out=False, print_port=print,
                 l.append("")
             t.add_row(l)
         print(str(t))
-        print("\nConnecting Report")
+        print("\n连接报告")
         t = PT()
-        t.field_names = ["Grouping", "Level", "Mean"]
+        t.field_names = ['分组', '水平', '均值']
         for i in range(k):
             key_i = means[i][1]
             gt = ""

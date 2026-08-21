@@ -42,29 +42,29 @@ def describe(data, print_port=print,
 
     if print_out:
         print = print_port
-        print("\n---- Descriptive Statistics ----")
+        print("\n---- 描述性统计 ----")
         t = PT()
         #  t.field_names = ["Item", "Value", "Item", "Value", "Item", "Value"]
-        t.add_row(["N", "%d" %
-                   N, "Mean", "%.3f" %
-                   mean, "SD", "%.3f" %
+        t.add_row(["样本量 N", "%d" %
+                   N, "均值", "%.3f" %
+                   mean, "标准差", "%.3f" %
                    std])
-        t.add_row(["SE Mean", "%.3f" % SEM, "Variance", "%.3f" % var,
-                   "CoefVar", "%.2f" % coefvar])
-        t.add_row(["Sum", "%.3f" % (sum(data)), "Min", "%.3f" % min(data),
+        t.add_row(["均值标准误", "%.3f" % SEM, "方差", "%.3f" % var,
+                   "变异系数%", "%.2f" % coefvar])
+        t.add_row(["总和", "%.3f" % (sum(data)), "最小值", "%.3f" % min(data),
                    "Q1", "%.3f" % qnt[0]])
-        t.add_row(["Median", "%.3f" % median, "Q3", "%.3f" % qnt[1],
-                   "Max", "%.3f" % max(data)])
-        t.add_row(["Range", "%.3f" %
-                   R, "IQR", "%.3f" %
-                   IQR, "Mode", "%.3f" %
+        t.add_row(["中位数", "%.3f" % median, "Q3", "%.3f" % qnt[1],
+                   "最大值", "%.3f" % max(data)])
+        t.add_row(["极差", "%.3f" %
+                   R, "四分位距", "%.3f" %
+                   IQR, "众数", "%.3f" %
                    mode])
-        t.add_row(["N for Mode", "%d" % N_mode, "Skewness", "%.3f" % skew,
-                   "Kurtosis", "%.3f" % kurt])
+        t.add_row(["众数频数", "%d" % N_mode, "偏度", "%.3f" % skew,
+                   "峰度", "%.3f" % kurt])
         print(t.get_string(header=False))
-        print("\nQuantiles")
+        print("\n分位数")
         t = PT()
-        t.field_names = ["Percentiles", "Values"]
+        t.field_names = ["百分位数", "数值"]
         for i, j in zip(percentiles, qnt2):
             t.add_row(["%.2f%%" % i, "%.3f" % j])
         print(str(t))

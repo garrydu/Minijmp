@@ -70,7 +70,7 @@ def cpk_calc(mean, std, T, usl, lsl, df, N, print_port=print,
         pct = "%.2f%%" % (100 - 100 * alpha)
         print("\n" + name)
         t = PT()
-        t.field_names = ["Index", "Estimate", "Lower " + pct, "Upper " + pct]
+        t.field_names = ["指数", "估计值", "下限 " + pct, "上限 " + pct]
         t.add_row(['Cpk', "%.3f" % cpk, "%.3f" % cpk_l, "%.3f" % cpk_u])
         t.add_row(['Cpl', "%.3f" % cpl, "%.3f" % cpl_l, "%.3f" % cpl_u])
         t.add_row(['Cpu', "%.3f" % cpu, "%.3f" % cpu_l, "%.3f" % cpu_u])
@@ -100,13 +100,13 @@ def nonconformance(data, t, lsl, usl, u, sw, so, print_out=True,
     ol = norm.cdf((lsl - u) / so)
     if print_out:
         print = print_port
-        print("\n" + "Nonconformance (Observation and Expected)")
+        print("\n" + "不合格率（观测与期望）")
         #  t = PT()
-        t = [['Portion', 'Below LSL', 'Above USL', 'Total Out'],
-             ['Observed%', "%.2f" % (below / N * 100), "%.2f" % (above / N * 100), "%.2f" % ((below + above) / N * 100)]]
+        t = [['项目', '低于LSL', '高于USL', '总不合格'],
+             ['观测%', "%.2f" % (below / N * 100), "%.2f" % (above / N * 100), "%.2f" % ((below + above) / N * 100)]]
         if within:
-            t.append(['Expected Within%', "%.2f" % (wl * 100), "%.2f" % (wu * 100), "%.2f" % (wu * 100 + 100 * wl)])
-        t.append(['Expected Overall%', "%.2f" % (ol * 100), "%.2f" % (ou * 100), "%.2f" % ((ol + ou) * 100)])
+            t.append(['期望组内%', "%.2f" % (wl * 100), "%.2f" % (wu * 100), "%.2f" % (wu * 100 + 100 * wl)])
+        t.append(['期望整体%', "%.2f" % (ol * 100), "%.2f" % (ou * 100), "%.2f" % ((ol + ou) * 100)])
         print(str(gen_table(transpose_2D_list(t))))
 
         #  t.field_names = [
@@ -157,7 +157,7 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
         sub_grps = len(data)
 
         if use_range:
-            within_msg = "Within sigma estimated by the average of ranges over d2."
+            within_msg = "组内标准差由极差均值除以 d2 系数估计。"
             std_within = stat.mean(
                 [(max(l) - min(l)) / d2_values(len(l)) for l in data])
             if balanced:
@@ -167,7 +167,7 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
             else:
                 df_sub = len(flat_list) - sub_grps
         else:
-            within_msg = "Within sigma estimated by the average of unbiased SD."
+            within_msg = "组内标准差由无偏标准差的平均值估计。"
             std_within = stat.mean(
                 [stat.stdev(l) / c4_values(len(l)) for l in data])
             df_sub = len(flat_list) - sub_grps
@@ -176,7 +176,7 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
                 df_sub = scale_factor_f(n) * df_sub
 
     except BaseException:
-        within_msg = "Within sigma estimated by averaging moving ranges of 2."
+        within_msg = "组内标准差由移动极差（n=2）的平均值估计。"
         flat_list = data  # 1D for individual MR within
         std_within = stat.mean(
             [abs(i - j) for i, j in zip(data,
@@ -193,18 +193,29 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
     res = {"LSL": lsl, "USL": usl, "Target": target, "mean": mean,
            "Within Sigma": std_within, "Overall Sigma": std_overall,
            "N": N, "N Subgroups": sub_grps, "Stability Index": stability}
+    key_zh = {
+        "LSL": "LSL（规格下限）",
+        "USL": "USL（规格上限）",
+        "Target": "目标值",
+        "mean": "均值",
+        "Within Sigma": "组内标准差",
+        "Overall Sigma": "整体标准差",
+        "N": "样本量 N",
+        "N Subgroups": "子组数",
+        "Stability Index": "稳定性指数",
+    }
     if print_out:
         print = print_port
-        print("\n---- Process Capabilities ----")
+        print("\n---- 过程能力 ----")
         for key in res:
             if (not within) and key == "Within Sigma":
                 continue
             if (not within) and key == "Stability Index":
                 continue
             if "N" in key:
-                print(key + " = %d" % int(res[key]))
+                print(key_zh.get(key, key) + " = %d" % int(res[key]))
             else:
-                print(str(key) + " = %.3f" % res[key]
+                print(str(key_zh.get(key, key)) + " = %.3f" % res[key]
                       if isinstance(res[key], float) else str(res[key]))
         if within:
             print(within_msg)
@@ -213,7 +224,7 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
         res["Within"] = cpk_calc(mean, std_within, target,
                                  usl, lsl, df_sub, N, alpha=alpha,
                                  print_port=print_port,
-                                 name="Within", print_out=print_out)
+                                 name="组内 (Within)", print_out=print_out)
     res["Overall"] = cpk_calc(
         mean,
         std_overall,
@@ -223,7 +234,7 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
         N - 1,
         N, print_port=print_port,
         alpha=alpha,
-        name="Overall (AKA Ppk in JMP)",
+        name="整体 (Overall，即 JMP 的 Ppk)",
         print_out=print_out)
     res["nonconformance"] = nonconformance(
         flat_list,

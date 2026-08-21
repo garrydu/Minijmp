@@ -43,16 +43,16 @@ def cpk_plot(data, usl, target, lsl, print_out=False,
 
     # Plot the normal distribution curve for overall
     y = norm.pdf(x, mean, std)
-    ax1.plot(x, y, 'k', linewidth=2, linestyle="dashed", label="Overall")
+    ax1.plot(x, y, 'k', linewidth=2, linestyle="dashed", label="整体")
     #  print(x, y)
     if show_within:
         # Plot the normal distribution curve for within
         y = norm.pdf(x, mean, std_within)
-        ax1.plot(x, y, 'b', linewidth=1, label="Within")
+        ax1.plot(x, y, 'b', linewidth=1, label="组内")
 
     # Add labels and title
-    ax2.set_ylabel("Counts")
-    ax1.set_ylabel('Density')
+    ax2.set_ylabel("频数")
+    ax1.set_ylabel('概率密度')
     if xlabel is not None:
         ax1.set_xlabel(xlabel)
     # ax1.set_title(f'Histogram with Normal Distribution Fit (μ={mu:.2f}, σ={std:.2f})')
@@ -65,7 +65,7 @@ def cpk_plot(data, usl, target, lsl, print_out=False,
         ax1.text(
             target,
             txt_pos,
-            "Target",
+            "目标值",
             horizontalalignment='center',
             verticalalignment='bottom')
         ax1.text(
@@ -123,12 +123,12 @@ def hist_norm(data, ax=None, show_plot=False,
 
     # Plot the normal distribution curve for overall
     y = norm.pdf(x, mean, std)
-    ax1.plot(x, y, 'k', linewidth=2, linestyle="dashed", label="Overall")
+    ax1.plot(x, y, 'k', linewidth=2, linestyle="dashed", label="整体")
 
     # Add labels and title
-    ax2.set_ylabel("Counts")
+    ax2.set_ylabel("频数")
     ax1.set_xlabel(xlabel)
-    ax1.set_ylabel('Density')
+    ax1.set_ylabel('概率密度')
     # ax1.set_title(f'Histogram with Normal Distribution Fit (μ={mu:.2f}, σ={std:.2f})')
 
     if show_plot:

@@ -42,22 +42,22 @@ def t_test_1sample(data_list, u0, print_out=False,
     # Here P is two tailed test, for one tailed test 1/2
     if print_out:
         print = print_port
-        print("\n---- One sample t ----")
-        print("mean = %.3f" % mean)
-        print("SD = %.3f" % stdev)
-        print("t = %.3f" % t)
-        print("df = %.3f" % df)
-        print("u0 = %.3f"%u0)
-        print("Two-tailed test H0 u==u0, H1 u!=u0: p = %.3f" % p)
-        print("P-value is the prob of that population mean equals the specified value, which the samples came from.")
+        print("\n---- 单样本 t 检验 ----")
+        print("均值 = %.3f" % mean)
+        print("标准差 = %.3f" % stdev)
+        print("t 值 = %.3f" % t)
+        print("自由度 = %.3f" % df)
+        print("假设均值 u0 = %.3f" % u0)
+        print("双尾检验 H0: μ==μ0, H1: μ!=μ0: p = %.3f" % p)
+        print("P 值是样本来自总体均值等于指定值的概率。")
         print(
             pct +
-            " confidence interval for population mean: (%.3f, %.3f)" %
+            " 总体均值置信区间: (%.3f, %.3f)" %
             u0_95range)
-        print("H0 u==u0, H1 u>u0 p value = %.3f" % p_g)
-        print(pct + " Lower bound of population mean: %.3f" % u0_lower)
-        print("H0 u==u0, H1 u<u0 p value = %.3f" % p_l)
-        print(pct + " Upper bound of population mean: %.3f" % u0_upper)
+        print("H0: μ==μ0, H1: μ>μ0 的 p 值 = %.3f" % p_g)
+        print(pct + " 总体均值下限: %.3f" % u0_lower)
+        print("H0: μ==μ0, H1: μ<μ0 的 p 值 = %.3f" % p_l)
+        print(pct + " 总体均值上限: %.3f" % u0_upper)
     return {
         "t": t,
         "p": p,
@@ -105,22 +105,22 @@ def z_test_1sample(
     if print_out:
         print = print_port
         pct = "%.2f%%" % (100 - 100 * alpha)
-        print("\n---- One sample Z ----")
-        print("mean = %.3f" % mean)
-        print("z = %.3f" % z)
-        print("df = %.3f" % df)
-        print("u0 = %.3f"%u0)
-        print("Known SD = %.3f"%s0)
-        print("Two-tailed test H0: u==u0, H1 u!=u0: p = %.3f" % p)
-        print("P-value is the prob of that population mean equals the specified value, which the samples came from.")
+        print("\n---- 单样本 Z 检验 ----")
+        print("均值 = %.3f" % mean)
+        print("z 值 = %.3f" % z)
+        print("自由度 = %.3f" % df)
+        print("假设均值 u0 = %.3f" % u0)
+        print("已知标准差 = %.3f" % s0)
+        print("双尾检验 H0: μ==μ0, H1 μ!=μ0: p = %.3f" % p)
+        print("P 值是样本来自总体均值等于指定值的概率。")
         print(
             pct +
-            " confidence interval for population mean: (%.3f, %.3f)" %
+            " 总体均值置信区间: (%.3f, %.3f)" %
             CI_95)
-        print("H0 u==u0, H1 u>u0 p value = %.3f" % p_u)
-        print(pct + " Lower bound of population mean: %.3f" % CI_l)
-        print("H0 u==u0, H1 u<u0 p value = %.3f" % p_l)
-        print(pct + " Upper bound of population mean: %.3f" % CI_u)
+        print("H0: μ==μ0, H1: μ>μ0 的 p 值 = %.3f" % p_u)
+        print(pct + " 总体均值下限: %.3f" % CI_l)
+        print("H0: μ==μ0, H1: μ<μ0 的 p 值 = %.3f" % p_l)
+        print(pct + " 总体均值上限: %.3f" % CI_u)
 
     return {"z": z, "p": p, "df": df, "mean": mean,
             "u0_95range": CI_95,
@@ -138,27 +138,27 @@ def paired_t_test(l1, l2, print_out=False, u0=0,
     pct = "%.2f%%" % (100 - alpha * 100)
     if print_out:
         print = print_port
-        print("\n---- Paired t test ----")
-        print("Hypothesized mean of the differences u0 = %.3f" % u0)
-        print("Paired difference (Sample 1 - Sample 2):")
-        print("mean (ud) = %.3f" % res["mean"])
-        print("SD = %.3f" % res["stdev"])
-        print("t = %.3f" % res["t"])
-        print("df = %.3f" % res["df"])
-        print("n = %d" % len(l1))
+        print("\n---- 配对 t 检验 ----")
+        print("差值的假设均值 u0 = %.3f" % u0)
+        print("配对差值（样本1 - 样本2）：")
+        print("差值均值 (ud) = %.3f" % res["mean"])
+        print("标准差 = %.3f" % res["stdev"])
+        print("t 值 = %.3f" % res["t"])
+        print("自由度 = %.3f" % res["df"])
+        print("样本量 n = %d" % len(l1))
         print("H0: ud == u0, H1: ud != u0, p = %.3f" % res["p"])
         print("" + pct +
-              " range of the difference's mean: (%.3f, %.3f)" %
+              " 差值均值置信区间: (%.3f, %.3f)" %
               res["u0_95range"])
-        print("H0: u == u0, H1: ud > u0, p value = %.3f" % res["p gt"])
+        print("H0: ud == u0, H1: ud > u0, p 值 = %.3f" % res["p gt"])
         print(
             pct +
-            " Lower bound of difference's mean: %.3f" %
+            " 差值均值下限: %.3f" %
             res["u0 lower"])
-        print("H0: u == u0, H1: ud < u0, p value = %.3f" % res["p lt"])
+        print("H0: ud == u0, H1: ud < u0, p 值 = %.3f" % res["p lt"])
         print(
             pct +
-            " Upper bound of difference's mean: %.3f" %
+            " 差值均值上限: %.3f" %
             res["u0 upper"])
     return res
 
@@ -197,11 +197,11 @@ def t_test_2samples(l1=None, l2=None,
             print = print_port
             print("\n" + title)
             pct = "%.2f%%" % (100 - 100 * alpha)
-            print(pct + " CI of u2 - u1: (%.3f,%.3f)" % CI)
-            print("df = %.3f\tt = %.3f" % (df, t))
-            print("H0: u2 - u1 == d0, H1: u2 - u1 != d0, p = %.3f" % p)
-            print("H0: u2 - u1 == d0, H1: u2 - u1 < d0, p = %.3f" % pl)
-            print("H0: u2 - u1 == d0, H1: u2 - u1 > d0, p = %.3f" % pu)
+            print(pct + " μ2 - μ1 的置信区间: (%.3f,%.3f)" % CI)
+            print("自由度 = %.3f\tt 值 = %.3f" % (df, t))
+            print("H0: μ2 - μ1 == d0, H1: μ2 - μ1 != d0, p = %.3f" % p)
+            print("H0: μ2 - μ1 == d0, H1: μ2 - μ1 < d0, p = %.3f" % pl)
+            print("H0: μ2 - μ1 == d0, H1: μ2 - μ1 > d0, p = %.3f" % pu)
         return {"CI": CI, "p": p, "p lower": pl, "p upper": pu, "t": t,
                 "df": df}
 
@@ -225,10 +225,10 @@ def t_test_2samples(l1=None, l2=None,
 
     if print_out:
         print = print_port
-        print("\n---- Two Samples t tests ----")
-        print("u1 = %.3f\ts1 = %.3f\tn1 = %d" % (u1, s1, n1))
-        print("u2 = %.3f\ts2 = %.3f\tn2 = %d" % (u2, s2, n2))
-        print("d0 = %.3f\tu2 - u1 = %.3f" % (d0, u2 - u1))
+        print("\n---- 双样本 t 检验 ----")
+        print("μ1 = %.3f\t标准差1 = %.3f\t样本量1 = %d" % (u1, s1, n1))
+        print("μ2 = %.3f\t标准差2 = %.3f\t样本量2 = %d" % (u2, s2, n2))
+        print("d0 = %.3f\tμ2 - μ1 = %.3f" % (d0, u2 - u1))
     # t = (x̄₁ - x̄₂) / √((s₁²/n₁) + (s₂²/n₂))
     # df = (s1^2/n1 + s2^2/n2)^2 / [(s1^2/n1)^2/(n1-1) + (s2^2/n2)^2/(n2-1)]
 
@@ -238,7 +238,7 @@ def t_test_2samples(l1=None, l2=None,
         df = (s1 * s1 / n1 + s2 * s2 / n2)**2 / ((s1 * s1 / n1)
                                                  ** 2 / (n1 - 1) + (s2 * s2 / n2)**2 / (n2 - 1))
         res = tTest(u2 - u1, d0, s, df, alpha,
-                    "JMP 17 method unequal variances",
+                    "JMP 17 方法（方差不相等）",
                     print_out=print_out, print_port=print_port)
     else:
         #  Minitab unequal variances method
@@ -254,7 +254,7 @@ def t_test_2samples(l1=None, l2=None,
         s = sp * (1 / n1 + 1 / n2)**.5
         df = n1 + n2 - 2
         res = tTest(u2 - u1, d0, s, df, alpha,
-                    "Equal variances, pooled t",
+                    "等方差，合并 t 检验",
                     print_out=print_out, print_port=print_port)
 
     return res

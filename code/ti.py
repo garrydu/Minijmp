@@ -62,7 +62,7 @@ def ti_norm(data=None, alpha=0.05, P=0.9,
             " of the population's values for this characteristic will fall between %.2f and %.2f" %
             ti)
         t = PT()
-        t.field_names = ["Proportion", "Lower TI", "Upper TI", "1-Alpha"]
+        t.field_names = ['比例', '公差区间下限', '公差区间上限', '1-α']
         t.add_row(["%.2f" %
                    P, "%.2f" %
                    ti[0], "%.2f" %
@@ -71,7 +71,7 @@ def ti_norm(data=None, alpha=0.05, P=0.9,
         print(str(t))
         print("\nOne-Sided Tolerance Interval")
         t = PT()
-        t.field_names = ["Proportion", "Lower TI", "Upper TI", "1-Alpha"]
+        t.field_names = ['比例', '公差区间下限', '公差区间上限', '1-α']
         t.add_row(["%.2f" % P, "%.2f" % ll, "-", "%.3f" % (1 - alpha)])
         t.add_row(["%.2f" % P, "-", "%.2f" % ul, "%.3f" % (1 - alpha)])
         print(str(t))

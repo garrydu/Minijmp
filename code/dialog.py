@@ -91,7 +91,7 @@ class Dialogs(BaseDialog):
         #  print("Receive txt", txt)
         if len(txt) == 0:
             return
-        txt = txt + " [Click HELP for more info.]"
+        txt = txt + " [点击帮助了解更多]"
         w = ttk.Label(
             f,
             anchor="w",
@@ -108,11 +108,11 @@ class Dialogs(BaseDialog):
     def buttonsFrame(self):
         bf = ttk.Frame(self.main)
         bf.pack(side=TOP, fill=BOTH)
-        ttk.Button(bf, text="OK", command=self.ok).pack(
+        ttk.Button(bf, text="确定", command=self.ok).pack(
             side=LEFT, fill=X, expand=1, pady=2)
-        ttk.Button(bf, text="Cancel", command=self.quit).pack(
+        ttk.Button(bf, text="取消", command=self.quit).pack(
             side=LEFT, fill=X, expand=1, pady=2)
-        ttk.Button(bf, text="Help", command=self.help).pack(
+        ttk.Button(bf, text="帮助", command=self.help).pack(
             side=LEFT, fill=X, expand=1, pady=2)
         return
 
@@ -132,15 +132,15 @@ class Dialogs(BaseDialog):
         self.x_min = tk.StringVar(value="Auto")
         self.x_max = tk.StringVar(value="Auto")
 
-        master = ttk.LabelFrame(m, text='X Axis')
+        master = ttk.LabelFrame(m, text='X 轴')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        ttk.Label(master, text="Label").pack(side=LEFT, fill=X, padx=2)
+        ttk.Label(master, text="标签").pack(side=LEFT, fill=X, padx=2)
         ttk.Entry(master, textvariable=self.xlabel, width=15).pack(
             side=LEFT, padx=2, pady=2)
-        ttk.Label(master, text="Min").pack(side=LEFT, fill=X, padx=2)
+        ttk.Label(master, text="最小").pack(side=LEFT, fill=X, padx=2)
         ttk.Entry(master, textvariable=self.x_min, width=5).pack(
             side=LEFT, padx=2, pady=2)
-        ttk.Label(master, text="Max").pack(side=LEFT, fill=X, padx=2)
+        ttk.Label(master, text="最大").pack(side=LEFT, fill=X, padx=2)
         ttk.Entry(master, textvariable=self.x_max, width=5).pack(
             side=LEFT, padx=2, pady=2)
         return
@@ -150,15 +150,15 @@ class Dialogs(BaseDialog):
         self.y_min = tk.StringVar(value="Auto")
         self.y_max = tk.StringVar(value="Auto")
 
-        master = ttk.LabelFrame(m, text='Y Axis')
+        master = ttk.LabelFrame(m, text='Y 轴')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        ttk.Label(master, text="Label").pack(side=LEFT, fill=X, padx=2)
+        ttk.Label(master, text="标签").pack(side=LEFT, fill=X, padx=2)
         ttk.Entry(master, textvariable=self.ylabel, width=15).pack(
             side=LEFT, padx=2, pady=2)
-        ttk.Label(master, text="Min").pack(side=LEFT, fill=X, padx=2)
+        ttk.Label(master, text="最小").pack(side=LEFT, fill=X, padx=2)
         ttk.Entry(master, textvariable=self.y_min, width=5).pack(
             side=LEFT, padx=2, pady=2)
-        ttk.Label(master, text="Max").pack(side=LEFT, fill=X, padx=2)
+        ttk.Label(master, text="最大").pack(side=LEFT, fill=X, padx=2)
         ttk.Entry(master, textvariable=self.y_max, width=5).pack(
             side=LEFT, padx=2, pady=2)
         return
@@ -168,22 +168,22 @@ class Dialogs(BaseDialog):
         self.show_legend = tk.BooleanVar(value=False)
         self.ax_margin = tk.DoubleVar(value=0.1)
 
-        master = ttk.LabelFrame(m, text='Plot Setting')
+        master = ttk.LabelFrame(m, text='图表设置')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        ttk.Checkbutton(master, text='Show Grid',
+        ttk.Checkbutton(master, text='显示网格',
                         variable=self.grid).pack(side=LEFT, padx=2, pady=2)
-        ttk.Checkbutton(master, text='Show Legend',
+        ttk.Checkbutton(master, text='显示图例',
                         variable=self.show_legend).pack(side=LEFT, padx=2, pady=2)
-        ttk.Label(master, text="Margin").pack(side=LEFT, fill=X, padx=2)
+        ttk.Label(master, text="边距").pack(side=LEFT, fill=X, padx=2)
         ttk.Entry(master, textvariable=self.ax_margin, width=5).pack(
             side=LEFT, padx=2, pady=2)
         return
 
     def add_alpha(self, m):
         self.alpha = tk.DoubleVar(value=0.05)
-        master = ttk.LabelFrame(m, text='Alpha for CI and etc.')
+        master = ttk.LabelFrame(m, text='显著性水平 α (置信区间等)')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        ttk.Label(master, text="Alpha").pack(side=LEFT, fill=X, padx=2)
+        ttk.Label(master, text="α").pack(side=LEFT, fill=X, padx=2)
         ttk.Entry(master, textvariable=self.alpha, width=5).pack(
             side=LEFT, padx=2, pady=2)
         return
@@ -220,7 +220,7 @@ class Dialogs(BaseDialog):
         if msg is None:
             return
         t = PT()
-        t.field_names = ["ERROR"]
+        t.field_names = ["错误"]
         t.add_row([msg])
         self.app.print("\n" + str(t))
         return

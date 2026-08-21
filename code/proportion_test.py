@@ -62,7 +62,7 @@ def prop_2sample(n1=None, n2=None, e1=None,
         print = print_port
         print("\n---- Two samples proportion test ----")
         t = PT()
-        t.field_names = ["Sample", "N", "Events", "P ratio"]
+        t.field_names = ['样本', '样本量 N', '事件数', '比例 P']
         t.add_row(["1", n1, e1, "%.3f" % p1])
         t.add_row(["2", n2, e2, "%.3f" % p2])
         print(str(t))
@@ -72,7 +72,7 @@ def prop_2sample(n1=None, n2=None, e1=None,
         print(pct + " Lower bound for difference %.3f" % CI2[0])
         print("\nH0: p1 == p2")
         t = PT()
-        t.field_names = ["p-value", "Z", "p1 != p2", "p1 < p2", "p1 > p2"]
+        t.field_names = ['P 值', "Z", "p1 != p2", "p1 < p2", "p1 > p2"]
         t.add_row(["Fisher's Exact", " ", "%.3f" % p_f,
                    "%.3f" % pl_f, "%.3f" % pu_f])
         t.add_row(["Normal appx.", "%.3f" % Zs, "%.3f" % p,
@@ -177,7 +177,7 @@ def prop_test_1sample(events=1, N=1, p0=1, print_port=print,
         print = print_port
         #  print(min(events, N - events))
         print("\n---- One sample propotion test ----")
-        #  print("Z porportion test")
+        #  print('Z 比例检验')
         print("\np-value for H0: p==p0, H1: p!=p0")
         print("Normal Approx.   %.3f" % p_norm)
         print("Sterne's Method  %.3f" % p_s)
@@ -191,14 +191,14 @@ def prop_test_1sample(events=1, N=1, p0=1, print_port=print,
               (1 - p_norm_less, p_bi_r))
         pct = "%.2f%%" % (100 - alpha * 100)
         t = PT()
-        t.field_names = ["N", "Event", "Sample P Ratio"]
+        t.field_names = ['样本量 N', '事件', '样本比例']
         t.add_row([str(N), str(events), "%.3f" % (events / N)])
         print("")
         print(str(t))
         t = PT()
         print("P ratio CI of " + pct)
-        t.field_names = ["Algo", " CI", "Upper Bound",
-                         "Lower Bound"]
+        t.field_names = ['算法', " CI", '上限',
+                         '下限']
         t.add_row(["Normal Approx.", "(%.3f, %.3f)" % (CI_l, CI_u),
                    "%.3f" % CI_high, "%.3f" % CI_low])
         t.add_row(["Clopper-Pearson", "(%.3f, %.3f)" %

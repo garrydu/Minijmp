@@ -16,7 +16,7 @@ class LinearFitDialog(Dialogs):
     def createWidgets(self, m):
         """Create a set of grp-agg-func options together"""
         master = self.main
-        f = tk.LabelFrame(m, text='X Y Values')
+        f = tk.LabelFrame(m, text='X Y 值')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
         self.yvar = tk.StringVar(value="")
@@ -46,43 +46,43 @@ class LinearFitDialog(Dialogs):
         ####### extension #######
         self.update_vars()
 
-        master = tk.LabelFrame(m, text='Scatter Plot')
+        master = tk.LabelFrame(m, text='散点图')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Checkbutton(master, text='Scatter Dots',
+        w = tk.Checkbutton(master, text='散点',
                            variable=self.scatter)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(master, text='Correlation Ellipse',
+        w = tk.Checkbutton(master, text='相关性椭圆',
                            variable=self.ellipse)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(master, text='Ellipse Outline',
+        w = tk.Checkbutton(master, text='椭圆轮廓',
                            variable=self.red_ellipse)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        master = tk.LabelFrame(m, text='Linear Regression')
+        master = tk.LabelFrame(m, text='线性回归')
         master.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Checkbutton(master, text='Show Fit',
+        w = tk.Checkbutton(master, text='显示拟合',
                            variable=self.linear)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(master, text='Confidence Interval',
+        w = tk.Checkbutton(master, text='置信区间',
                            variable=self.show_CI)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(master, text='Prediction Interval',
+        w = tk.Checkbutton(master, text='预测区间',
                            variable=self.show_PI)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        master = tk.LabelFrame(m, text='Orthogonal Regression')
+        master = tk.LabelFrame(m, text='正交回归')
         master.pack(side=TOP, fill=BOTH, padx=2)
         slave = tk.Frame(master)
         slave.pack(side=TOP, fill=BOTH)
-        w = tk.Checkbutton(slave, text='Show Fit',
+        w = tk.Checkbutton(slave, text='显示拟合',
                            variable=self.ortho)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(slave, text='Residual Table',
+        w = tk.Checkbutton(slave, text='残差表',
                            variable=self.ortho_resid)
         w.pack(side=LEFT, padx=2, pady=2)
         slave = tk.Frame(master)
         slave.pack(side=TOP, fill=BOTH)
-        w = tk.Label(slave, text="Error varaince ratio (y/x)")
+        w = tk.Label(slave, text="误差方差比 (y/x)")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(slave, textvariable=self.ortho_ratio,
                      bg='white', width=5)
@@ -140,7 +140,7 @@ class LinearFitDialog(Dialogs):
 class CorrelationDialog(LinearFitDialog):
     def createWidgets(self, m):
         master = self.main
-        f = tk.LabelFrame(m, text='X Y Values')
+        f = tk.LabelFrame(m, text='X Y 值')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
         self.yvar = tk.StringVar(value="")
@@ -157,59 +157,59 @@ class CorrelationDialog(LinearFitDialog):
             width=14)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        master = tk.LabelFrame(m, text='Correlation Select')
+        master = tk.LabelFrame(m, text='相关性选择')
         master.pack(side=TOP, fill=BOTH, padx=2)
         #  cor_list=['Pearson',"Hoeffding's D",
         #            "Spearman's rho", "Kendall's tau"]
         #  self.cor=tk.StringVar(value=cor_list[0])
-        #  w = tk.Label(master, text="Box Width")
+        #  w = tk.Label(master, text="箱宽")
         #  w.pack(side=LEFT, fill=X, padx=2)
         #  w = ttk.Combobox(
         #      master, values=stat_list, textvariable=self.stat,
         #      width=5)
         #  w.pack(side=LEFT, padx=2)
         #  self.cor = tk.IntVar(value=4)
-        #  w = tk.Radiobutton(master, text="Pearson: linear relationship", variable=self.cor, value=4)
+        #  w = tk.Radiobutton(master, text="Pearson：线性关系", variable=self.cor, value=4)
         #  w.pack(side=TOP, anchor=W)
-        #  w = tk.Radiobutton(master, text="Spearman's rho: monotonic relationship", variable=self.cor, value=0)
+        #  w = tk.Radiobutton(master, text="Spearman ρ：单调关系", variable=self.cor, value=0)
         #  w.pack(side=TOP, anchor=W)
-        #  w = tk.Radiobutton(master, text="Kendall's tau: monotonic relationship", variable=self.cor, value=1)
+        #  w = tk.Radiobutton(master, text="Kendall τ：单调关系", variable=self.cor, value=1)
         #  w.pack(side=TOP, anchor=W)
-        #  w = tk.Radiobutton(master, text="Hoeffding's D: independent or not", variable=self.cor, value=2)
+        #  w = tk.Radiobutton(master, text="Hoeffding D：独立性检验", variable=self.cor, value=2)
         #  w.pack(side=TOP, anchor=W)
 
         self.cor_p = tk.BooleanVar(value=True)
         self.cor_s = tk.BooleanVar(value=False)
         self.cor_k = tk.BooleanVar(value=False)
         self.cor_h = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text="Pearson: linear relationship", variable=self.cor_p)
+        w = tk.Checkbutton(master, text="Pearson：线性关系", variable=self.cor_p)
         w.pack(side=TOP, anchor=W)
-        w = tk.Checkbutton(master, text="Spearman's rho: monotonic relationship", variable=self.cor_s)
+        w = tk.Checkbutton(master, text="Spearman ρ：单调关系", variable=self.cor_s)
         w.pack(side=TOP, anchor=W)
-        w = tk.Checkbutton(master, text="Kendall's tau: monotonic relationship", variable=self.cor_k)
+        w = tk.Checkbutton(master, text="Kendall τ：单调关系", variable=self.cor_k)
         w.pack(side=TOP, anchor=W)
-        w = tk.Checkbutton(master, text="Hoeffding's D: independent or not (Slow, O(n^2))", variable=self.cor_h)
+        w = tk.Checkbutton(master, text="Hoeffding D：独立性检验（较慢，O(n²)）", variable=self.cor_h)
         w.pack(side=TOP, anchor=W)
 
-        master = tk.LabelFrame(m, text='Scatter Plot')
+        master = tk.LabelFrame(m, text='散点图')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.scatter = tk.BooleanVar(value=True)
-        #  w = tk.Checkbutton(master, text='Scatter Dots',
+        #  w = tk.Checkbutton(master, text='散点',
         #                     variable=self.scatter)
         #  w.pack(side=LEFT, padx=2, pady=2)
 
-        slave = tk.LabelFrame(master, text="Pearson's Correlation Only")
+        slave = tk.LabelFrame(master, text="仅皮尔逊相关")
         slave.pack(side=TOP, fill=BOTH, padx=2)
         self.ellipse = tk.BooleanVar(value=True)
         self.red_ellipse = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(slave, text='Correlation Ellipse',
+        w = tk.Checkbutton(slave, text='相关性椭圆',
                            variable=self.ellipse)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(slave, text='Ellipse Outline',
+        w = tk.Checkbutton(slave, text='椭圆轮廓',
                            variable=self.red_ellipse)
         w.pack(side=LEFT, padx=2, pady=2)
         self.alpha = tk.DoubleVar(value=0.05)
-        w = tk.Label(slave, text="Alpha")
+        w = tk.Label(slave, text="α")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(slave, textvariable=self.alpha,
                      bg='white', width=5)
@@ -285,9 +285,9 @@ class ResidDialog(Dialogs):
     def createWidgets(self, m):
         """Create a set of grp-agg-func options together"""
         #  w = tk.Label(
-        #      m, text="Residual plots are only available for linear regressions.")
+        #      m, text="残差图仅适用于线性回归。")
         #  w.pack(side=TOP, fill=BOTH, padx=2)
-        f = tk.LabelFrame(m, text='X Y Values')
+        f = tk.LabelFrame(m, text='X Y 值')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
         self.yvar = tk.StringVar(value="")
@@ -322,30 +322,30 @@ class ResidDialog(Dialogs):
 
 class MCorDialog(Dialogs):
     def createWidgets(self, m):
-        f = tk.LabelFrame(m, text='Variables')
+        f = tk.LabelFrame(m, text='变量')
         f.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(f, text="Will only include rows " +
+        w = tk.Label(f, text="将仅包含行 " +
                      "with valid numbers " +
                      "in all selected columns.",
                      anchor="e", justify=LEFT, wraplength=100)
         w.pack(side=LEFT, fill=X, padx=10)
         w, self.grpvar = addListBox(
-            f, values=self.cols, width=20, label='columns')
+            f, values=self.cols, width=20, label='列')
         w.pack(side=LEFT, fill=X, padx=10)
 
-        master = tk.LabelFrame(m, text='Correlation Select')
+        master = tk.LabelFrame(m, text='相关性选择')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.cor_p = tk.BooleanVar(value=True)
         self.cor_s = tk.BooleanVar(value=False)
         self.cor_k = tk.BooleanVar(value=False)
         self.cor_h = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text="Pearson: linear relationship", variable=self.cor_p)
+        w = tk.Checkbutton(master, text="Pearson：线性关系", variable=self.cor_p)
         w.pack(side=TOP, anchor=W)
-        w = tk.Checkbutton(master, text="Spearman's rho: monotonic relationship", variable=self.cor_s)
+        w = tk.Checkbutton(master, text="Spearman ρ：单调关系", variable=self.cor_s)
         w.pack(side=TOP, anchor=W)
-        w = tk.Checkbutton(master, text="Kendall's tau: monotonic relationship", variable=self.cor_k)
+        w = tk.Checkbutton(master, text="Kendall τ：单调关系", variable=self.cor_k)
         w.pack(side=TOP, anchor=W)
-        w = tk.Checkbutton(master, text="Hoeffding's D: independent or not (Slow, O(n^2))", variable=self.cor_h)
+        w = tk.Checkbutton(master, text="Hoeffding D：独立性检验（较慢，O(n²)）", variable=self.cor_h)
         w.pack(side=TOP, anchor=W)
 
         self.ax_margin = tk.DoubleVar(value=0.1)
@@ -354,44 +354,44 @@ class MCorDialog(Dialogs):
         self.xlabel_45deg = tk.BooleanVar(value=False)
         self.xtick_45deg = tk.BooleanVar(value=False)
 
-        master = tk.LabelFrame(m, text='Plot Setting')
+        master = tk.LabelFrame(m, text='图表设置')
         master.pack(side=TOP, fill=BOTH, padx=2)
         slave = tk.Frame(master)
         slave.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(slave, text="Margin (0.1=10%% of data range)")
+        w = tk.Label(slave, text="边距 (0.1=数据范围的10%%)")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(slave, textvariable=self.ax_margin,
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(master, text="Horizontal Y-labels",
+        w = tk.Checkbutton(master, text="水平Y轴标签",
                            variable=self.ylabel_0deg)
         w.pack(side=TOP, anchor=W, padx=2, pady=2)
         slave = tk.Frame(master)
         slave.pack(side=TOP, fill=BOTH, padx=0)
-        w = tk.Checkbutton(slave, text="45-degree X-labels",
+        w = tk.Checkbutton(slave, text="45度X轴标签",
                            variable=self.xlabel_45deg)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(slave, text="45-degree X-ticks",
+        w = tk.Checkbutton(slave, text="45度X轴刻度",
                            variable=self.xtick_45deg)
         w.pack(side=LEFT, padx=2, pady=2)
 
-        slave = tk.LabelFrame(master, text="Pearson's Correlation Only")
+        slave = tk.LabelFrame(master, text="仅皮尔逊相关")
         slave.pack(side=TOP, fill=BOTH, padx=2)
         self.ellipse = tk.BooleanVar(value=True)
         self.red_ellipse = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(slave, text='Correlation Ellipse',
+        w = tk.Checkbutton(slave, text='相关性椭圆',
                            variable=self.ellipse)
         w.pack(side=LEFT, padx=2, pady=2)
-        w = tk.Checkbutton(slave, text='Ellipse Outline',
+        w = tk.Checkbutton(slave, text='椭圆轮廓',
                            variable=self.red_ellipse)
         w.pack(side=LEFT, padx=2, pady=2)
         self.alpha = tk.DoubleVar(value=0.05)
-        w = tk.Label(slave, text="Alpha")
+        w = tk.Label(slave, text="α")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(slave, textvariable=self.alpha,
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
-        #  w = tk.Checkbutton(master, text='Ellipse Outline',
+        #  w = tk.Checkbutton(master, text='椭圆轮廓',
         #                     variable=self.red_ellipse)
         #  w.pack(side=LEFT, padx=2, pady=2)
         #  self.add_alpha(m)

@@ -45,7 +45,7 @@ def fit_plot(x, y, alpha=0.05, print_out=False,
 
     if scatter:
         ax.scatter(x, y, color='blue', alpha=1 / (len(x))**.2,
-                   label='Data points', s=dot_size)
+                   label='数据点', s=dot_size)
 
     if ellipse or red_ellipse:
         ax.set_box_aspect(1)
@@ -82,7 +82,7 @@ def fit_plot(x, y, alpha=0.05, print_out=False,
         x_line = [x0, x1]
         y_line = [ortho_res["intercept"] + x0 * ortho_res["slope"],
                   ortho_res["intercept"] + x1 * ortho_res["slope"]]
-        ax.plot(x_line, y_line, color='k', label='Orthogonal Regression')
+        ax.plot(x_line, y_line, color='k', label='正交回归')
 
     if linear:
         l_res = linear_fit(x, y, print_out=print_out, print_port=print)
@@ -91,7 +91,7 @@ def fit_plot(x, y, alpha=0.05, print_out=False,
         x_line = [x0, x1]
         y_line = [l_res["intercept"] + x0 * l_res["slope"],
                   l_res["intercept"] + x1 * l_res["slope"]]
-        ax.plot(x_line, y_line, color='r', label='Linear Regression')
+        ax.plot(x_line, y_line, color='r', label='线性回归')
         alpha_label = " %d%%" % ((1 - alpha) * 100)
         if show_PI:
             n = len(x)
@@ -108,7 +108,7 @@ def fit_plot(x, y, alpha=0.05, print_out=False,
                 y_line,
                 linewidth=1,
                 color='purple',
-                label='PI' +
+                label='预测区间(PI)' +
                 alpha_label,
                 linestyle='dashed')
             y_line = -t_value * se_pred + \
@@ -133,7 +133,7 @@ def fit_plot(x, y, alpha=0.05, print_out=False,
                 x_line,
                 y_line,
                 color='g',
-                label='CI' +
+                label='置信区间(CI)' +
                 alpha_label,
                 linestyle='dashed', linewidth=1)
             y_line = -t_value * se_pred + \

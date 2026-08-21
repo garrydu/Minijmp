@@ -11,10 +11,10 @@ from sbplot_dialog import SBDialog
 
 class singleHistoDialog(SBDialog):
     def createWidgets(self, m):
-        f = tk.LabelFrame(m, text='Data')
+        f = tk.LabelFrame(m, text='数据')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Data Column")
+        w = tk.Label(f, text="数据列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
@@ -24,7 +24,7 @@ class singleHistoDialog(SBDialog):
         self.update_vars()
 
         self.add_histo_setting(m)
-        master = tk.LabelFrame(m, text='Distribution Fit')
+        master = tk.LabelFrame(m, text='分布拟合')
         master.pack(side=TOP, fill=BOTH, padx=2)
         dist_list = [
             "Normal",
@@ -34,7 +34,7 @@ class singleHistoDialog(SBDialog):
             "Exponential",
             "Weibull"]
         self.dist = tk.StringVar(value=dist_list[0])
-        w = tk.Label(master, text="Distribution")
+        w = tk.Label(master, text="分布")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             master, values=dist_list, textvariable=self.dist,
@@ -42,7 +42,7 @@ class singleHistoDialog(SBDialog):
         w.pack(side=LEFT, padx=2)
 
         self.fit_dist = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='Show Fit',
+        w = tk.Checkbutton(master, text='显示拟合',
                            variable=self.fit_dist)
         w.pack(side=LEFT, padx=2, pady=2)
 
@@ -51,24 +51,24 @@ class singleHistoDialog(SBDialog):
         return
 
     def add_histo_setting(self, m):
-        master = tk.LabelFrame(m, text='Histogram Setting')
+        master = tk.LabelFrame(m, text='直方图设置')
         master.pack(side=TOP, fill=BOTH, padx=2)
         stat_list = ['count', 'frequency', 'proportion', 'percent', 'density']
         self.stat = tk.StringVar(value=stat_list[0])
-        w = tk.Label(master, text="Stats.")
+        w = tk.Label(master, text="统计量")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             master, values=stat_list, textvariable=self.stat,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.bins = tk.StringVar(value="Auto")
-        w = tk.Label(master, text="Bins")
+        w = tk.Label(master, text="组数")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.bins,
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
         self.binwidth = tk.StringVar(value="Auto")
-        w = tk.Label(master, text="Bin Width")
+        w = tk.Label(master, text="组距")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.binwidth,
                      bg='white', width=5)
@@ -126,39 +126,39 @@ class singleHistoDialog(SBDialog):
 
 class multiHistoDialog(singleHistoDialog):
     def createWidgets(self, m):
-        f = tk.LabelFrame(m, text='Data in one column')
+        f = tk.LabelFrame(m, text='数据在单列中')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Data Col.")
+        w = tk.Label(f, text="数据列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.grouping = tk.StringVar(value="")
-        w = tk.Label(f, text="Group Col.")
+        w = tk.Label(f, text="分组列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.grouping,
             width=14)
         w.pack(side=LEFT, padx=2)
 
-        f = tk.LabelFrame(m, text='Data in its own column')
+        f = tk.LabelFrame(m, text='数据在独立列中')
         f.pack(side=TOP, fill=BOTH, padx=2)
-        w = tk.Label(f, text="Overriding selections above"
+        w = tk.Label(f, text="覆盖以上选择"
                      + "\nESC to deselect.")  # ,
         #  anchor="e", justify=LEFT, wraplength=100)
         w.pack(side=LEFT, fill=X, padx=10)
         f.pack(side=TOP, fill=BOTH, padx=2)
         w, self.grpvar = addListBox(
-            f, values=self.cols, width=20, label='columns')
+            f, values=self.cols, width=20, label='列')
         w.pack(side=LEFT, fill=X, padx=10)
 
-        master = tk.LabelFrame(m, text='Extended Features')
+        master = tk.LabelFrame(m, text='扩展功能')
         master.pack(side=TOP, fill=BOTH, padx=2)
         multiple_list = ['layer', 'dodge', 'stack', 'fill']
         self.multiple = tk.StringVar(value=multiple_list[0])
-        w = tk.Label(master, text="Multiple")
+        w = tk.Label(master, text="多个")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             master, values=multiple_list, textvariable=self.multiple,
@@ -166,18 +166,18 @@ class multiHistoDialog(singleHistoDialog):
         w.pack(side=LEFT, padx=2)
         element_list = ['bars', 'step', 'poly']
         self.element = tk.StringVar(value=element_list[0])
-        w = tk.Label(master, text="Element")
+        w = tk.Label(master, text="元素")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             master, values=element_list, textvariable=self.element,
             width=5)
         w.pack(side=LEFT, padx=2)
         self.kde = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='KDE',
+        w = tk.Checkbutton(master, text='KDE（核密度估计）',
                            variable=self.kde)
         w.pack(side=LEFT, padx=2, pady=2)
         self.kde_only = tk.BooleanVar(value=False)
-        w = tk.Checkbutton(master, text='KDE Only',
+        w = tk.Checkbutton(master, text='仅KDE',
                            variable=self.kde_only)
         w.pack(side=LEFT, padx=2, pady=2)
 
@@ -253,27 +253,27 @@ class multiHistoDialog(singleHistoDialog):
 
 class xyHistoDialog(SBDialog):
     def createWidgets(self, m):
-        f = tk.LabelFrame(m, text='Data')
+        f = tk.LabelFrame(m, text='数据')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.xvar = tk.StringVar(value="")
-        w = tk.Label(f, text="X Data Column")
+        w = tk.Label(f, text="X数据列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.xvar,
             width=14)
         w.pack(side=LEFT, padx=2)
         self.yvar = tk.StringVar(value="")
-        w = tk.Label(f, text="Y Data Column")
+        w = tk.Label(f, text="Y数据列")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.yvar,
             width=14)
         w.pack(side=LEFT, padx=2)
 
-        f = tk.LabelFrame(m, text='Grouping Data (Optional)')
+        f = tk.LabelFrame(m, text='分组数据（可选）')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.hue = tk.StringVar(value="")
-        w = tk.Label(f, text="Hue Data Column")
+        w = tk.Label(f, text="色调数据列 (Hue)")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f, values=self.cols, textvariable=self.hue,
@@ -288,16 +288,16 @@ class xyHistoDialog(SBDialog):
         return
 
     def add_histo_setting(self, m):
-        master = tk.LabelFrame(m, text='Histogram Setting')
+        master = tk.LabelFrame(m, text='直方图设置')
         master.pack(side=TOP, fill=BOTH, padx=2)
         self.bins = tk.StringVar(value="Auto")
-        w = tk.Label(master, text="Bins")
+        w = tk.Label(master, text="组数")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.bins,
                      bg='white', width=5)
         w.pack(side=LEFT, padx=2, pady=2)
         self.binwidth = tk.StringVar(value="Auto")
-        w = tk.Label(master, text="Bin Width")
+        w = tk.Label(master, text="组距")
         w.pack(side=LEFT, fill=X, padx=2)
         w = tk.Entry(master, textvariable=self.binwidth,
                      bg='white', width=5)

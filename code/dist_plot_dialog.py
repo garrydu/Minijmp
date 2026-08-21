@@ -78,16 +78,16 @@ class displayProbDialog(SBDialog):
                              ["Scale"],
                              ["Degrees of freedom"],
                              ["Number of trials", "Event probability"], ["Mean"]]
-        f = tk.LabelFrame(m, text='Distribution')
+        f = tk.LabelFrame(m, text='分布')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.dist = comboNEntries("Distribution",
                                   self.dist_list, self.dist_entries, f)
 
-        f = tk.LabelFrame(m, text='Show the area corresponding to the following')
+        f = tk.LabelFrame(m, text='显示以下对应的区域')
         f.pack(side=TOP, fill=BOTH, padx=2)
         master = ttk.Frame(f)
         master.pack(side=TOP, padx=2, pady=2)
-        w = tk.Label(master, text="A specified probability")
+        w = tk.Label(master, text="指定的概率")
         w.pack(side=LEFT, padx=2)
         self.P = tk.StringVar(value="")
         w = tk.Entry(master, textvariable=self.P,
@@ -96,7 +96,7 @@ class displayProbDialog(SBDialog):
 
         master = ttk.Frame(f)
         master.pack(side=TOP, padx=2, pady=2)
-        w = tk.Label(master, text="A specified x value (overriding)")
+        w = tk.Label(master, text="指定的X值（覆盖输入）")
         w.pack(side=LEFT, padx=2)
         self.X = tk.StringVar(value="")
         w = tk.Entry(master, textvariable=self.X,
@@ -104,7 +104,7 @@ class displayProbDialog(SBDialog):
         w.pack(side=LEFT, padx=2, pady=2)
 
         self.plot_out = tk.BooleanVar(value=True)
-        w = tk.Checkbutton(f, text='Show Plot',
+        w = tk.Checkbutton(f, text='显示图表',
                            variable=self.plot_out)
         w.pack(side=TOP, padx=2, pady=2)
         return
@@ -143,11 +143,11 @@ class displayProb2xDialog(SBDialog):
                              ["Scale"],
                              ["Degrees of freedom"],
                              ["Number of trials", "Event probability"], ["Mean"]]
-        f = tk.LabelFrame(m, text='Distribution 1')
+        f = tk.LabelFrame(m, text='分布1')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.dist1 = comboNEntries("Distribution",
                                    self.dist_list, self.dist_entries, f)
-        f = tk.LabelFrame(m, text='Distribution 2')
+        f = tk.LabelFrame(m, text='分布2')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.dist2 = comboNEntries("Distribution",
                                    self.dist_list, self.dist_entries, f)
