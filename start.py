@@ -1,5 +1,6 @@
 import os
 import subprocess
+import sys
 from contextlib import contextmanager
 
 
@@ -21,10 +22,8 @@ new_dir = os.path.join(script_dir, 'code')
 
 # Use the context manager
 with change_dir(new_dir):
-    try:
-        subprocess.run(['pythonw', 'MiniJMP.py'])
-    except FileNotFoundError:
-        try:
-            subprocess.run(['python3', 'MiniJMP.py']) 
-        except BaseException:
-            subprocess.run(['python', 'MiniJMP.py'])
+    # Use the same interpreter that launched this script, so the app gets
+    # that Python's Tk (e.g. Homebrew Tk 9) instead of whatever "python3"
+    # resolves to on PATH (on macOS often Apple's /usr/bin/python3 with the
+    # deprecated Tk 8.5, which renders a blank/black window).
+    subprocess.run([sys.executable, 'MiniJMP.py'])
