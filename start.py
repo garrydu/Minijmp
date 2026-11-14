@@ -20,10 +20,20 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 # Change to a subdirectory relative to the script's location
 new_dir = os.path.join(script_dir, 'code')
 
-# Use the context manager
+def pick_python():
+    """Prefer the project's virtualenv (has all requirements and a modern Tk).
+
+    Falls back to the interpreter running this script. On macOS, Apple's
+    /usr/bin/python3 ships the deprecated Tk 8.5, which shows a black window.
+    """
+    if os.name == 'nt':
+        venv_py = os.path.join(script_dir, '.venv', 'Scripts', 'python.exe')
+    else:
+        venv_py = os.path.join(script_dir, '.venv', 'bin', 'python')
+    if os.path.exists(venv_py):
+        return venv_py
+    return sys.executable
+
+
 with change_dir(new_dir):
-    # Use the same interpreter that launched this script, so the app gets
-    # that Python's Tk (e.g. Homebrew Tk 9) instead of whatever "python3"
-    # resolves to on PATH (on macOS often Apple's /usr/bin/python3 with the
-    # deprecated Tk 8.5, which renders a blank/black window).
-    subprocess.run([sys.executable, 'MiniJMP.py'])
+    subprocess.run([pick_python(), 'MiniJMP.py'])
