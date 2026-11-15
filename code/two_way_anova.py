@@ -50,8 +50,12 @@ def SSA_SSB_simple(data):
 
     # To get the complete ANOVA table with Type 3 SS
     anova_table = sm.stats.anova_lm(full_model, typ=3)
+    # Error SS is the residual SS of this additive model (JMP / Minitab GLM).
+    # SST - SSA - SSB only equals it for balanced data, because Type III SS
+    # do not add up to the model SS when the design is unbalanced.
     return (anova_table.sum_sq.iloc[1],  # SSA
-            anova_table.sum_sq.iloc[2])  # ,  # SSB
+            anova_table.sum_sq.iloc[2],  # SSB
+            full_model.ssr)              # SSE
 
 
 def two_way_anova(data, factor_listA=None, print_port=print, interaction=True,
@@ -100,9 +104,8 @@ def two_way_anova(data, factor_listA=None, print_port=print, interaction=True,
         SSE = sum([sum((x - stat.mean(k))**2 for x in k)
                    for j in d for k in j])
     else:
-        SSA, SSB = SSA_SSB_simple(d)
+        SSA, SSB, SSE = SSA_SSB_simple(d)
         SSAB = 0
-        SSE = SST - SSB - SSA - SSAB
 
     DFA = a - 1
     DFB = b - 1
