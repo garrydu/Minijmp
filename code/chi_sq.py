@@ -173,7 +173,8 @@ def chi_square(data, print_out=True, print_port=print,
         for y in range(a.shape[0]):
             for x in range(a.shape[1]):
                 expected = row_sum[y] * col_sum[x] / ttl_sum
-                LR += 2 * a[y][x] * ln(a[y][x] / expected)
+                if a[y][x] > 0:  # 0 * ln(0) is taken as 0
+                    LR += 2 * a[y][x] * ln(a[y][x] / expected)
                 e[y][x] = expected
 
         p_LR = 1 - chi2.cdf(LR, df)
