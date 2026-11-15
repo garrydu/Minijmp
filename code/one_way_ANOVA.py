@@ -90,6 +90,7 @@ def one_way_anova(data, labels, print_out=False, print_port=print,
 # t = (X1_bar - X2_bar) / SE
 
 # in JMP, df is N-1 the total sample number not only the two keys
+# Confirmed JMP 19 is N-k.... I am not sure about 17 now... 
 
 
 def JMP_ANOVA_t_test(data, labels, print_out=False, print_port=print,
