@@ -23,8 +23,9 @@ def binomial(n, p, x=None, pvalue=None, print_out=False, print_port=print, ax=No
             pp += rv.pmf(i)
             if pp > threshold:
                 return pp - rv.pmf(i), i - s
-        print(h, t, s, threshold, n, p, x)
-        print(res["left_acc_p"], res["right_acc_p"])
+        # Never exceeded the threshold (e.g. symmetric case where both
+        # tails are equal): the whole range counts, ending at t - s.
+        return pp, t - s
 
     if x is not None:
         x = int(x)
