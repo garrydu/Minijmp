@@ -1,4 +1,5 @@
-from scipy.special import gamma
+from scipy.special import gammaln
+from math import exp
 from scipy import integrate
 from scipy.stats import norm, shapiro, chi2
 from functools import lru_cache
@@ -272,7 +273,9 @@ def pearson_correlation(x, y, alpha=0.05, print_out=True, print_port=print):
 
 @lru_cache
 def c4_values(n):
-    return (2 / (n - 1))**.5 * gamma(n / 2) / gamma((n - 1) / 2)
+    # Gamma(n/2) / Gamma((n-1)/2) is taken through log-gamma: gamma() itself
+    # overflows for n > 343 and the ratio became inf / NaN.
+    return (2 / (n - 1))**.5 * exp(gammaln(n / 2) - gammaln((n - 1) / 2))
 
 
 def scale_factor_f(n):
