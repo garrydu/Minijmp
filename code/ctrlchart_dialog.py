@@ -585,7 +585,7 @@ class UDialog(CDialog):
             n_list, data = [], []
             for i, k in zip(x, n):
                 if is_number(i) and is_number(k):
-                    data.append(float(i) / float(k))
+                    data.append(float(i))  # raw count; cu_plot divides by n
                     n_list.append(float(k))
             xlabels = list(range(1, len(data) + 1))
         else:
