@@ -98,10 +98,12 @@ def linear_fit(x, y, print_out=True, print_port=print):
 
     SSLF = SSE - SSPE
 
-    # Mean square of lack of fit
-    MSLF = SSLF / DFLF
-
-    if DFPE > 0 and SSPE != 0:
+    # Lack of fit needs at least 3 distinct x values (DFLF > 0); with only
+    # two, the line passes through both group means and there is nothing
+    # to test, so the Lack of Fit report is skipped (as in JMP).
+    if DFLF > 0 and DFPE > 0 and SSPE != 0:
+        # Mean square of lack of fit
+        MSLF = SSLF / DFLF
         # Mean square of Pure Error
         MSPE = SSPE / DFPE
 
@@ -112,7 +114,7 @@ def linear_fit(x, y, print_out=True, print_port=print):
     # model (e.g., polynomial) might be more appropriate.
         p_lack = 1 - f_dist.cdf(F_lack, dfn=DFLF, dfd=DFPE)
     else:
-        MSPE = F_lack = p_lack = -1
+        MSLF = MSPE = F_lack = p_lack = -1
 
 #     Calculate sum of squares for the saturated model (SSM):
 # SSM = Σni(ȳi - ȳ)², where ȳi is the mean of each group and
