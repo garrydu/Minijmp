@@ -3,10 +3,10 @@ import matplotlib.pyplot as plt
 import statistics as stat
 ####### Own modules ##########
 try: 
-    from .ctrl_chart_const import df as Ctrl_Cht_Const
+    from .ctrl_chart_const import d2 as cc_d2, d3 as cc_d3
     from .utilities import add_Y_refs, gen_table, c4_values
 except ImportError:
-    from ctrl_chart_const import df as Ctrl_Cht_Const
+    from ctrl_chart_const import d2 as cc_d2, d3 as cc_d3
     from utilities import add_Y_refs, gen_table, c4_values
 
 
@@ -23,12 +23,12 @@ def x_mR(x, mr, k=3, sigma=None, mean=None):  # , print_out=True, xLabels=None,m
     #  xbar_bar = stat.mean([j for l in data for j in l]) if mean is None else mean
     R_bar = stat.mean(MR[(mr - 1):])
     if sigma is None:
-        sigma = R_bar / Ctrl_Cht_Const["d2"][mr]
+        sigma = R_bar / cc_d2(mr)
     x_UCL = x_bar + k * sigma
     x_LCL = x_bar - k * sigma
 
-    R_UCL = Ctrl_Cht_Const["d2"][mr] * sigma + k * sigma * Ctrl_Cht_Const['d3'][mr]
-    R_LCL = max(0, Ctrl_Cht_Const['d2'][mr] * sigma - k * sigma * Ctrl_Cht_Const['d3'][mr])
+    R_UCL = cc_d2(mr) * sigma + k * sigma * cc_d3(mr)
+    R_LCL = max(0, cc_d2(mr) * sigma - k * sigma * cc_d3(mr))
     #  R_UCL = D4 * R_bar
     #  R_LCL = 0
     x1 = list(range(len(x)))
@@ -56,7 +56,7 @@ def xBar_R(data,
             sp = (sum(sum((i - stat.mean(l))**2 for i in l) for l in data) / sum(_-1 for _ in n))**.5
             sigma = sp / c4_values(sum(_-1 for _ in n))
         else:
-            sigma = sum(Ctrl_Cht_Const['d2'][_] * r / Ctrl_Cht_Const['d3'][_]**2 for r, _ in zip(R, n)) / sum((Ctrl_Cht_Const['d2'][_] / Ctrl_Cht_Const['d3'][_])**2 for _ in n)
+            sigma = sum(cc_d2(_) * r / cc_d3(_)**2 for r, _ in zip(R, n)) / sum((cc_d2(_) / cc_d3(_))**2 for _ in n)
 
     #  R_bar = stat.mean(R)
     xbar_bar = stat.mean([j for l in data for j in l]) if mean is None else mean
@@ -67,9 +67,9 @@ def xBar_R(data,
     #  D3 = Ctrl_Cht_Const["D3"][n]
     #  R_UCL = D4 * R_bar
     #  R_LCL = D3 * R_bar
-    R_bar = [Ctrl_Cht_Const['d2'][ni] * sigma for ni in n]
-    R_UCL = [Ctrl_Cht_Const["d2"][mr] * sigma + k * sigma * Ctrl_Cht_Const['d3'][mr] for mr in n]
-    R_LCL = [max(0, Ctrl_Cht_Const['d2'][mr] * sigma - k * sigma * Ctrl_Cht_Const['d3'][mr]) for mr in n]
+    R_bar = [cc_d2(ni) * sigma for ni in n]
+    R_UCL = [cc_d2(mr) * sigma + k * sigma * cc_d3(mr) for mr in n]
+    R_LCL = [max(0, cc_d2(mr) * sigma - k * sigma * cc_d3(mr)) for mr in n]
 
     return {"Y1": xbar, "Y2": R, "bar1": xbar_bar, "ucl1": xbar_ucl,
             "ucl2": R_UCL, "lcl1": xbar_lcl, "lcl2": R_LCL, "n": n,

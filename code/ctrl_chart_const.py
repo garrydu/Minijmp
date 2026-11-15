@@ -31,6 +31,25 @@ df.set_index('n', inplace=True)
 # https://support.minitab.com/en-us/minitab/help-and-how-to/quality-and-process-improvement/control-charts/how-to/variables-charts-for-subgroups/xbar-r-chart/methods-and-formulas/unbiasing-constants-d2-d3-and-d4/
 # https://support.minitab.com/en-us/minitab/help-and-how-to/quality-and-process-improvement/control-charts/how-to/variables-charts-for-subgroups/xbar-r-chart/methods-and-formulas/unbiasing-constants-c4-and-c5/
 
+try:
+    from .utilities import calculate_d2, calculate_d3
+except ImportError:
+    from utilities import calculate_d2, calculate_d3
+
+
+def d2(n):
+    """d2 for subgroup size n: the published table for n <= 25 (so existing
+    results do not change), computed by numerical integration above that."""
+    n = int(n)
+    return df['d2'][n] if n in df.index else calculate_d2(n)
+
+
+def d3(n):
+    """d3 for subgroup size n: table for n <= 25, computed above that."""
+    n = int(n)
+    return df['d3'][n] if n in df.index else calculate_d3(n)
+
+
 if __name__=="__main__":
 	print(df.head())
 	print(df.info())
