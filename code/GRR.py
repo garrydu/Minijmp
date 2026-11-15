@@ -40,9 +40,12 @@ def GRR_xbar(data, op_key="Operator", pt_key="Part", y_key="Y",
             tmp = d[d[op_key] == op]
             op_avgs.append(sum(tmp[y_key]) / len(tmp))
         R0 = max(op_avgs) - min(op_avgs)
-        return ((R0 / d2(num_of_op, 1))**2 - EV_stdev(d, op_key=op_key,
-                                                      pt_key=pt_key, y_key=y_key
-                                                      )**2 / num_of_parts / num_of_tests)**.5
+        av_sq = (R0 / d2(num_of_op, 1))**2 - EV_stdev(
+            d, op_key=op_key, pt_key=pt_key, y_key=y_key
+        )**2 / num_of_parts / num_of_tests
+        # AIAG: if the value under the root is negative, AV is set to 0
+        # (operator differences are smaller than repeatability noise).
+        return max(av_sq, 0)**.5
 
     def Part2Part(d, op_key="Operator", pt_key="Part", y_key="Y"):
         part_avgs = []
