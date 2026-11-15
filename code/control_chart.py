@@ -9,6 +9,12 @@ except ImportError:
     from ctrl_chart_const import d2 as cc_d2, d3 as cc_d3
     from utilities import add_Y_refs, gen_table, c4_values
 
+NAN = float('nan')
+
+
+def _finite(values):
+    return [v for v in values if v == v]  # v == v is False only for NaN
+
 
 def x_mR(x, mr, k=3, sigma=None, mean=None):  # , print_out=True, xLabels=None,max_xlabels=25):
 
@@ -47,29 +53,37 @@ def x_mR(x, mr, k=3, sigma=None, mean=None):  # , print_out=True, xLabels=None,m
 def xBar_R(data,
            k=3, mean=None, sigma=None, pooled=False):  # , print_out=True, max_xlabels=25,xLabels=None):
 
-    xbar = [stat.mean(l) for l in data]
-    R = [max(l) - min(l) for l in data]
+    # Subgroups keep their position even when they hold fewer valid values.
+    # As in Minitab: the X-bar point uses whatever values exist; a subgroup
+    # with fewer than 2 values has no range, so its R point and R limits are
+    # left blank (NaN) and it is not used to estimate sigma.
     n = [len(l) for l in data]
+    xbar = [stat.mean(l) if ni > 0 else NAN for l, ni in zip(data, n)]
+    R = [max(l) - min(l) if ni >= 2 else NAN for l, ni in zip(data, n)]
+    ok = [i for i, ni in enumerate(n) if ni >= 2]
     #  A2 = Ctrl_Cht_Const["A2"][n]
     if sigma is None:
+        if not ok:
+            raise ValueError("Need at least one subgroup with 2 or more"
+                             " valid values to estimate sigma.")
         if pooled:
-            sp = (sum(sum((i - stat.mean(l))**2 for i in l) for l in data) / sum(_-1 for _ in n))**.5
-            sigma = sp / c4_values(sum(_-1 for _ in n))
+            sp = (sum(sum((x - stat.mean(data[i]))**2 for x in data[i]) for i in ok) / sum(n[i] - 1 for i in ok))**.5
+            sigma = sp / c4_values(sum(n[i] - 1 for i in ok))
         else:
-            sigma = sum(cc_d2(_) * r / cc_d3(_)**2 for r, _ in zip(R, n)) / sum((cc_d2(_) / cc_d3(_))**2 for _ in n)
+            sigma = sum(cc_d2(n[i]) * R[i] / cc_d3(n[i])**2 for i in ok) / sum((cc_d2(n[i]) / cc_d3(n[i]))**2 for i in ok)
 
     #  R_bar = stat.mean(R)
     xbar_bar = stat.mean([j for l in data for j in l]) if mean is None else mean
-    xbar_ucl = [xbar_bar + k * sigma / (_)**.5 for _ in n]
-    xbar_lcl = [xbar_bar - k * sigma / (_)**.5 for _ in n]
+    xbar_ucl = [xbar_bar + k * sigma / (_)**.5 if _ > 0 else NAN for _ in n]
+    xbar_lcl = [xbar_bar - k * sigma / (_)**.5 if _ > 0 else NAN for _ in n]
     #  xbar_lcl = xbar_bar - A2 * R_bar
     #  D4 = Ctrl_Cht_Const["D4"][n]
     #  D3 = Ctrl_Cht_Const["D3"][n]
     #  R_UCL = D4 * R_bar
     #  R_LCL = D3 * R_bar
-    R_bar = [cc_d2(ni) * sigma for ni in n]
-    R_UCL = [cc_d2(mr) * sigma + k * sigma * cc_d3(mr) for mr in n]
-    R_LCL = [max(0, cc_d2(mr) * sigma - k * sigma * cc_d3(mr)) for mr in n]
+    R_bar = [cc_d2(ni) * sigma if ni >= 2 else NAN for ni in n]
+    R_UCL = [cc_d2(mr) * sigma + k * sigma * cc_d3(mr) if mr >= 2 else NAN for mr in n]
+    R_LCL = [max(0, cc_d2(mr) * sigma - k * sigma * cc_d3(mr)) if mr >= 2 else NAN for mr in n]
 
     return {"Y1": xbar, "Y2": R, "bar1": xbar_bar, "ucl1": xbar_ucl,
             "ucl2": R_UCL, "lcl1": xbar_lcl, "lcl2": R_LCL, "n": n,
@@ -80,27 +94,33 @@ def xBar_R(data,
 def xBar_S(data,  # , print_out=True, max_xlabels=25,xLabels=None):
            k=3, mean=None, sigma=None, pooled=False):  # , print_out=True, max_xlabels=25,xLabels=None):
 
-    xbar = [stat.mean(l) for l in data]
-    S = [stat.stdev(l) for l in data]
-    #  S_bar = stat.mean(S)
+    # Same handling as xBar_R: a subgroup with fewer than 2 values keeps its
+    # X-bar point but has no S point or S limits (NaN).
     n = [len(l) for l in data]
+    xbar = [stat.mean(l) if ni > 0 else NAN for l, ni in zip(data, n)]
+    S = [stat.stdev(l) if ni >= 2 else NAN for l, ni in zip(data, n)]
+    #  S_bar = stat.mean(S)
+    ok = [i for i, ni in enumerate(n) if ni >= 2]
     #  A2 = Ctrl_Cht_Const["A2"][n]
 
     unbiased = True
     if sigma is None:
+        if not ok:
+            raise ValueError("Need at least one subgroup with 2 or more"
+                             " valid values to estimate sigma.")
         if pooled:
-            sp = (sum(sum((i - stat.mean(l))**2 for i in l) for l in data) / sum(_-1 for _ in n))**.5
-            sigma = sp / c4_values(sum(_-1 for _ in n))
+            sp = (sum(sum((x - stat.mean(data[i]))**2 for x in data[i]) for i in ok) / sum(n[i] - 1 for i in ok))**.5
+            sigma = sp / c4_values(sum(n[i] - 1 for i in ok))
         else:
-            h = [c4_values(_)**2 / (1 - c4_values(_)**2) for _ in n]
-            sigma = sum(hi * si / c4_values(ni) for hi, si, ni in zip(h, S, n)) / sum(h)
+            h = {i: c4_values(n[i])**2 / (1 - c4_values(n[i])**2) for i in ok}
+            sigma = sum(h[i] * S[i] / c4_values(n[i]) for i in ok) / sum(h.values())
     else:
         unbiased = False
 
     #  xbar_bar = stat.mean(xbar) if mean is None else mean
     xbar_bar = stat.mean([j for l in data for j in l]) if mean is None else mean
-    xbar_ucl = [xbar_bar + k * sigma / (_)**.5 for _ in n]
-    xbar_lcl = [xbar_bar - k * sigma / (_)**.5 for _ in n]
+    xbar_ucl = [xbar_bar + k * sigma / (_)**.5 if _ > 0 else NAN for _ in n]
+    xbar_lcl = [xbar_bar - k * sigma / (_)**.5 if _ > 0 else NAN for _ in n]
     #  A3 = Ctrl_Cht_Const["A3"][n]
     #  xbar_bar = stat.mean(xbar)
     #  xbar_ucl = xbar_bar + A3 * S_bar
@@ -114,13 +134,13 @@ def xBar_S(data,  # , print_out=True, max_xlabels=25,xLabels=None):
         return (1 - c4_values(n)**2)**.5
 
     if unbiased:
-        S_bar = [c4_values(ni) * sigma for ni in n]
-        S_LCL = [max(0, c4_values(ni) * sigma - k * sigma * c5(ni)) for ni in n]
-        S_UCL = [c4_values(ni) * sigma + k * sigma * c5(ni) for ni in n]
+        S_bar = [c4_values(ni) * sigma if ni >= 2 else NAN for ni in n]
+        S_LCL = [max(0, c4_values(ni) * sigma - k * sigma * c5(ni)) if ni >= 2 else NAN for ni in n]
+        S_UCL = [c4_values(ni) * sigma + k * sigma * c5(ni) if ni >= 2 else NAN for ni in n]
     else:
         S_bar = sigma
-        S_LCL = [max(0, sigma * (1 - k * c5(ni) / c4_values(ni))) for ni in n]
-        S_UCL = [sigma * (1 + k * c5(ni) / c4_values(ni)) for ni in n]
+        S_LCL = [max(0, sigma * (1 - k * c5(ni) / c4_values(ni))) if ni >= 2 else NAN for ni in n]
+        S_UCL = [sigma * (1 + k * c5(ni) / c4_values(ni)) if ni >= 2 else NAN for ni in n]
 
     return {"Y1": xbar, "Y2": S, "bar1": xbar_bar, "ucl1": xbar_ucl,
             "ucl2": S_UCL, "lcl1": xbar_lcl, "lcl2": S_LCL, "n": n,
@@ -128,9 +148,17 @@ def xBar_S(data,  # , print_out=True, max_xlabels=25,xLabels=None):
             "X": list(range(len(data)))}
 
 
+def _max0(v):
+    # max(0, v) that keeps NaN (a blank subgroup) blank instead of making it 0
+    return v if v != v else max(0, v)
+
+
 def limit_line(ax, y, color='black', **kwargs):
     if isinstance(y, (list)):
-        if len(set(y)) == 1:
+        finite = _finite(y)
+        if not finite:
+            return
+        if len(set(finite)) == 1 and len(finite) == len(y):
             y = y[0]
     if isinstance(y, (int, float)):
         ax.axhline(y, color=color, **kwargs)
@@ -149,7 +177,8 @@ def limit_line(ax, y, color='black', **kwargs):
             ys.append(_)
             ys.append(_)
         ax.plot(xs, ys, color=color, **kwargs)
-        add_Y_refs(ax, "%.2f" % ys[-1], color=color, label=True, draw_line=False)
+        # label with the last subgroup that has a limit (skip blank ones)
+        add_Y_refs(ax, "%.2f" % _finite(ys)[-1], color=color, label=True, draw_line=False)
     return
 
 
@@ -182,8 +211,8 @@ def additional_SD(ax, sd, cl, ucl=None):
                 ucl = [ucl] * n
             if not isinstance(cl, list):
                 cl = [cl] * n
-            limit_line(ax, [max(0, cli - (sdi - cli) / 3 * 2) for cli, sdi in zip(cl, ucl)], color='red', linestyle='dashed')
-            limit_line(ax, [max(0, cli - (sdi - cli) / 3)for cli, sdi in zip(cl, ucl)], color='red', linestyle='dashed')
+            limit_line(ax, [_max0(cli - (sdi - cli) / 3 * 2) for cli, sdi in zip(cl, ucl)], color='red', linestyle='dashed')
+            limit_line(ax, [_max0(cli - (sdi - cli) / 3) for cli, sdi in zip(cl, ucl)], color='red', linestyle='dashed')
 
     return
 
@@ -297,6 +326,14 @@ def x_plot(data, bar1=None, pooled=False,
     if print_out:
         print = print_port
         print("\n---- Control Chart ----")
+        if "BAR" in plot_type:
+            blank = [i for i, v in enumerate(s["Y2"]) if v != v]
+            if blank:
+                names = [str(xLabels[i]) if xLabels is not None and i < len(xLabels)
+                         else str(i + 1) for i in blank]
+                print("Subgroups with fewer than 2 valid values (no %s point): %s"
+                      % ("range" if "R" in plot_type.replace("BAR", "") else "SD",
+                         ", ".join(names)))
         if not chart_two_only:
             print("\n" + ylabel1)
             t = [["LCL", "Center", "UCL"], []]

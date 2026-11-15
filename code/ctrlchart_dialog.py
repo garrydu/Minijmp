@@ -6,7 +6,7 @@ from tkinter import TOP, LEFT, X, BOTH, RIGHT
 #  from pandastable_local.dialogs import addListBox
 ########### Own Modules ###########
 from dialog import Dialogs
-from utilities import is_number, number_list, filter_voids, grouping_by_labels, get_number
+from utilities import is_number, number_list, filter_voids, grouping_by_labels, get_number, is_void
 from control_chart import x_plot, p_np_plot, cu_plot
 
 
@@ -187,12 +187,22 @@ class IMRDialog(Dialogs):
         return fig, None, [ax1, ax2]
 
     def apply(self):
-        data, xlabels, fig, ax, axs = self.get_data()
+        res = self.get_data()
+        if res is None:  # get_data already showed the error
+            return
+        data, xlabels, fig, ax, axs = res
         try:
             mr_range = self.mr_range.get()
         except BaseException:
             mr_range = 2
 
+        try:
+            self._plot(data, xlabels, fig, ax, axs, mr_range)
+        except ValueError as e:
+            self.error(str(e))
+        return
+
+    def _plot(self, data, xlabels, fig, ax, axs, mr_range):
         x_plot(
             data, xLabels=xlabels,
             mean=get_number(self.mean),
@@ -313,23 +323,51 @@ class XBRDialog(IMRDialog):
         if xid not in list(self.df):
             self.error("Can't get data.")
             return
+        def valid(values):
+            # keep only real numbers; blanks and text are left out
+            res = []
+            for v in values:
+                try:
+                    f = float(v)
+                except (TypeError, ValueError):
+                    continue
+                if f == f:  # not NaN
+                    res.append(f)
+            return res
+
+        keys = None
         if gsize is None:
             gid = self.gid.get()
             if gid not in list(self.df):
-                self.error("Can't get valid a grouping method.")
+                self.error("Choose a subgroup Size or an ID column.")
                 return
-            data, keys = grouping_by_labels(self.df[xid],
-                                            self.df[gid], return_keys=True)
+            # Rows with a blank ID are skipped; a subgroup keeps its place
+            # even when some of its values are invalid.
+            rows = [(g, v) for g, v in zip(self.df[gid], self.df[xid])
+                    if not is_void(g)]
+            try:
+                keys = sorted(set(g for g, _ in rows))
+            except TypeError:  # mixed number / text IDs
+                keys = sorted(set(g for g, _ in rows), key=str)
+            data = [valid(v for g, v in rows if g == key) for key in keys]
         else:
             gsize = int(gsize)
+            if gsize <= 0:
+                self.error("Subgroup Size must be 1 or more.")
+                return
+            # Group by position first, so invalid cells still take their
+            # place in a subgroup (as Minitab does), then drop them.
             l = list(self.df[xid])
-            if gsize > 0:
-                data = [l[i:i + gsize] for i in range(0, len(l), gsize)]
+            # The column ends at its last non-blank cell (a shorter column
+            # is padded with blank rows in the table); don't turn that
+            # padding into empty subgroups.
+            while l and is_void(l[-1]):
+                l.pop()
+            data = [valid(l[i:i + gsize]) for i in range(0, len(l), gsize)]
 
         if self.xlabelID.get() == "":
-            if gsize is None:
-                xlabels = keys
-            xlabels = list(range(1, len(data) + 1))
+            xlabels = list(keys) if keys is not None else \
+                list(range(1, len(data) + 1))
         else:
             ids = self.df[self.xlabelID.get()]
             [ids] = filter_voids([ids])

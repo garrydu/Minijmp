@@ -41,12 +41,16 @@ def d2(n):
     """d2 for subgroup size n: the published table for n <= 25 (so existing
     results do not change), computed by numerical integration above that."""
     n = int(n)
+    if n < 2:
+        raise ValueError("d2 needs a subgroup size of at least 2, got %d" % n)
     return df['d2'][n] if n in df.index else calculate_d2(n)
 
 
 def d3(n):
     """d3 for subgroup size n: table for n <= 25, computed above that."""
     n = int(n)
+    if n < 2:
+        raise ValueError("d3 needs a subgroup size of at least 2, got %d" % n)
     return df['d3'][n] if n in df.index else calculate_d3(n)
 
 
