@@ -486,7 +486,9 @@ def grr_nested(y=None, op=None, part=None, print_out=False, print_port=print,
     std_repeat = Repeatability**.5
     std_reproduce = Reproducibility**.5
 
-    part_var_comp = (MSPO - MSR) / n
+    # A negative variance estimate (MSPO < MSR: parts differ less than the
+    # repeatability noise) is set to 0, as done for Reproducibility above.
+    part_var_comp = max(0, (MSPO - MSR) / n)
     std_part = part_var_comp**.5
     hist_std_used = False
     if hist_std is not None:
