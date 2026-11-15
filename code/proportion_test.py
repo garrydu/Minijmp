@@ -29,15 +29,24 @@ def prop_2sample(n1=None, n2=None, e1=None,
     CI2 = (pd + norm.ppf(alpha) * SE_sep,
            pd + norm.ppf(1 - alpha) * SE_sep)
     pct = "%.2f%%" % (100 - 100 * alpha)
-    Zp = pd / SE_pooled
-    Zs = pd / SE_sep
-    pl = norm.cdf(Zs)
-    pu = 1 - pl
-    p = 2 * min(pl, pu)
+    # A standard error of 0 (each sample proportion is 0 or 1) makes the
+    # normal approximation undefined; report it as not available (NaN)
+    # instead of dividing by zero. Fisher's exact test below still applies.
+    if SE_sep > 0:
+        Zs = pd / SE_sep
+        pl = norm.cdf(Zs)
+        pu = 1 - pl
+        p = 2 * min(pl, pu)
+    else:
+        Zs = pl = pu = p = float('nan')
 
-    pl_p = norm.cdf(Zp)
-    pu_p = 1 - pl_p
-    p_p = 2 * min(pl_p, pu_p)
+    if SE_pooled > 0:
+        Zp = pd / SE_pooled
+        pl_p = norm.cdf(Zp)
+        pu_p = 1 - pl_p
+        p_p = 2 * min(pl_p, pu_p)
+    else:
+        Zp = pl_p = pu_p = p_p = float('nan')
 
     rv = hypergeom(n1 + n2, e1 + e2, n1)
     pl_f = rv.cdf(e1)
@@ -71,15 +80,19 @@ def prop_2sample(n1=None, n2=None, e1=None,
         print(pct + " Upper bound for difference %.3f" % CI2[1])
         print(pct + " Lower bound for difference %.3f" % CI2[0])
         print("\nH0: p1 == p2")
+        def f3(v):
+            return "N/A" if v != v else "%.3f" % v  # v != v only for NaN
+
         t = PT()
         t.field_names = ["p-value", "Z", "p1 != p2", "p1 < p2", "p1 > p2"]
         t.add_row(["Fisher's Exact", " ", "%.3f" % p_f,
                    "%.3f" % pl_f, "%.3f" % pu_f])
-        t.add_row(["Normal appx.", "%.3f" % Zs, "%.3f" % p,
-                   "%.3f" % pl, "%.3f" % pu])
-        t.add_row(["Normal appx. pooled", "%.3f" % Zp, "%.3f" % p_p,
-                   "%.3f" % pl_p, "%.3f" % pu_p])
+        t.add_row(["Normal appx.", f3(Zs), f3(p), f3(pl), f3(pu)])
+        t.add_row(["Normal appx. pooled", f3(Zp), f3(p_p), f3(pl_p), f3(pu_p)])
         print(str(t))
+        if SE_sep == 0 or SE_pooled == 0:
+            print("N/A: the normal approximation is undefined when its"
+                  " standard error is 0 (proportions of 0 or 1).")
 
     return {"p sep": p, "p p1<p2": pl, "p p1>p2": pu,
             "p Fisher": p_f, "p p1<p2 Fisher": pl_f, "p p1>p2 Fisher": pu_f,
