@@ -6,7 +6,7 @@ from prettytable import PrettyTable as PT
 from pandastable_local.dialogs import MultipleValDialog
 ########### Own Modules ###########
 from dialog import Dialogs, addListBox
-from utilities import count_2factors, number_2Dlist, transpose_2D_list, filter_voids, count_1factor, number_list
+from utilities import count_2factors, number_2Dlist, transpose_2D_list, filter_voids, count_1factor, number_list, is_void
 from chi_sq import chi_square
 
 
@@ -53,14 +53,33 @@ class Chi2TableDialog(Dialogs):
     def apply(self):
 
         if len(self.grpcols) > 0:
-            data = number_2Dlist(df=self.df, cols=self.grpcols,
-                                 print_out=True, print_port=self.app.print)
+            # Read counts and row labels in one pass so each label stays
+            # with its own row; a row with any non-numeric count is skipped
+            # together with its label.
+            label_col = self.rvar.get()
+            data, rKeys = [], []
+            for i in range(self.df.shape[0]):
+                row = []
+                for col in self.grpcols:
+                    try:
+                        v = float(self.df[col].iloc[i])
+                    except (TypeError, ValueError):
+                        break
+                    if v != v:  # NaN
+                        break
+                    row.append(v)
+                if len(row) != len(self.grpcols):
+                    continue
+                data.append(row)
+                if len(label_col) > 0:
+                    label = self.df[label_col].iloc[i]
+                    rKeys.append("Row %d" % (i + 1) if is_void(label)
+                                 else label)
+            if len(label_col) == 0:
+                rKeys = [chr(65 + i) for i in range(len(data))]
+            self.app.print("Received %d cols of data. Found %d rows valid." %
+                           (len(self.grpcols), len(data)))
             cKeys = self.grpcols
-            data = transpose_2D_list(data)
-            if len(self.rvar.get()) > 0:
-                [rKeys] = filter_voids([list(self.df[self.rvar.get()])])
-            else:
-                rKeys = [chr(65 + i) for i in range(len(data[0]))]
         else:
             data, rKeys, cKeys = count_2factors(
                 self.df[self.xvar.get()],
