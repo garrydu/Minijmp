@@ -100,16 +100,20 @@ def p_blaker(n, p, k):
     def pt_ge_k(n, p, k):
         return 1 - pt_le_k(n, p, k - 1)
 
+    # If no value on the opposite side has a tail probability as small as
+    # the observed one, the opposite side adds nothing to the p-value.
     if pt_ge_k(n, p, k) < pt_le_k(n, p, k):
-        k_modified = max([i for i in range(n + 1)
-                          if pt_le_k(n, p, i) <= pt_ge_k(n, p, k)])
-        return pt_ge_k(n, p, k) + pt_le_k(n, p, k_modified)
+        candidates = [i for i in range(n + 1)
+                      if pt_le_k(n, p, i) <= pt_ge_k(n, p, k)]
+        other = pt_le_k(n, p, max(candidates)) if candidates else 0
+        return pt_ge_k(n, p, k) + other
     elif pt_ge_k(n, p, k) == pt_le_k(n, p, k):
         return 1
     else:
-        k_modified = min([i for i in range(n + 1)
-                          if pt_ge_k(n, p, i) <= pt_le_k(n, p, k)])
-        return pt_le_k(n, p, k) + pt_ge_k(n, p, k_modified)
+        candidates = [i for i in range(n + 1)
+                      if pt_ge_k(n, p, i) <= pt_le_k(n, p, k)]
+        other = pt_ge_k(n, p, min(candidates)) if candidates else 0
+        return pt_le_k(n, p, k) + other
 
 
 def p_sterne(n, p, k):
