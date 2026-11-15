@@ -584,7 +584,7 @@ class Prop2SDialog(Dialogs):
             x = list(self.df[self.xvar.get()])
         else:
             x = None
-        if len(self.xvar.get()) > 0:
+        if len(self.yvar.get()) > 0:
             y = list(self.df[self.yvar.get()])
         else:
             y = None
@@ -598,11 +598,15 @@ class Prop2SDialog(Dialogs):
 
         if event_cnt is None or ttl_cnt is None:
             if x is None:
+                self.error("Sample 1 is missing: choose a column, or enter"
+                           " the number of events and trials.")
                 return
             ttl_cnt, event_cnt = event_count(x, event_name)
 
         if event_cnt2 is None or ttl_cnt2 is None:
             if y is None:
+                self.error("Sample 2 is missing: choose a column, or enter"
+                           " the number of events and trials.")
                 return
             ttl_cnt2, event_cnt2 = event_count(y, event_name2)
 
