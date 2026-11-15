@@ -209,9 +209,11 @@ class Anova1WayDialog(Dialogs):
                 return
             else:
                 self.make_working_df(cols=[grp], numcols=[xvar])
-                data = group_df_to_list(self.df, y_key=xvar, grp_key=grp)
-                data = [number_list(i) for i in data]
-                groups = self.df[grp].unique()
+                # Rows with a missing value or a blank group label are left
+                # out, so no group ends up empty.
+                wdf = self.working_df.dropna(subset=[grp])
+                data = group_df_to_list(wdf, y_key=xvar, grp_key=grp)
+                groups = wdf[grp].unique()
 
         res = one_way_anova(data, groups, print_out=True,
                             print_port=self.app.print,

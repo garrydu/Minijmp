@@ -52,14 +52,31 @@ class SBDialog(Dialogs):
         def voids2nan(data):
             return [np.nan if is_void(i) else i
                     for i in data]
+
+        def to_float_or_nan(data):
+            # Keep one entry per row so every column stays aligned;
+            # anything that is not a number becomes NaN.
+            res = []
+            for i in data:
+                try:
+                    res.append(float(i))
+                except (TypeError, ValueError):
+                    res.append(np.nan)
+            return res
+
         d = dict()
         if cols is None:
             cols = self.cols
         for key in cols:
             d[key] = voids2nan(self.df[key])
         for key in numcols:
-            d[key] = number_list(self.df[key])
-        self.working_df = DF(d)
+            d[key] = to_float_or_nan(self.df[key])
+        working_df = DF(d)
+        if numcols:
+            # Drop whole rows whose numeric value is missing, instead of
+            # shortening only the numeric column.
+            working_df = working_df.dropna(subset=list(numcols))
+        self.working_df = working_df.reset_index(drop=True)
         return
 
     def make_working_df_1col(self,
