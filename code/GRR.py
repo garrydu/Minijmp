@@ -434,6 +434,20 @@ def grr_master(y=None, op=None, part=None, mode="aiag", alpha=0.05,
 
 def grr_nested(y=None, op=None, part=None, print_out=False, print_port=print,
                hist_std=None):
+    # In a nested study each part is measured by one operator only, so a
+    # part ID must not appear under two operators.
+    ops_per_part = {}
+    for p, o in zip(part, op):
+        ops_per_part.setdefault(p, set()).add(o)
+    shared = sorted(str(p) for p, ops in ops_per_part.items() if len(ops) > 1)
+    if shared:
+        raise ValueError(
+            "Part IDs repeat across operators: " + ", ".join(shared[:5]) +
+            (" ..." if len(shared) > 5 else "") + ".\n"
+            "In a nested study each part is measured by only one operator,"
+            " so part IDs must be unique (e.g. A1, B1).\n"
+            "If every operator measured the same parts,"
+            " use Crossed Gage R&R instead.")
     a = len(set(part))  # a is number of parts
     b = len(set(op))  # number of operators
     n = len(y) / a
