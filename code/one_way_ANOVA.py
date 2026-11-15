@@ -102,7 +102,7 @@ def JMP_ANOVA_t_test(data, labels, print_out=False, print_port=print,
     k = len(keys)
     ns = [len(dict_data[key]) for key in keys]
     N = sum(ns)
-    df = N - 1
+    df = N - k  # error df of the pooled variance (matches JMP and the ANOVA table)
     means = [(stat.mean(dict_data[keys[i]]), i) for i in range(k)]
 
     pooled_variance = sum([stat.stdev(l)**2 * (len(l) - 1)
