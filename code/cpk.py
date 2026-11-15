@@ -53,8 +53,8 @@ def cpk_calc(mean, std, T, usl, lsl, df, N, print_port=print,
 
     cp_l = cp * (chi2.ppf(alpha / 2, df) / (df))**.5
     cp_u = cp * (chi2.ppf(1 - alpha / 2, df) / (df))**.5
-    cpk_delta = norm.ppf(1 - alpha / 2) * (1 / 9 / N /
-                                           cpk**2 + 1 / 2 / df)**.5 * cpk
+    # Bissell: Cpk +/- z * sqrt(1/(9N) + Cpk^2/(2 df)); stays valid for Cpk <= 0
+    cpk_delta = norm.ppf(1 - alpha / 2) * (1 / 9 / N + cpk**2 / 2 / df)**.5
     cpk_l, cpk_u = cpk - cpk_delta, cpk + cpk_delta
 
     gamma = N * (1 + ((mean - T) / std)**2)**2 / \
