@@ -41,7 +41,7 @@ def prop_2sample(n1=None, n2=None, e1=None,
 
     rv = hypergeom(n1 + n2, e1 + e2, n1)
     pl_f = rv.cdf(e1)
-    pu_f = 1 - rv.cdf(max(e1 - 1, 0))
+    pu_f = 1 - rv.cdf(e1 - 1)  # Minitab: 1 - F(x1 - 1); equals 1 when e1 == 0
 
     mode = int((n1 + 1) * (e1 + e2 + 1) / (n1 + n2 + 2))
 
