@@ -1,7 +1,7 @@
 # GDu Jun 2024
 # The calculation gives same outputs with JMP 17
-# However Cpm confidence limits of Overall has 1.5% differences.
-# So the Cpm limits are not included here. While the JMP Cpk
+# Cpm confidence limits follow JMP: overall built on Cpm2 ((N-1)/N s^2),
+# within on Cpm; shown only when the target is centered. While the JMP Cpk
 # confidence limits (alpha==1) are not that accurate as the Cpk calculated by
 # chi2 dist. Using the upper limit of the sampled stdev when alpha==1
 # the cpk 95% lower limit is more close to simulation.
@@ -57,10 +57,22 @@ def cpk_calc(mean, std, T, usl, lsl, df, N, print_port=print,
     cpk_delta = norm.ppf(1 - alpha / 2) * (1 / 9 / N + cpk**2 / 2 / df)**.5
     cpk_l, cpk_u = cpk - cpk_delta, cpk + cpk_delta
 
+    # JMP only reports the Cpm interval when the target is centered.
+    # Overall: JMP and Minitab build it on Cpm2, which uses (N-1)/N s^2 (the
+    # same as Minitab's Cpm point estimate). Within: JMP builds it on Cpm
+    # itself (Minitab has no within Cpm).
     gamma = N * (1 + ((mean - T) / std)**2)**2 / \
         (1 + 2 * ((mean - T) / std)**2)
-    cpm_l = cpm * (chi2.ppf(alpha / 2, gamma) / gamma)**.5
-    cpm_u = cpm * (chi2.ppf(1 - alpha / 2, gamma) / gamma)**.5
+    centered = abs(T - (usl + lsl) / 2) <= 1e-9 * max(1.0, abs(usl - lsl))
+    if centered:
+        if name == "Within":
+            cpm2 = cpm
+        else:
+            cpm2 = (usl - lsl) / 6 / ((N - 1) / N * std**2 + (T - mean)**2)**.5
+        cpm_l = cpm2 * (chi2.ppf(alpha / 2, gamma) / gamma)**.5
+        cpm_u = cpm2 * (chi2.ppf(1 - alpha / 2, gamma) / gamma)**.5
+    else:
+        cpm_l = cpm_u = float('nan')
 
     cpl_l, cpl_u = cpl_cpu_95(cpl, N, df, alpha)
     cpu_l, cpu_u = cpl_cpu_95(cpu, N, df, alpha)
@@ -75,7 +87,10 @@ def cpk_calc(mean, std, T, usl, lsl, df, N, print_port=print,
         t.add_row(['Cpl', "%.3f" % cpl, "%.3f" % cpl_l, "%.3f" % cpl_u])
         t.add_row(['Cpu', "%.3f" % cpu, "%.3f" % cpu_l, "%.3f" % cpu_u])
         t.add_row(['Cp', "%.3f" % cp, "%.3f" % cp_l, "%.3f" % cp_u])
-        t.add_row(['Cpm', "%.3f" % cpm, "", ""])
+        if centered:
+            t.add_row(['Cpm', "%.3f" % cpm, "%.3f" % cpm_l, "%.3f" % cpm_u])
+        else:
+            t.add_row(['Cpm', "%.3f" % cpm, "", ""])
         print(str(t))
         #  print("Cpk\tEst: %.3f\tLower: %.3f\tUpper: %.3f" % (cpk, cpk_l, cpk_u))
         #  print("Cpl\tEst: %.3f\tLower: %.3f\tUpper: %.3f" % (cpl, cpl_l, cpl_u))
