@@ -72,7 +72,18 @@ def histo_n_fit(df=None, xkey=None,
     if ax is None:
         fig, ax = plt.subplots()
 
-    x = list(df[xkey])
+    # Blank cells come in as NaN; min()/max() return NaN when the first
+    # value is NaN, so use only the finite numbers for the axis range.
+    x = []
+    for v in df[xkey]:
+        try:
+            v = float(v)
+        except (TypeError, ValueError):
+            continue
+        if np.isfinite(v):
+            x.append(v)
+    if not x:
+        raise ValueError("No valid numbers in column %s." % xkey)
     if x_min is None:
         x_min = min(x) - (max(x) - min(x)) * ax_margin
     if x_max is None:

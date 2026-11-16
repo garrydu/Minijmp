@@ -87,6 +87,9 @@ class singleHistoDialog(SBDialog):
             col_name=xvar,
             print_out=True,
             print_port=self.app.print)
+        if len(data) == 0:
+            self.error("No valid numbers in column %s." % xvar)
+            return
         fit_dist = self.fit_dist.get()
         rv = None
         if fit_dist:
