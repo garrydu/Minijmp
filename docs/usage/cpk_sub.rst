@@ -1,3 +1,11 @@
+.. raw:: html
+
+   <style>
+      .tight-table td {
+             white-space: normal !important;
+                       }
+                          </style>
+
 Process Capability with Subgroups
 ---------------------------------
 
@@ -137,6 +145,7 @@ Notation: :math:`N` is the number of observations, :math:`\bar{x}` the mean, :ma
 .. list-table::
    :header-rows: 1
    :widths: 22 38 20 20
+   :class: tight-table
 
    * - Statistic
      - MiniJMP
@@ -190,6 +199,7 @@ Cpm differs:
 .. list-table::
    :header-rows: 1
    :widths: 22 38 20 20
+   :class: tight-table
 
    * - Statistic
      - MiniJMP
@@ -217,6 +227,7 @@ Degrees of freedom :math:`\nu` used by the Cp and Cpk intervals:
 .. list-table::
    :header-rows: 1
    :widths: 30 30 20 20
+   :class: tight-table
 
    * - Sigma
      - MiniJMP
