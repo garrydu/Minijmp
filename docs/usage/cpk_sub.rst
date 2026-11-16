@@ -16,10 +16,13 @@ To perform the study choose Quality > Process Capability with Subgroups
   - **Option 1: Use Subgroup Size**: Select **Use Subgroup Size** in **Option**, and set the size of each group in **Subgroup Size**. In this case each sub group has to have the same number of sample points. Each sub group will be extracted from the pool sequentially.
   - **Option 2: Use Subgroup ID**: In this case, there shall be a column containing the categorical data for the measurement data points. Select **Use Subgroup ID Col.** in **Option**, and select the column in **ID Col.**. The setting in **Subgroup Size** will be ignored in this case, and vise versa. 
 
-- **Within Subgroup Variation**: Select the approach to estimate the within Subgroup sigma.
+- **Within Subgroup Variation**: Select the **Method** to estimate the within Subgroup sigma.
   
-  - **Average of Unbiased SD**: Use the average of the standard deviation of each sub group divided by its C4 value.
-  - **Average of Ranges**: The approach uses range of each group to estimate the underlying data population. The approach is more sensitive to outliers. 
+  - **Unbiased Std Dev**: Use the average of the standard deviation of each sub group divided by its C4 value. Same as `Average of Unbiased Std Dev` in JMP and `Sbar` in Minitab.
+  - **Ranges**: The approach uses range of each group divided by its d2 value to estimate the underlying data population. The approach is more sensitive to outliers. Same as `Average of Range` in JMP and `Rbar` in Minitab.
+  - **Pooled Std Dev**: Pool the variation of all subgroups into one standard deviation, divided by C4. This is the default method of Minitab. JMP does not offer it.
+
+  A subgroup with a single value has no within subgroup variation. It is left out of the within sigma, but its value is still used in N, the mean and the overall sigma. The output notes how many subgroups were left out. At least one subgroup must have 2 or more values.
 
 - **Plot Settings**:
   
@@ -30,7 +33,7 @@ To perform the study choose Quality > Process Capability with Subgroups
 - **Alpha**: Set confidence interval range. For example CI range will be 95% when alpha is 0.05.
 
 
-The result aligns with JMP 17.
+The result aligns with JMP 17. See `Calculation Details and Comparison with JMP and Minitab` at the end of this page for the formulas and where JMP and Minitab differ.
 
 
 The plot below demenstrates the result from the data set `CPK_sample.pickle` in the sample data folder. Select `Measurement` with column `Y`. Set the LSL, USL and Target to 17, 23 and 20. Select `Subgroup` with `Use Subgroup ID` and column `Lot` as the Subgroup ID. Keep the `Within Subgroup Variation` as `Unbiased SD` unchanged.
@@ -66,7 +69,7 @@ The plot contains the histogram of the data and the normal distribution fit. The
   |  Cpl  |  1.077   |    0.742     |    1.408     |
   |  Cpu  |  0.825   |    0.557     |    1.089     |
   |   Cp  |  0.951   |    0.675     |    1.227     |
-  |  Cpm  |  0.890   |              |              |
+  |  Cpm  |  0.890   |    0.674     |    1.104     |
   +-------+----------+--------------+--------------+
   
   Overall (AKA Ppk in JMP)
@@ -77,7 +80,7 @@ The plot contains the histogram of the data and the normal distribution fit. The
   |  Cpl  |  0.768   |    0.543     |    0.988     |
   |  Cpu  |  0.588   |    0.400     |    0.772     |
   |   Cp  |  0.678   |    0.510     |    0.846     |
-  |  Cpm  |  0.655   |              |              |
+  |  Cpm  |  0.655   |    0.503     |    0.826     |
   +-------+----------+--------------+--------------+
   
   Nonconformance (Observation and Expected)
@@ -116,3 +119,139 @@ But if the same data points were regrouped, for example by operators, the within
 
 In the previous session, when the data do not have any subgrouping, a moving window can still be applied to a sequentially recorded data set for within sigma. The algorithm uses the pairs of neighor data points as the subgroups. It assumes the production condition and environment change less during a short of period time. But if over the entire time span the condition drifts much, the within indices will be much better than the overall indices. In this case, a control chart will come to handy for further process drifting analysis, which will be discussed in the next session.
 
+
+Calculation Details and Comparison with JMP and Minitab
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+JMP and Minitab use mostly the same formulas, but differ in a few places. MiniJMP follows JMP by default. The table below lists each statistic, how MiniJMP calculates it, and whether the result matches JMP and Minitab. "Same" in the JMP column comes from the original calibration against JMP 17 and later checks against JMP 19. The Minitab column comes from the Minitab help pages below and from comparing results in Minitab; items not covered by either are noted.
+
+References:
+
+- JMP: `Statistical Details for Capability Indices for Normal Distributions <https://www.jmp.com/support/help/en/19.0/index.shtml#page/jmp/statistical-details-for-capability-indices-for-normal-distributions.shtml>`_
+- Minitab: `Methods and formulas for overall capability <https://support.minitab.com/en-us/minitab/help-and-how-to/quality-and-process-improvement/capability-analysis/how-to/capability-analysis/normal-capability-analysis/methods-and-formulas/overall-capability/>`_ and `potential (within) capability <https://support.minitab.com/en-us/minitab/help-and-how-to/quality-and-process-improvement/capability-analysis/how-to/capability-analysis/normal-capability-analysis/methods-and-formulas/potential-capability/>`_
+
+Notation: :math:`N` is the number of observations, :math:`\bar{x}` the mean, :math:`s` the sample standard deviation (N-1), :math:`T` the target, :math:`n_i` the size of subgroup i, :math:`s_i` and :math:`R_i` its standard deviation and range, and :math:`k` the number of subgroups.
+
+**Sigma estimates**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 22 38 20 20
+
+   * - Statistic
+     - MiniJMP
+     - JMP
+     - Minitab
+   * - Overall sigma
+     - :math:`s`
+     - Same
+     - Same (default, without the unbiasing constant)
+   * - Within sigma, no subgroups
+     - Average moving range of length 2 / d2(2), d2(2) = 1.128379
+     - Same
+     - Uses d2(2) = 1.128, so slightly larger (16.2844 vs 16.2899 in one example). Minitab also offers other moving range lengths.
+   * - Within sigma, Unbiased Std Dev
+     - :math:`\frac{1}{k}\sum s_i / c_4(n_i)`
+     - Same (Average of Unbiased Std Dev)
+     - Same as the Sbar option when subgroups have equal size
+   * - Within sigma, Ranges
+     - :math:`\frac{1}{k}\sum R_i / d_2(n_i)`
+     - Same (Average of Range)
+     - Same as the Rbar option when subgroups have equal size
+   * - Within sigma, Pooled Std Dev
+     - :math:`s_p / c_4(d+1)`, :math:`s_p = \sqrt{\sum\sum (x_{ij}-\bar{x}_i)^2 / d}`, :math:`d = \sum (n_i - 1)`
+     - Not available
+     - Same (Minitab default)
+
+**Capability indices**
+
+Cp, Cpk, Cpl and Cpu use the standard formulas (shown above) in all three programs. The within indices use the within sigma, and the overall indices (Pp, Ppk, Ppl, Ppu in Minitab) use the overall sigma.
+
+Cpm differs:
+
+- MiniJMP and JMP:
+
+  .. math::
+
+     Cpm = \frac{\min(T - LSL, USL - T)}{3\sqrt{\sigma^2 + (\bar{x} - T)^2}}
+
+  with :math:`\sigma` = overall or within sigma.
+
+- Minitab (overall only, no within Cpm):
+
+  .. math::
+
+     Cpm = \frac{\min(T - LSL, USL - T)}{3\sqrt{\sum (x_i - T)^2 / N}}
+
+  This divides by N instead of N-1, so for small samples Minitab shows a larger Cpm (for example 0.48 vs 0.462 with N = 9).
+
+**Confidence intervals**
+
+.. list-table::
+   :header-rows: 1
+   :widths: 22 38 20 20
+
+   * - Statistic
+     - MiniJMP
+     - JMP
+     - Minitab
+   * - Cp
+     - Chi-square: :math:`Cp\sqrt{\chi^2_{\alpha/2,\nu}/\nu}` to :math:`Cp\sqrt{\chi^2_{1-\alpha/2,\nu}/\nu}`
+     - Same
+     - Same formula, see the degrees of freedom below
+   * - Cpk
+     - Normal approximation: :math:`Cpk \pm z_{1-\alpha/2}\sqrt{\frac{1}{9N} + \frac{Cpk^2}{2\nu}}`
+     - Same
+     - Overall interval matched in our test. Within interval differs (0.02 to 0.54 in Minitab vs 0.001 to 0.559 in JMP and MiniJMP for one example).
+   * - Cpl, Cpu
+     - Based on the noncentral t distribution
+     - Same
+     - Not reported
+   * - Cpm
+     - Chi-square with :math:`\gamma = N\frac{(1+a^2)^2}{1+2a^2}`, :math:`a = (\bar{x}-T)/\sigma`. Overall interval is centered on :math:`Cpm_2 = \frac{USL-LSL}{6\sqrt{\frac{N-1}{N}s^2 + (T-\bar{x})^2}}`; within interval is centered on Cpm. Only shown when the target is the middle of LSL and USL.
+     - Same
+     - Overall interval is the same. No within interval.
+
+Degrees of freedom :math:`\nu` used by the Cp and Cpk intervals:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 30 30 20 20
+
+   * - Sigma
+     - MiniJMP
+     - JMP
+     - Minitab
+   * - Overall
+     - :math:`N - 1`
+     - Same
+     - Same
+   * - Within, no subgroups
+     - :math:`0.62(N - 1)`
+     - Same
+     - :math:`N - 1`, so Minitab gives a narrower within interval
+   * - Within, Unbiased Std Dev
+     - :math:`f_n \sum (n_i - 1)` for equal sizes, :math:`\sum (n_i - 1)` otherwise
+     - Same
+     - Same for equal sizes (Sbar)
+   * - Within, Ranges
+     - Approximation from d2 and d3 for equal sizes, :math:`\sum (n_i - 1)` otherwise
+     - Same
+     - Minitab uses :math:`0.9k(n-1)`
+   * - Within, Pooled Std Dev
+     - :math:`\sum (n_i - 1)`
+     - Not available
+     - Same
+
+**Nonconformance**
+
+The expected percentages outside the spec limits come from the normal distribution with the mean and the within or overall sigma. JMP and Minitab calculate them the same way (Minitab reports them as PPM).
+
+**Summary of differences from Minitab**
+
+When you compare MiniJMP results with Minitab, expect differences in these places only:
+
+- Minitab's default within sigma is Pooled Std Dev. Choose `Pooled Std Dev` in MiniJMP to get the same within sigma.
+- Minitab's Cpm uses N instead of N-1, so its Cpm point estimate is larger for small samples. The overall Cpm interval is the same.
+- The within Cpk interval, and the within Cp interval without subgroups, use different formulas or degrees of freedom.
+- Without subgroups, Minitab uses d2(2) = 1.128 instead of 1.128379.

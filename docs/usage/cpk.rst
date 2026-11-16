@@ -21,7 +21,7 @@ Choose Quality > Process Capability
 - **Alpha**: Set confidence interval range. For example CI range will be 95% when alpha is 0.05.
 
 
-The result aligns with JMP 17.
+The result aligns with JMP 17. See `Calculation Details and Comparison with JMP and Minitab` in the :doc:`cpk_sub` page for the formulas and where JMP and Minitab differ.
 
 
 Open the file `CPK_sample.pickle` in the sample data folder. Select `Measurement` with column `Y`. Set the LSL, USL and Target to 17, 23 and 20. The plot and results below will be displayed. 
@@ -51,7 +51,7 @@ The plot contains the histogram of the data and the normal distribution fit. The
    |  Cpl  |  0.768   |    0.543     |    0.988     |
    |  Cpu  |  0.588   |    0.400     |    0.772     |
    |   Cp  |  0.678   |    0.510     |    0.846     |
-   |  Cpm  |  0.655   |              |              |
+   |  Cpm  |  0.655   |    0.503     |    0.826     |
    +-------+----------+--------------+--------------+
    
    Nonconformance (Observation and Expected)
@@ -131,6 +131,8 @@ The overall Cpk is also called as Ppk, for example in Minitab. The difference of
 
 Nonconformance in process capability analysis refers to products or processes that fail to meet specified requirements. The result includes the stats of falling out of the upper and lower limites, and the total as well. The observed values indicate the portion of sample data that do not meet spec limits. The expected values are the estimate from the fitted normal distribution, which are the portion of the population that falling out of the limits, assuming population following the distribution fitted.
 
-When the `Show within sigma` option being checked, the software will use each pair of the neibhour data point to caculate standard deviation and use the average of the values to be the with subgroup sigma. The caculation requires that the data possesses a chronological order.
+When the `Show within sigma` option being checked, the software takes the absolute difference of each pair of neighbour data points (moving range of length 2), and uses the average moving range divided by d2(2) = 1.128379 as the within sigma. The calculation requires that the data possesses a chronological order.
+
+The confidence interval of Cpm is shown only when the target is at the middle of LSL and USL, the same as JMP.
 
 The within sigma will be discussed in the next session. 
