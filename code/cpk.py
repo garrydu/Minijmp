@@ -148,7 +148,7 @@ def nonconformance(data, t, lsl, usl, u, sw, so, print_out=True,
 
 
 def cpk(data, target, usl, lsl, print_port=print, within=True,
-        print_out=True, use_range=False, alpha=0.05):
+        print_out=True, use_range=False, alpha=0.05, use_pooled=False):
     try:
         # if data is a 2D list
         size_subgrp = [len(l) for l in data]
@@ -156,7 +156,15 @@ def cpk(data, target, usl, lsl, print_port=print, within=True,
         flat_list = [item for sublist in data for item in sublist]
         sub_grps = len(data)
 
-        if use_range:
+        if use_pooled:
+            # Minitab default: pooled SD over d = sum(n_i - 1) degrees of
+            # freedom, unbiased with c4(d + 1).
+            within_msg = "Within sigma estimated by the pooled SD over c4(d+1)."
+            d = sum(len(l) - 1 for l in data)
+            ss = sum(sum((x - stat.mean(l))**2 for x in l) for l in data)
+            std_within = (ss / d)**.5 / c4_values(d + 1)
+            df_sub = d
+        elif use_range:
             within_msg = "Within sigma estimated by the average of ranges over d2."
             std_within = stat.mean(
                 [(max(l) - min(l)) / d2_values(len(l)) for l in data])

@@ -9,7 +9,7 @@ def cpk_plot(data, usl, target, lsl, print_out=False,
              use_range=False, alpha=0.05, show_plot=False,
              filename=None, xlabel=None, print_port=print,
              transparent=None, ax=None, show_legend=True,
-             show_within=True, show_spec=True):
+             show_within=True, show_spec=True, use_pooled=False):
 
     if ax is None:
         fig, ax1 = plt.subplots()
@@ -19,7 +19,8 @@ def cpk_plot(data, usl, target, lsl, print_out=False,
     ax2 = ax1.twinx()
 
     res = cpk(data, target, usl, lsl, print_out=print_out, within=show_within,
-              use_range=use_range, alpha=alpha, print_port=print_port)
+              use_range=use_range, alpha=alpha, print_port=print_port,
+              use_pooled=use_pooled)
     # Use density=True when creating the histogram to ensure
     # the y-axis represents probability density, which is
     # necessary for a proper comparison with the normal distribution curve

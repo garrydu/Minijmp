@@ -397,13 +397,14 @@ class CpkSubDialog(Dialogs):
         f = tk.LabelFrame(m, text='Within-Subgroup Variation')
         f.pack(side=TOP, fill=BOTH, padx=2)
         self.subm = tk.StringVar(value="Unbiased Std Dev")
-        w = tk.Label(f, text="Average of")
+        w = tk.Label(f, text="Method")
         w.pack(side=LEFT, fill=X, padx=2)
         w = ttk.Combobox(
             f,
             values=[
                 "Unbiased Std Dev",
-                "Ranges"],
+                "Ranges",
+                "Pooled Std Dev"],
             textvariable=self.subm,
             width=14)
         w.pack(side=LEFT, padx=2)
@@ -465,6 +466,7 @@ class CpkSubDialog(Dialogs):
             alpha = 0.05
 
         use_range = "ange" in self.subm.get()
+        use_pooled = "ooled" in self.subm.get()
 
         lsl, tgt, usl = self.lsl.get(), self.target.get(), self.usl.get()
         if lsl < tgt < usl:
@@ -485,6 +487,7 @@ class CpkSubDialog(Dialogs):
             print_port=self.app.print,
             xlabel=self.xlabel.get() if self.xlabel.get() != "" else self.xvar.get(),
             use_range=use_range,
+            use_pooled=use_pooled,
             alpha=alpha,
             ax=pf.ax,
             show_legend=self.show_legend.get(),
