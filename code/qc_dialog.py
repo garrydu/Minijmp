@@ -478,21 +478,25 @@ class CpkSubDialog(Dialogs):
         pf = self.app.showPlotViewer()
         pf.ax = pf.fig.add_subplot(111)
 
-        cpk_plot(
-            data,
-            lsl,
-            tgt,
-            usl,
-            print_out=True,
-            print_port=self.app.print,
-            xlabel=self.xlabel.get() if self.xlabel.get() != "" else self.xvar.get(),
-            use_range=use_range,
-            use_pooled=use_pooled,
-            alpha=alpha,
-            ax=pf.ax,
-            show_legend=self.show_legend.get(),
-            show_within=self.show_within.get(),
-            show_spec=self.show_spec.get())
+        try:
+            cpk_plot(
+                data,
+                lsl,
+                tgt,
+                usl,
+                print_out=True,
+                print_port=self.app.print,
+                xlabel=self.xlabel.get() if self.xlabel.get() != "" else self.xvar.get(),
+                use_range=use_range,
+                use_pooled=use_pooled,
+                alpha=alpha,
+                ax=pf.ax,
+                show_legend=self.show_legend.get(),
+                show_within=self.show_within.get(),
+                show_spec=self.show_spec.get())
+        except ValueError as e:
+            self.error(str(e))
+            return
 
         return
 

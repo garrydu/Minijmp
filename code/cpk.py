@@ -164,41 +164,53 @@ def nonconformance(data, t, lsl, usl, u, sw, so, print_out=True,
 
 def cpk(data, target, usl, lsl, print_port=print, within=True,
         print_out=True, use_range=False, alpha=0.05, use_pooled=False):
-    try:
-        # if data is a 2D list
-        size_subgrp = [len(l) for l in data]
-        balanced = (max(size_subgrp) == min(size_subgrp))
+    grouped = len(data) > 0 and all(
+        isinstance(l, (list, tuple)) for l in data)
+    if grouped:
         flat_list = [item for sublist in data for item in sublist]
         sub_grps = len(data)
+        # A subgroup with a single value has no within variation (n - 1 = 0
+        # degrees of freedom): leave it out of the within sigma, but keep its
+        # value in N, the mean and the overall sigma.
+        usable = [l for l in data if len(l) >= 2]
+        if not usable:
+            raise ValueError("Need at least one subgroup with 2 or more"
+                             " values to estimate the within sigma.")
+        n_single = len(data) - len(usable)
+        size_subgrp = [len(l) for l in usable]
+        balanced = (max(size_subgrp) == min(size_subgrp))
+        usable_n = sum(size_subgrp)
 
         if use_pooled:
             # Minitab default: pooled SD over d = sum(n_i - 1) degrees of
             # freedom, unbiased with c4(d + 1).
             within_msg = "Within sigma estimated by the pooled SD over c4(d+1)."
-            d = sum(len(l) - 1 for l in data)
-            ss = sum(sum((x - stat.mean(l))**2 for x in l) for l in data)
+            d = usable_n - len(usable)
+            ss = sum(sum((x - stat.mean(l))**2 for x in l) for l in usable)
             std_within = (ss / d)**.5 / c4_values(d + 1)
             df_sub = d
         elif use_range:
             within_msg = "Within sigma estimated by the average of ranges over d2."
             std_within = stat.mean(
-                [(max(l) - min(l)) / d2_values(len(l)) for l in data])
+                [(max(l) - min(l)) / d2_values(len(l)) for l in usable])
             if balanced:
-                n = len(flat_list) / sub_grps
-                A = 2 * calculate_d3(n)**2 / sub_grps / calculate_d2(n)**2
+                n = usable_n / len(usable)
+                A = 2 * calculate_d3(n)**2 / len(usable) / calculate_d2(n)**2
                 df_sub = 1 / A - (3 / 16) * A + (3 / 64) * A**2 + 0.25
             else:
-                df_sub = len(flat_list) - sub_grps
+                df_sub = usable_n - len(usable)
         else:
             within_msg = "Within sigma estimated by the average of unbiased SD."
             std_within = stat.mean(
-                [stat.stdev(l) / c4_values(len(l)) for l in data])
-            df_sub = len(flat_list) - sub_grps
+                [stat.stdev(l) / c4_values(len(l)) for l in usable])
+            df_sub = usable_n - len(usable)
             if balanced:
-                n = len(flat_list) / sub_grps
+                n = usable_n / len(usable)
                 df_sub = scale_factor_f(n) * df_sub
-
-    except BaseException:
+        if n_single:
+            within_msg += ("\n%d subgroup(s) with a single value not used"
+                           " for the within sigma." % n_single)
+    else:
         within_msg = "Within sigma estimated by averaging moving ranges of 2."
         flat_list = data  # 1D for individual MR within
         std_within = stat.mean(
