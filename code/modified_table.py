@@ -680,7 +680,6 @@ class MTable(Table):
     def storeCurrent(self):
         """Store current version of the table before a major change is made"""
 
-        #  print(len(self.prevdf),self.prevdf_end)
         prevdf = self.model.df.copy()
         if self.prevdf is None:
             self.prevdf = [prevdf]
@@ -692,13 +691,11 @@ class MTable(Table):
             if self.prevdf_end > 5:
                 del self.prevdf[0]
                 self.prevdf_end -= 1
-        print(len(self.prevdf), self.prevdf_end)
         return
 
     def undo(self, event=None):
         """Undo last major table change"""
 
-        print(len(self.prevdf), self.prevdf_end)
         if self.prevdf is None:
             return
         if self.prevdf_end == 0:
@@ -712,13 +709,11 @@ class MTable(Table):
         self.model.df = prevdf
         self.redraw()
         self.updateModel(self.model)
-        print(len(self.prevdf), self.prevdf_end)
         return
 
     def redo(self, event=None):
         """Redo tolast major table change"""
 
-        print(len(self.prevdf), self.prevdf_end)
         if self.prevdf is None:
             return
         if self.prevdf_end + 2 > len(self.prevdf):
@@ -728,7 +723,6 @@ class MTable(Table):
         self.model.df = prevdf
         self.redraw()
         self.updateModel(self.model)
-        print(len(self.prevdf), self.prevdf_end)
         return
 
     def tableChanged(self):
