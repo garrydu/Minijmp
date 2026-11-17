@@ -236,6 +236,9 @@ def chi_square(data, print_out=True, print_port=print,
 def multi_pop_var_test(data, labels, print_out=False, print_port=print,
                        alpha=0.05):
     # data in a list of lists
+    if any(len(l) < 2 for l in data):
+        raise ValueError("Each sample needs at least 2 values to estimate"
+                         " its standard deviation.")
 
     def one_way_anova(data):
         ns = [len(l) for l in data]
@@ -257,6 +260,9 @@ def multi_pop_var_test(data, labels, print_out=False, print_port=print,
         #         Mj is the mean of group j
         #         SSj is the sum of squared deviations from the mean for group j
         #     Do one way ANOVA to uij
+        # The transform divides by (nj - 2): needs 3 or more values per group.
+        if any(len(l) < 3 for l in data):
+            return {"F": np.nan, "p": np.nan}
         Zij = [[((len(l) - 1.5) * len(l) * (v - stat.mean(l))**2 -
                  stat.variance(l) * (len(l) - 1) / 2) / (len(l) - 1) / (len(l) - 2)
                 for v in l] for l in data]
@@ -309,7 +315,10 @@ def multi_pop_var_test(data, labels, print_out=False, print_port=print,
         print("Note: MAD to Mean is Mean Absolute Difference to Mean. MAD to Median is Mean Absolute Difference to Median.\n")
 
         print("H0: All variances are equal. H1: At least one variance is different.\n")
-        print("O'Brien[.5]       p = %.3f" % res["OBrien"]["p"])
+        if np.isnan(res["OBrien"]["p"]):
+            print("O'Brien[.5]       p = N/A (needs 3 or more values in every sample)")
+        else:
+            print("O'Brien[.5]       p = %.3f" % res["OBrien"]["p"])
         print("Levene            p = %.3f" % res["Levene"]["p"])
         print("Brown-Forsythe    p = %.3f" % res["Brown_Forsythe"]["p"])
 

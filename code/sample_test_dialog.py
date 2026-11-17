@@ -436,9 +436,12 @@ class MultiVarDialog(Dialogs):
         except BaseException:
             alpha = 0.05
 
-        multi_pop_var_test(data, self.grpcols, print_out=True,
-                           print_port=self.app.print,
-                           alpha=alpha)
+        try:
+            multi_pop_var_test(data, self.grpcols, print_out=True,
+                               print_port=self.app.print,
+                               alpha=alpha)
+        except ValueError as e:
+            self.error(str(e))
         return
 
 
