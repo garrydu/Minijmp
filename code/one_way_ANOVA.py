@@ -8,6 +8,19 @@ from utilities import make_dict
 from t_test import t_test_1sample
 
 
+def _pooled_variance(groups, N, k):
+    """Sum of squares within the groups over N - k. A group with a single
+    value adds 0 (it has no within-group variation), as in JMP."""
+    if N - k <= 0:
+        raise ValueError("Need at least one group with 2 or more values"
+                         " to estimate the error variance.")
+    ss = 0
+    for l in groups:
+        m = stat.mean(l)
+        ss += sum((v - m)**2 for v in l)
+    return ss / (N - k)
+
+
 def one_way_anova(data, labels, print_out=False, print_port=print,
                   alpha=0.05):
     dict_data = make_dict(data, labels)
@@ -16,8 +29,7 @@ def one_way_anova(data, labels, print_out=False, print_port=print,
     ns = [len(dict_data[key]) for key in groups]
     N = sum(ns)
     means = [stat.mean(dict_data[key]) for key in groups]
-    pooled_variance = sum([stat.stdev(l)**2 * (len(l) - 1)
-                           for l in dict_data.values()]) / (N - k)
+    pooled_variance = _pooled_variance(dict_data.values(), N, k)
     CIs = [t_test_1sample([], 0, sample_mean=means[i],
                           sample_n=ns[i], df=N - k,
                           sample_std=pooled_variance**.5,
@@ -106,8 +118,7 @@ def JMP_ANOVA_t_test(data, labels, print_out=False, print_port=print,
     df = N - k  # error df of the pooled variance (matches JMP and the ANOVA table)
     means = [(stat.mean(dict_data[keys[i]]), i) for i in range(k)]
 
-    pooled_variance = sum([stat.stdev(l)**2 * (len(l) - 1)
-                           for l in dict_data.values()]) / (N - k)
+    pooled_variance = _pooled_variance(dict_data.values(), N, k)
 
     def t_test_anova(l1, l2, print_out=False):
         u1 = stat.mean(l1)

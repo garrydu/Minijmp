@@ -99,9 +99,12 @@ class Anova1WayDialog_old(Dialogs):
         except BaseException:
             alpha = 0.05
 
-        one_way_anova(data, self.grpcols, print_out=True,
-                      print_port=self.app.print,
-                      alpha=alpha)
+        try:
+            one_way_anova(data, self.grpcols, print_out=True,
+                          print_port=self.app.print,
+                          alpha=alpha)
+        except ValueError as e:
+            self.error(str(e))
         return
 
 
@@ -215,13 +218,17 @@ class Anova1WayDialog(Dialogs):
                 data = group_df_to_list(wdf, y_key=xvar, grp_key=grp)
                 groups = wdf[grp].unique()
 
-        res = one_way_anova(data, groups, print_out=True,
-                            print_port=self.app.print,
-                            alpha=alpha)
-        if self.comp_mean.get():
-            JMP_ANOVA_t_test(data, groups, print_out=True,
-                             print_port=self.app.print,
-                             alpha=alpha)
+        try:
+            res = one_way_anova(data, groups, print_out=True,
+                                print_port=self.app.print,
+                                alpha=alpha)
+            if self.comp_mean.get():
+                JMP_ANOVA_t_test(data, groups, print_out=True,
+                                 print_port=self.app.print,
+                                 alpha=alpha)
+        except ValueError as e:
+            self.error(str(e))
+            return
 
         if not self.show_plot.get():
             return
@@ -286,7 +293,10 @@ class TtestDialog(Dialogs):
         except BaseException:
             alpha = 0.05
 
-        JMP_ANOVA_t_test(data, self.grpcols, print_out=True,
-                         print_port=self.app.print,
-                         alpha=alpha)
+        try:
+            JMP_ANOVA_t_test(data, self.grpcols, print_out=True,
+                             print_port=self.app.print,
+                             alpha=alpha)
+        except ValueError as e:
+            self.error(str(e))
         return
