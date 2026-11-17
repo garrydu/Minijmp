@@ -27,7 +27,8 @@ def describe(data, print_port=print,
     std = stat.stdev(data)
     SEM = std / N**.5
     var = stat.variance(data)
-    coefvar = 100 * std / mean
+    # CV is undefined when the mean is 0 (JMP leaves it blank).
+    coefvar = 100 * std / mean if mean != 0 else np.nan
     try:
         kurt = N * (N + 1) / (N - 1) / (N - 2) / (N - 3) * sum(
             ((i - mean) / std)**4 for i in data
@@ -50,7 +51,7 @@ def describe(data, print_port=print,
                    mean, "SD", "%.3f" %
                    std])
         t.add_row(["SE Mean", "%.3f" % SEM, "Variance", "%.3f" % var,
-                   "CoefVar", "%.2f" % coefvar])
+                   "CoefVar", "N/A" if np.isnan(coefvar) else "%.2f" % coefvar])
         t.add_row(["Sum", "%.3f" % (sum(data)), "Min", "%.3f" % min(data),
                    "Q1", "%.3f" % qnt[0]])
         t.add_row(["Median", "%.3f" % median, "Q3", "%.3f" % qnt[1],
