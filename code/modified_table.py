@@ -705,7 +705,8 @@ class MTable(Table):
             self.prevdf_end -= 1
 
         self.prevdf_end -= 1
-        prevdf = self.prevdf[self.prevdf_end]
+        # Work on a copy so later edits do not change the stored snapshot.
+        prevdf = self.prevdf[self.prevdf_end].copy()
         self.model.df = prevdf
         self.redraw()
         self.updateModel(self.model)
@@ -719,7 +720,7 @@ class MTable(Table):
         if self.prevdf_end + 2 > len(self.prevdf):
             return
         self.prevdf_end += 1
-        prevdf = self.prevdf[self.prevdf_end]
+        prevdf = self.prevdf[self.prevdf_end].copy()
         self.model.df = prevdf
         self.redraw()
         self.updateModel(self.model)
