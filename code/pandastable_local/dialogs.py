@@ -1509,6 +1509,8 @@ class QueryDialog(Frame):
             table.model.df = filtdf
             table.filtered = True
         else:
+            # The whole table is shown again (model.df was restored above).
+            table.filtered = False
             idx = filtdf.index
             rows = table.multiplerowlist = table.getRowsFromIndex(idx)
             if len(rows)>0:

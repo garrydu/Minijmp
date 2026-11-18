@@ -578,7 +578,10 @@ class ColumnHeader(Canvas):
             if new == '':
                 messagebox.showwarning("Error", "Name should not be blank.")
                 return
+            elif new == name:
+                return
             else:
+                self.table.storeCurrent()
                 df.rename(columns={df.columns[col]: new}, inplace=True)
                 self.table.tableChanged()
                 self.redraw()

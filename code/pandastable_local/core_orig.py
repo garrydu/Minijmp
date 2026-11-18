@@ -892,16 +892,23 @@ class Table(Canvas):
             columnIndex = [columnIndex]
 
         if index:
-            df.sort_index(inplace=True)
+            new = df.sort_index()
         else:
             colnames = list(df.columns[columnIndex])
             try:
                 print(colnames, ascending)
-                df.sort_values(by=colnames, inplace=True, ascending=ascending)
+                new = df.sort_values(by=colnames, ascending=ascending)
             except Exception as e:
                 print('could not sort')
+                new = df
                 #logging.error("Exception occurred", exc_info=True)
-        self.updateIndex(ask=False)
+        # Rows are renumbered 0..n-1 afterwards (updateIndex). Only record an
+        # undo step when the order or the numbering really changes.
+        if not (new.index.equals(df.index) and
+                df.index.equals(pd.RangeIndex(len(df)))):
+            self.storeCurrent()
+            self.model.df = new
+            self.updateIndex(ask=False)
         self.redraw()
         return
 
@@ -988,6 +995,7 @@ class Table(Canvas):
     def copyIndex(self):
         """Copy index to a column"""
 
+        self.storeCurrent()
         self.model.copyIndex()
         self.redraw()
         return
@@ -999,7 +1007,8 @@ class Table(Canvas):
         name = simpledialog.askstring("New index name",
                                       "New name:", initialvalue=n,
                                       parent=self.parentframe)
-        if name:
+        if name and name != n:
+            self.storeCurrent()
             self.model.df.index.name = name
             self.rowindexheader.redraw()
         return
@@ -1059,6 +1068,7 @@ class Table(Canvas):
         """Insert a new row"""
 
         row = self.getSelectedRow()
+        self.storeCurrent()
         key = self.model.insertRow(row)
         # self.rowcolors.append(pd.DataFrame(np.nan,index=[key],columns=self.model.df.columns))
         self.update_rowcolors()
@@ -1146,8 +1156,11 @@ class Table(Canvas):
         """Make copy of rows"""
 
         rows = self.multiplerowlist
+        if not rows:
+            return
         df = self.model.df
         d = df.iloc[rows]
+        self.storeCurrent()
         self.model.df = pd.concat([df, d])
         self.redraw()
         return
@@ -1377,7 +1390,11 @@ class Table(Canvas):
             return
         t = d.results[0]
         try:
-            self.model.df[col] = df[col].astype(t)
+            converted = df[col].astype(t)
+            if converted.dtype == df[col].dtype and converted.equals(df[col]):
+                return
+            self.storeCurrent()
+            self.model.df[col] = converted
             self.redraw()
         except BaseException:
             logging.error("Exception occurred", exc_info=True)
@@ -1403,7 +1420,8 @@ class Table(Canvas):
             cols = df.columns
         keep = d.results[2]
         new = df[df.duplicated(subset=cols, keep=keep)]
-        if remove:
+        if remove and len(new) > 0:
+            self.storeCurrent()
             self.model.df = df.drop_duplicates(subset=cols, keep=keep)
             self.redraw()
         if len(new) > 0:
@@ -1964,7 +1982,7 @@ class Table(Canvas):
     def showAll(self):
         """Re-show unfiltered"""
 
-        if hasattr(self, 'dataframe'):
+        if self.filtered and hasattr(self, 'dataframe'):
             self.model.df = self.dataframe
         self.filtered = False
         self.redraw()

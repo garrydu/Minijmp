@@ -46,6 +46,7 @@ class MTable(Table):
                 new_name = df.iloc[0, x]
             new_headers.append(
                 verifyNewColName(new_name, new_headers))
+        self.storeCurrent()
         df.columns = new_headers
         self.redraw()
         return
@@ -267,6 +268,9 @@ class MTable(Table):
                 row,
                 col))
         self.cellentry.bind("<FocusIn>", select_all)
+        # After Return the editor moves on and keeps the focus, so Ctrl-Z
+        # (bound on the table) would not reach undo without this.
+        self.cellentry.bind("<Control-z>", self._undo_key)
         self.cellentry.bind("<Tab>",
                             lambda x: self.handleCellEntry(
                                 row,
@@ -281,6 +285,10 @@ class MTable(Table):
         #  print(col, row)
         return
 
+    def _undo_key(self, event=None):
+        self.undo()
+        return 'break'
+
     def handleCellEntry(self, row, col, nxt_col=False):
         """Callback for cell entry"""
 
@@ -289,7 +297,10 @@ class MTable(Table):
             df = self.dataframe
         else:
             df = None
-        self.model.setValueAt(value, row, col, df=df)
+        target = self.model.df if df is None else df
+        self._record_cell_edit(
+            target, row, col,
+            lambda: self.model.setValueAt(value, row, col, df=df))
 
         self.drawText(row, col, value, align=self.align)
         self.delete('entry')
@@ -445,8 +456,10 @@ class MTable(Table):
         selected_cols = list(df.columns[self.multiplecollist])
         cols = list(df)
 
-        self.addColumn(newname=verifyNewColName('Stk Keys', cols))
-        self.addColumn(newname=verifyNewColName('Stk Data', cols))
+        # model.addColumn, not self.addColumn: that would record two more
+        # undo steps on top of the one stored above.
+        self.model.addColumn(verifyNewColName('Stk Keys', cols), 'object')
+        self.model.addColumn(verifyNewColName('Stk Data', cols), 'object')
 
         resKeys, resData = [], []
         for col in selected_cols:
@@ -526,6 +539,8 @@ class MTable(Table):
             n = messagebox.askyesno("Delete",
                                     "Delete selected rows?",
                                     parent=self.parentframe)
+        if not n:
+            return
 
         if len(self.multiplerowlist) > 1:
             if n:
@@ -677,54 +692,235 @@ class MTable(Table):
         self.redraw()
         return
 
+    # Undo history. Each entry is one of
+    #   ("df", table copy): the whole table, stored by storeCurrent() before
+    #       a major change (insert/delete/sort rows, add/rename columns...);
+    #   ("cell", row, col, name, old value, new value, check): one cell typed
+    #       in or picked from a category drop-down;
+    #   ("col", row, col, name, old column, check): a typed cell whose edit
+    #       changed the type of its whole column (text typed into a number
+    #       column), so the old column is kept.
+    # "check" records how the edited column looked right after the edit; the
+    # entry is only applied while the table still matches it, so an untracked
+    # change can never make undo write into wrong rows. Redo entries have the
+    # same form.
+    MAX_UNDO = 50
+    MAX_UNDO_SNAPSHOTS = 5
+    N_CHECK_CELLS = 16
+
+    def _history(self):
+        if not hasattr(self, "undo_stack"):
+            self.undo_stack, self.redo_stack = [], []
+        return self.undo_stack, self.redo_stack
+
+    def clearUndoHistory(self):
+        undo_stack, redo_stack = self._history()
+        undo_stack.clear()
+        redo_stack.clear()
+        self.prevdf = None
+        return
+
+    @staticmethod
+    def _same(a, b):
+        """a == b for cell values and column names, with NaN equal to NaN"""
+        try:
+            if a is b or bool(a == b):
+                return True
+        except (TypeError, ValueError):
+            return False
+        try:
+            return bool(pd.isna(a)) and bool(pd.isna(b))
+        except (TypeError, ValueError):
+            return False
+
+    def _check(self, df, row, col):
+        """Row labels, dtype and a few values (the edited cell plus cells
+        spread over the column) of column col, to recognise this state later
+        without comparing or hashing the whole column"""
+        n = len(df)
+        step = max(1, n // self.N_CHECK_CELLS)
+        pos = sorted(set(range(0, n, step)) | {row})
+        values = list(df.iloc[pos, col])
+        return (df.index, str(df.iloc[:, col].dtype), pos, values)
+
+    def _matches(self, df, col, name, check):
+        index, dtype, pos, values = check
+        if col >= df.shape[1] or not self._same(df.columns[col], name):
+            return False
+        if not (df.index is index or df.index.equals(index)):
+            return False
+        if str(df.iloc[:, col].dtype) != dtype:
+            return False
+        now = list(df.iloc[pos, col])
+        return all(self._same(x, y) for x, y in zip(now, values))
+
+    def _push_undo(self, entry):
+        undo_stack, redo_stack = self._history()
+        undo_stack.append(entry)
+        redo_stack.clear()  # a new change drops what could be redone
+        while (len(undo_stack) > self.MAX_UNDO or
+               sum(e[0] == "df" for e in undo_stack) > self.MAX_UNDO_SNAPSHOTS):
+            del undo_stack[0]
+        # core_orig hides "Undo" in the popup menu while prevdf is None
+        self.prevdf = undo_stack
+        return
+
     def storeCurrent(self):
         """Store current version of the table before a major change is made"""
-
-        prevdf = self.model.df.copy()
-        if self.prevdf is None:
-            self.prevdf = [prevdf]
-            self.prevdf_end = 1
+        # While rows are filtered the grid shows only a subset; keep the
+        # whole table, which is what remains after the filter is closed.
+        if self.filtered and hasattr(self, "dataframe"):
+            df = self.dataframe
         else:
-            del self.prevdf[self.prevdf_end:]
-            self.prevdf.append(prevdf)
-            self.prevdf_end += 1
-            if self.prevdf_end > 5:
-                del self.prevdf[0]
-                self.prevdf_end -= 1
+            df = self.model.df
+        self._push_undo(("df", df.copy()))
+        return
+
+    def _record_cell_edit(self, df, row, col, change):
+        """Run change(), which sets the cell at positions (row, col) of df,
+        and keep an undo entry for it (also if change() raises midway)."""
+        if not df.columns.is_unique:
+            # setValueAt finds the column by name, so with repeated names an
+            # edit can reach other columns too: keep the whole table instead.
+            before_df = df.copy()
+            try:
+                change()
+            finally:
+                if not before_df.equals(df):
+                    self._push_undo(("df", before_df))
+            return
+        name = df.columns[col]
+        # No copy: if the edit converts the column to another dtype, pandas
+        # builds a new column and this one keeps the old values.
+        column = df.iloc[:, col]
+        dtype = column.dtype
+        old = df.iat[row, col]
+        try:
+            change()
+        finally:
+            if df.iloc[:, col].dtype != dtype:
+                self._push_undo(("col", row, col, name, column.copy(),
+                                 self._check(df, row, col)))
+            else:
+                new = df.iat[row, col]
+                if not self._same(old, new):
+                    self._push_undo(("cell", row, col, name, old, new,
+                                     self._check(df, row, col)))
+        return
+
+    def _fits(self, entry):
+        """Whether an entry can be applied to the table as it is now"""
+        if entry[0] == "df":
+            return True
+        col, name, check = entry[2], entry[3], entry[-1]
+        return self._matches(self.model.df, col, name, check)
+
+    def _swap(self, entry):
+        """Apply an entry and return the entry that reverses it"""
+        if entry[0] == "df":
+            current = ("df", self.model.df.copy())
+            # Work on a copy so later edits do not change the stored snapshot.
+            self.model.df = entry[1].copy()
+            return current
+        df = self.model.df
+        if entry[0] == "cell":
+            _, row, col, name, old, new, _ = entry
+            df.iat[row, col] = old
+            return ("cell", row, col, name, new, old,
+                    self._check(df, row, col))
+        _, row, col, name, column, _ = entry
+        current = df.iloc[:, col].copy()
+        df.isetitem(col, column.copy())
+        return ("col", row, col, name, current, self._check(df, row, col))
+
+    def _close_editor(self):
+        """Close an open cell editor or category drop-down, so it cannot
+        write its old text back after the table changed"""
+        if getattr(self, "cellentry", None) is not None:
+            self.cellentry.destroy()
+        self.delete('entry')
+        return
+
+    def _step(self, source, target, action):
+        if self.filtered:
+            messagebox.showinfo(
+                action, "%s is not available while rows are filtered. "
+                "Close the filter first." % action, parent=self.parentframe)
+            return
+        stale = 0
+        while source and not self._fits(source[-1]):
+            source.pop()
+            stale += 1
+        if stale:
+            # Leave the table alone; the next press continues with the
+            # entries that still fit.
+            messagebox.showinfo(
+                action, "%d earlier step(s) could not be %s because the "
+                "table was changed by an action that undo does not track. "
+                "They were removed from the history and the table was not "
+                "changed." % (stale, "undone" if action == "Undo" else
+                              "redone"), parent=self.parentframe)
+        elif source:
+            self._close_editor()
+            target.append(self._swap(source.pop()))
+            self.redraw()
+            self.updateModel(self.model)
+        self.prevdf = self.undo_stack if self.undo_stack else None
         return
 
     def undo(self, event=None):
-        """Undo last major table change"""
-
-        if self.prevdf is None:
-            return
-        if self.prevdf_end == 0:
-            return
-        if self.prevdf_end == len(self.prevdf):
-            self.storeCurrent()
-            self.prevdf_end -= 1
-
-        self.prevdf_end -= 1
-        # Work on a copy so later edits do not change the stored snapshot.
-        prevdf = self.prevdf[self.prevdf_end].copy()
-        self.model.df = prevdf
-        self.redraw()
-        self.updateModel(self.model)
+        """Undo the last table change"""
+        undo_stack, redo_stack = self._history()
+        self._step(undo_stack, redo_stack, "Undo")
         return
 
     def redo(self, event=None):
-        """Redo tolast major table change"""
-
-        if self.prevdf is None:
-            return
-        if self.prevdf_end + 2 > len(self.prevdf):
-            return
-        self.prevdf_end += 1
-        prevdf = self.prevdf[self.prevdf_end].copy()
-        self.model.df = prevdf
-        self.redraw()
-        self.updateModel(self.model)
+        """Redo the last undone table change"""
+        undo_stack, redo_stack = self._history()
+        self._step(redo_stack, undo_stack, "Redo")
         return
+
+    def handleEntryMenu(self, *args):
+        """Pick a value from the drop-down of a category column"""
+        value = self.dropvar.get()
+        self.delete('entry')
+        row = self.currentrow
+        col = self.currentcol
+
+        def change():
+            try:
+                self.model.setValueAt(value, row, col)
+            except BaseException:
+                self.model.setValueAt(float(value), row, col)
+
+        if self.filtered:
+            change()  # edits to a filtered view are not kept after closing
+        else:
+            self._record_cell_edit(self.model.df, row, col, change)
+        self.drawText(row, col, value, align=self.align)
+        return
+
+    def _fresh_history(self, load, *args, **kwargs):
+        """Run a File action that may put a different table in place.
+        A new table starts with an empty undo history."""
+        old = self.model
+        result = load(*args, **kwargs)
+        if self.model is not old:
+            self.clearUndoHistory()
+        return result
+
+    def new(self):
+        return self._fresh_history(super().new)
+
+    def load(self, filename=None):
+        return self._fresh_history(super().load, filename)
+
+    def importCSV(self, filename=None, dialog=False, **kwargs):
+        return self._fresh_history(super().importCSV, filename, dialog,
+                                   **kwargs)
+
+    def loadExcel(self, filename=None):
+        return self._fresh_history(super().loadExcel, filename)
 
     def tableChanged(self):
         """Callback to be used when dataframe changes so that other
