@@ -40,6 +40,31 @@ except:
     import tkMessageBox as messagebox
     from ScrolledText import ScrolledText
 
+def _patch_simpledialog():
+    """Tk 9 on macOS removed ::tk::unsupported::MacWindowStyle, which
+    tkinter's simpledialog (Python 3.13 and others) calls for every dialog,
+    so askstring/askinteger and all Dialog subclasses failed to open. Keep
+    the call where it exists and skip it where Tk no longer has it."""
+    try:
+        import tkinter.simpledialog as sd
+    except ImportError:
+        return
+    setup = getattr(sd, '_setup_dialog', None)
+    if setup is None or getattr(setup, '_tk9_safe', False):
+        return
+
+    def safe_setup(w):
+        try:
+            setup(w)
+        except TclError:
+            pass  # only the macOS window style is missing; the dialog works
+
+    safe_setup._tk9_safe = True
+    sd._setup_dialog = safe_setup
+
+
+_patch_simpledialog()
+
 from collections import OrderedDict
 import webbrowser
 import numpy as np
