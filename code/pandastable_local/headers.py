@@ -580,9 +580,22 @@ class ColumnHeader(Canvas):
                 return
             elif new == name:
                 return
+            elif any(str(c) == new for i, c in enumerate(df.columns)
+                     if i != col):
+                # Two columns with one name make edits, Set Data Type and
+                # analyses pick up both columns.
+                messagebox.showwarning(
+                    "Error", "A column named '%s' already exists. "
+                    "Choose a different name." % new,
+                    parent=self.table.parentframe)
+                return
             else:
                 self.table.storeCurrent()
-                df.rename(columns={df.columns[col]: new}, inplace=True)
+                # Rename only this column (by position), even if other
+                # columns share its old name.
+                cols = list(df.columns)
+                cols[col] = new
+                df.columns = cols
                 self.table.tableChanged()
                 self.redraw()
         return
