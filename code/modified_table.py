@@ -293,16 +293,9 @@ class MTable(Table):
         """Callback for cell entry"""
 
         value = self.cellentryvar.get()
-        if self.filtered == 1:
-            df = self.dataframe
-        else:
-            df = None
-        target = self.model.df if df is None else df
-        self._record_cell_edit(
-            target, row, col,
-            lambda: self.model.setValueAt(value, row, col, df=df))
-
-        self.drawText(row, col, value, align=self.align)
+        if self._edit_cell(row, col, lambda df, r: self.model.setValueAt(
+                value, r, col, df=df)):
+            self.drawText(row, col, value, align=self.align)
         self.delete('entry')
         self.gotonextCell(nxt_col=nxt_col)
         return
@@ -776,6 +769,52 @@ class MTable(Table):
         self._push_undo(("df", df.copy()))
         return
 
+    def _filtered_row(self, row, col):
+        """Position in the full table of the shown row `row` while rows are
+        filtered, or None if it cannot be found for sure."""
+        view, full = self.model.df, getattr(self, 'dataframe', None)
+        if full is None or col >= full.shape[1] or \
+                not self._same(full.columns[col], view.columns[col]):
+            return None
+        label = view.index[row]
+        if not full.index.is_unique:
+            return None
+        try:
+            pos = full.index.get_loc(label)
+        except (KeyError, TypeError, ValueError):
+            return None
+        return pos if isinstance(pos, (int, np.integer)) else None
+
+    def _edit_cell(self, row, col, set_value):
+        """Set a cell the user typed or picked. set_value(df, r) sets the
+        cell at position (r, col) of df.
+
+        While rows are filtered the shown table is a filtered copy: the
+        value goes into that copy at the shown row and into the full table
+        at the row with the same row label, and the undo step is kept for
+        the full table (Undo works again after the filter is closed).
+        Returns False if nothing was changed."""
+        if not self.filtered:
+            self._record_cell_edit(
+                self.model.df, row, col, lambda: set_value(None, row))
+            return True
+        full_row = self._filtered_row(row, col)
+        if full_row is None:
+            messagebox.showinfo(
+                "Edit", "This cell cannot be matched to a row of the full "
+                "table (repeated row labels, or the columns were changed "
+                "while filtered). Close the filter and edit it there.",
+                parent=self.parentframe)
+            self.redraw()
+            return False
+
+        def change():
+            set_value(self.dataframe, full_row)
+            set_value(self.model.df, row)
+
+        self._record_cell_edit(self.dataframe, full_row, col, change)
+        return True
+
     def _record_cell_edit(self, df, row, col, change):
         """Run change(), which sets the cell at positions (row, col) of df,
         and keep an undo entry for it (also if change() raises midway)."""
@@ -887,17 +926,14 @@ class MTable(Table):
         row = self.currentrow
         col = self.currentcol
 
-        def change():
+        def set_value(df, r):
             try:
-                self.model.setValueAt(value, row, col)
+                self.model.setValueAt(value, r, col, df=df)
             except BaseException:
-                self.model.setValueAt(float(value), row, col)
+                self.model.setValueAt(float(value), r, col, df=df)
 
-        if self.filtered:
-            change()  # edits to a filtered view are not kept after closing
-        else:
-            self._record_cell_edit(self.model.df, row, col, change)
-        self.drawText(row, col, value, align=self.align)
+        if self._edit_cell(row, col, set_value):
+            self.drawText(row, col, value, align=self.align)
         return
 
     def _fresh_history(self, load, *args, **kwargs):
