@@ -1396,7 +1396,7 @@ class Table(Canvas):
             self.storeCurrent()
             self.model.df[col] = converted
             self.redraw()
-        except BaseException:
+        except Exception:
             logging.error("Exception occurred", exc_info=True)
             print('failed')
         return

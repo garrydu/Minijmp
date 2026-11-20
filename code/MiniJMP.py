@@ -122,7 +122,6 @@ class Minijmp(Minijmp_pre):
             '04Value Counts': {'cmd': lambda: self._call('valueCounts')},
             '05String Operation': {'cmd': lambda: self._call('applyStringMethod')},
             '06Date/Time Conversion': {'cmd': lambda: self._call('convertDates')},
-            '22Filter Rows': {'cmd': lambda: self._call('queryBar')},
             '32Split Data Column': {'cmd': lambda: self._call('splitColumn')},
             '33Stack Selected Columns': {'cmd': lambda: self._call('stackColumn')},
             '34Sort All Columns': {'cmd': lambda: self._call('sortAll')},

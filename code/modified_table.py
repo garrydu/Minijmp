@@ -12,6 +12,34 @@ from pandastable_local.dialogs import MultipleValDialog, filedialog
 from df_combine import df_combine
 from utilities import grouping_by_labels, verifyNewColName, filter_voids, is_void
 from dialog import findRepDialog
+import tkinter
+
+
+class FilteredEditBlocked(BaseException):
+    """Stops a table change while rows are filtered.
+
+    Raised by MTable.storeCurrent, which every table-changing action calls
+    before it changes anything. It derives from BaseException so the
+    actions' own `except Exception` blocks do not swallow it."""
+
+
+def _patch_report_callback_exception():
+    """Do not print a traceback for FilteredEditBlocked (the user has
+    already been told why nothing happened)."""
+    original = tkinter.Tk.report_callback_exception
+    if getattr(original, '_filtered_edit_aware', False):
+        return
+
+    def report(self, exc, val, tb):
+        if isinstance(val, FilteredEditBlocked):
+            return
+        return original(self, exc, val, tb)
+
+    report._filtered_edit_aware = True
+    tkinter.Tk.report_callback_exception = report
+
+
+_patch_report_callback_exception()
 
 
 class MTable(Table):
@@ -791,14 +819,20 @@ class MTable(Table):
         return
 
     def storeCurrent(self):
-        """Store current version of the table before a major change is made"""
-        # While rows are filtered the grid shows only a subset; keep the
-        # whole table, which is what remains after the filter is closed.
-        if self.filtered and hasattr(self, "dataframe"):
-            df = self.dataframe
-        else:
-            df = self.model.df
-        self._push_undo(("df", df.copy()))
+        """Store current version of the table before a major change is made.
+
+        While rows are filtered the grid shows a filtered copy, and changes
+        to it would be lost when the filter is closed: the change is
+        stopped (FilteredEditBlocked) with a message instead. Typing into a
+        cell does not come here and still works while filtered."""
+        if self.filtered:
+            messagebox.showinfo(
+                "Filter Rows",
+                "The table cannot be changed while rows are filtered "
+                "(only typing into cells works). Close the filter first.",
+                parent=self.parentframe)
+            raise FilteredEditBlocked()
+        self._push_undo(("df", self.model.df.copy()))
         return
 
     def _filtered_row(self, row, col):
