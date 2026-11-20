@@ -4,6 +4,7 @@ import numpy as np
 #  import os
 ############ pandastable #############
 from pandastable_local.core import Table
+from pandastable_local.core_orig import sort_mixed
 from pandastable_local.data import TableModel
 from pandastable_local.dialogs import MultipleValDialog, filedialog
 ############## Own Module ###############
@@ -700,7 +701,7 @@ class MTable(Table):
 
         try:
             #  print(col_list, d.results[3])
-            df.sort_values(by=col_list, inplace=True, ascending=a_list)
+            self.model.df = df = sort_mixed(df, col_list, a_list)
         except BaseException:
             print('could not sort')
 
@@ -763,7 +764,7 @@ class MTable(Table):
             return
 
         dfSub = df[colnames].copy()
-        dfSub.sort_values(by=col_list, inplace=True, ascending=a_list)
+        dfSub = sort_mixed(dfSub, col_list, a_list)
         dfSub.reset_index(drop=True, inplace=True)
         print(dfSub)
         #  for col in list(dfSub):

@@ -88,6 +88,43 @@ def darwin_system_theme_name():
 #      os.mkdir(config_path)
 
 
+def sort_mixed(df, by, ascending=True):
+    """Sort df by the columns `by` like sort_values, but text columns that
+    hold numbers too can be sorted: in such a column numbers (also numbers
+    typed as text, "5") come first in number order, then text in
+    alphabetical order. Empty cells are always last."""
+    by = list(by)
+    if isinstance(ascending, (list, tuple)):
+        asc = [bool(a) for a in ascending]
+    else:
+        asc = [bool(ascending)] * len(by)
+    if not df.columns.is_unique or \
+            not any(df[c].dtype == object for c in by):
+        return df.sort_values(by=by, ascending=asc)
+    keys = pd.DataFrame(index=range(len(df)))
+    key_cols, key_asc = [], []
+    for j, (c, a) in enumerate(zip(by, asc)):
+        values = df[c].reset_index(drop=True)
+        if values.dtype != object:
+            keys['v%d' % j] = values
+            key_cols.append('v%d' % j)
+            key_asc.append(a)
+            continue
+        blank = values.map(lambda v: isinstance(v, str) and v.strip() == '')
+        present = values.notna() & ~blank
+        num = pd.to_numeric(values.where(present), errors='coerce')
+        is_text = num.isna() & present
+        # group: 0 numbers, 1 text, empty cells missing (sorted last)
+        keys['g%d' % j] = is_text.astype(float).where(present)
+        keys['n%d' % j] = num
+        keys['t%d' % j] = values.where(is_text, '').astype(str)
+        key_cols += ['g%d' % j, 'n%d' % j, 't%d' % j]
+        key_asc += [a, a, a]
+    order = keys.sort_values(by=key_cols, ascending=key_asc,
+                             na_position='last', kind='mergesort').index
+    return df.iloc[order]
+
+
 class Table(Canvas):
     """A tkinter class for providing table functionality.
 
@@ -897,7 +934,7 @@ class Table(Canvas):
             colnames = list(df.columns[columnIndex])
             try:
                 print(colnames, ascending)
-                new = df.sort_values(by=colnames, ascending=ascending)
+                new = sort_mixed(df, colnames, ascending)
             except Exception as e:
                 print('could not sort')
                 new = df
