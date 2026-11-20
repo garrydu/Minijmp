@@ -102,10 +102,16 @@ class MTable(Table):
         """The column as numbers if every non-empty cell is a number,
         otherwise the column unchanged."""
         num = pd.to_numeric(column, errors='coerce')
-        filled = column.map(lambda v: not is_void(v))
-        if filled.any() and num[filled].notna().all():
-            return num.where(filled)
-        return column
+        # Cells that did not become numbers must all be empty ('', spaces).
+        # Stop at the first real text, so text columns are cheap to check.
+        missed = np.flatnonzero(num.isna().to_numpy() &
+                                column.notna().to_numpy())
+        for i in missed:
+            if not is_void(column.iat[i]):
+                return column
+        if not num.notna().any():
+            return column
+        return num
 
     def findText(self, evt=None):
         """Simple text search in whole table"""
@@ -860,6 +866,12 @@ class MTable(Table):
         at the row with the same row label, and the undo step is kept for
         the full table (Undo works again after the filter is closed).
         Returns False if nothing was changed."""
+        plain_set = set_value
+
+        def set_value(df, r):
+            plain_set(df, r)
+            self._auto_numeric(self.model.df if df is None else df, col, r)
+
         if not self.filtered:
             self._record_cell_edit(
                 self.model.df, row, col, lambda: set_value(None, row))
@@ -880,6 +892,31 @@ class MTable(Table):
 
         self._record_cell_edit(self.dataframe, full_row, col, change)
         return True
+
+    def _auto_numeric(self, df, col, row=None):
+        """After a cell of a text (object) column was typed in: if every
+        non-empty cell of that column is now a number, make it a number
+        column, as reading a CSV file would. Typed numbers in a new table
+        would otherwise stay text ("12" sorts before "2")."""
+        column = df.iloc[:, col]
+        if column.dtype != object:
+            return
+        if row is not None:
+            value = column.iat[row]
+            if not is_void(value) and pd.isna(pd.to_numeric(
+                    pd.Series([value]), errors='coerce')[0]):
+                return  # the typed cell is text: the column stays text
+        # Quick look at a few cells spread over the column first, so a big
+        # text column is not converted cell by cell on every Enter.
+        step = max(1, len(column) // 64)
+        sample = column.iloc[::step]
+        if self._as_numbers(sample) is sample and sample.notna().any() and \
+                not sample.map(is_void).all():
+            return
+        numbers = self._as_numbers(column)
+        if numbers is not column:
+            df.isetitem(col, numbers)
+        return
 
     def _record_cell_edit(self, df, row, col, change):
         """Run change(), which sets the cell at positions (row, col) of df,
@@ -904,7 +941,11 @@ class MTable(Table):
             change()
         finally:
             if df.iloc[:, col].dtype != dtype:
-                self._push_undo(("col", row, col, name, column.copy(),
+                # The cell may have been written into this column before
+                # the column was converted: put its old value back.
+                saved = column.copy()
+                saved.iat[row] = old
+                self._push_undo(("col", row, col, name, saved,
                                  self._check(df, row, col)))
             else:
                 new = df.iat[row, col]
