@@ -1606,13 +1606,16 @@ class QueryDialog(Frame):
         """Color filtered rows in main table"""
 
         table=self.table
-        if not hasattr(self.table,'dataframe') or not hasattr(self, 'filtdf'):
-            return
-        clr = self.table.getaColor('#dcf1fc')
+        clr = pickColor(table, '#dcf1fc')
         if clr is None: return
-        df = table.model.df = table.dataframe
-        idx = self.filtdf.index
-        rows = table.multiplerowlist = table.getRowsFromIndex(idx)
+        # Show the whole table (the current one, not an old filtered-out
+        # copy) and find the matching rows again, then color them.
+        self.applyqueryvar.set(False)
+        self.filtdf = None
+        self.query()
+        if self.filtdf is None:
+            return
+        rows = table.multiplerowlist = table.getRowsFromIndex(self.filtdf.index)
         table.setRowColors(rows, clr, cols='all')
         return
 
