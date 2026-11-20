@@ -1414,8 +1414,16 @@ class Table(Canvas):
         if d.result is None:
             return
         remove = d.results[0]
-        if d.results[1] is True:
-            cols = self.multiplecollist
+        # The check boxes give 1/0, not True/False.
+        if d.results[1]:
+            # multiplecollist holds column positions; pandas needs names.
+            pos = [c for c in self.multiplecollist if 0 <= c < len(df.columns)]
+            if not pos:
+                messagebox.showinfo(
+                    'Find duplicates', 'No columns are selected. Select the '
+                    'columns to compare first.', parent=self.parentframe)
+                return
+            cols = list(df.columns[pos])
         else:
             cols = df.columns
         keep = d.results[2]
@@ -1426,6 +1434,9 @@ class Table(Canvas):
             self.redraw()
         if len(new) > 0:
             self.createChildTable(new)
+        else:
+            messagebox.showinfo('Find duplicates', 'No duplicate rows found.',
+                                parent=self.parentframe)
         return
 
     def cleanData(self):
