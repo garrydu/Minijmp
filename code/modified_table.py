@@ -1,5 +1,5 @@
 import pandas as pd
-from tkinter import END, StringVar, Entry, messagebox
+from tkinter import END, StringVar, Entry, messagebox, ttk
 import numpy as np
 #  import os
 ############ pandastable #############
@@ -319,10 +319,22 @@ class MTable(Table):
         self.cellentryvar = txtvar = StringVar()
         txtvar.set(text)
 
-        self.cellentry = Entry(self.parentframe, width=20,
-                               textvariable=txtvar,
-                               takefocus=1,
-                               font=self.thefont)
+        column = self.model.df.iloc[:, col]
+        if str(column.dtype) == 'category':
+            # Category cells: an editable drop-down box. Pick a category
+            # from the list, or type a new value (it becomes a category).
+            self.cellentry = ttk.Combobox(
+                self.parentframe, width=20, textvariable=txtvar,
+                values=[str(c) for c in column.cat.categories],
+                takefocus=1, font=self.thefont)
+            self.cellentry.bind(
+                '<<ComboboxSelected>>',
+                lambda x: self.handleCellEntry(row, col))
+        else:
+            self.cellentry = Entry(self.parentframe, width=20,
+                                   textvariable=txtvar,
+                                   takefocus=1,
+                                   font=self.thefont)
         self.cellentry.icursor(END)
         self.cellentry.bind(
             '<Return>',
@@ -356,7 +368,7 @@ class MTable(Table):
 
         value = self.cellentryvar.get()
         if self._edit_cell(row, col, lambda df, r: self.model.setValueAt(
-                value, r, col, df=df)):
+                self._category_value(df, col, value), r, col, df=df)):
             self.drawText(row, col, value, align=self.align)
         self.delete('entry')
         self.gotonextCell(nxt_col=nxt_col)
@@ -382,6 +394,15 @@ class MTable(Table):
         #  if self.currentcol == 0:
         #  self.xview_moveto(0.5)
         #  self.xview_scroll(-1, "unit")
+        return
+
+    def handle_left_release(self, event):
+        """Mouse button released. The original also put a pick-only
+        drop-down over category cells here, on every click; it covered the
+        cell editor of a double click, so category cells could not be
+        typed into. Category cells now use the editable drop-down box of
+        drawCellEntry (double click), like other cells."""
+        self.endrow = self.get_row_clicked(event)
         return
 
     def handle_double_click(self, event):
@@ -892,6 +913,28 @@ class MTable(Table):
 
         self._record_cell_edit(self.dataframe, full_row, col, change)
         return True
+
+    def _category_value(self, df, col, value):
+        """For a category column: the typed text as a value of the column's
+        kind (a number if the categories are numbers), added as a new
+        category if it is not one yet. Other columns: the text unchanged."""
+        if df is None:
+            df = self.model.df
+        column = df.iloc[:, col]
+        if str(column.dtype) != 'category' or is_void(value):
+            return value
+        cats = column.cat.categories
+        v = value
+        if pd.api.types.is_numeric_dtype(cats.dtype):
+            try:
+                v = float(value)
+                if pd.api.types.is_integer_dtype(cats.dtype) and v.is_integer():
+                    v = int(v)
+            except ValueError:
+                v = value
+        if v not in cats:
+            df.isetitem(col, column.cat.add_categories([v]))
+        return v
 
     def _auto_numeric(self, df, col, row=None):
         """After a cell of a text (object) column was typed in: if every
