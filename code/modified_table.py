@@ -34,22 +34,50 @@ class MTable(Table):
 
     def row1ToHeader(self):
         """
-        Put row one contents to header, and have priority
+        Use the contents of row 1 as the column names and remove row 1.
+        Empty cells keep the old name. Names are text: 5.0 becomes "5".
+        Repeated names get _1, _2, ...
         """
         df = self.model.df
+        if len(df) == 0:
+            return
         cols = list(df)
         new_headers = []
         for x in range(len(cols)):
-            if is_void(df.iloc[0, x]):
-                new_name = cols[x]
-            else:
-                new_name = df.iloc[0, x]
+            value = df.iloc[0, x]
+            new_name = cols[x] if is_void(value) else self._header_text(value)
             new_headers.append(
-                verifyNewColName(new_name, new_headers))
+                verifyNewColName(str(new_name), new_headers))
+        new = df.iloc[1:].copy()
+        new.columns = new_headers
+        if df.index.equals(pd.RangeIndex(len(df))):
+            new.reset_index(drop=True, inplace=True)
+        # Columns that held text only because of the header row become
+        # numbers again (as if the file had been read with that header).
+        for x in range(new.shape[1]):
+            if new.iloc[:, x].dtype == object:
+                new.isetitem(x, self._as_numbers(new.iloc[:, x]))
         self.storeCurrent()
-        df.columns = new_headers
+        self.model.df = new
         self.redraw()
         return
+
+    @staticmethod
+    def _header_text(value):
+        """Text for a column name: whole numbers without '.0'."""
+        if isinstance(value, (float, np.floating)) and float(value).is_integer():
+            return str(int(value))
+        return str(value).strip()
+
+    @staticmethod
+    def _as_numbers(column):
+        """The column as numbers if every non-empty cell is a number,
+        otherwise the column unchanged."""
+        num = pd.to_numeric(column, errors='coerce')
+        filled = column.map(lambda v: not is_void(v))
+        if filled.any() and num[filled].notna().all():
+            return num.where(filled)
+        return column
 
     def findText(self, evt=None):
         """Simple text search in whole table"""
