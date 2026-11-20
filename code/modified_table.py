@@ -305,14 +305,18 @@ class MTable(Table):
 
         if hasattr(self, 'cellentry'):
             self.cellentry.destroy()
+        nrows, ncols = self.model.df.shape
         if nxt_col:
+            if self.currentcol + 1 >= ncols:
+                return  # last column: stay on the edited cell
             self.currentcol += 1
         else:
+            if self.currentrow + 1 >= nrows:
+                return  # last row: stay on the edited cell
             self.currentrow = self.currentrow + 1
         #  self.drawSelectedRect(self.currentrow, self.currentcol)
         #  self.xview_moveto(0)
         self.drawCellEntry(self.currentrow, self.currentcol)
-        print(self.currentcol, self.currentrow)
         #  if self.currentcol == 0:
         #  self.xview_moveto(0.5)
         #  self.xview_scroll(-1, "unit")
