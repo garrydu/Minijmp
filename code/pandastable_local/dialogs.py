@@ -1498,25 +1498,49 @@ class QueryDialog(Frame):
         self.table.qframe = None
         self.table.showAll()
 
+    def _query_error(self, s, reason):
+        messagebox.showwarning(
+            'Filter Rows',
+            'Cannot use the query:\n    %s\n\nReason: %s\n\n'
+            'Write column names that are not plain words (names that start '
+            'with a digit, or contain spaces or symbols) between backticks, '
+            'for example:\n    `4_1` > 1\n    `Part No` == "A"' % (s, reason),
+            parent=self.table.parentframe)
+        self.queryresultvar.set('query error')
+        return
+
     def query(self, evt=None):
         """Do query"""
 
         table = self.table
         s = self.queryvar.get()
+        # The query always runs on the whole table. Nothing is changed
+        # until it has worked, so a bad query leaves the table as it was.
         if table.filtered == True:
-            table.model.df = table.dataframe
-        df = table.model.df
+            df = table.dataframe
+        else:
+            df = table.model.df
         mask = None
 
-        #string query first
-        if s!='':
-            try:
-                mask = df.eval(s)
-            except:
-                mask = df.eval(s, engine='python')
-        #add any filters from widgets
-        if len(self.filters)>0:
-            mask = self.applyFilter(df, mask)
+        try:
+            #string query first
+            if s!='':
+                try:
+                    mask = df.eval(s)
+                except Exception:
+                    mask = df.eval(s, engine='python')
+            #add any filters from widgets
+            if len(self.filters)>0:
+                mask = self.applyFilter(df, mask)
+        except Exception as e:
+            self._query_error(s, str(e))
+            return
+        if mask is not None and not (isinstance(mask, pd.Series) and
+                                     mask.dtype == bool):
+            # e.g. "4_1 > 1" is read as the number 41 > 1, not a column
+            self._query_error(s, 'it does not compare a column with '
+                              'something, so it cannot select rows')
+            return
         if mask is None:
             table.showAll()
             self.queryresultvar.set('')
@@ -1527,13 +1551,14 @@ class QueryDialog(Frame):
 
         if self.applyqueryvar.get() == 1:
             #replace current dataframe but keep a copy!
-            table.dataframe = table.model.df.copy()
+            table.dataframe = df.copy()
             table.delete('rowrect')
             table.multiplerowlist = []
             table.model.df = filtdf
             table.filtered = True
         else:
-            # The whole table is shown again (model.df was restored above).
+            # Show the whole table again.
+            table.model.df = df
             table.filtered = False
             idx = filtdf.index
             rows = table.multiplerowlist = table.getRowsFromIndex(idx)
