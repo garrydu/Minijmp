@@ -564,7 +564,11 @@ class Table(Canvas):
                 if coldata.dtype == 'float64':
                     coldata = coldata.astype(object).apply(
                         lambda x: self.setPrecision(x, prec))
-            coldata = coldata.astype(object).fillna('')
+            # Empty cells are shown blank. Done on the plain values: fillna
+            # on an object column warns (FutureWarning) on every redraw.
+            values = coldata.to_numpy(dtype=object, copy=True)
+            values[pd.isna(values)] = ''
+            coldata = pd.Series(values, index=coldata.index, dtype=object)
             offset = rows[0]
             for row in self.visiblerows:
                 text = coldata.iloc[row - offset]

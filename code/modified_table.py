@@ -765,10 +765,10 @@ class MTable(Table):
 
         dfSub = df[colnames].copy()
         dfSub = sort_mixed(dfSub, col_list, a_list)
-        dfSub.reset_index(drop=True, inplace=True)
-        print(dfSub)
-        #  for col in list(dfSub):
-        #      df[col] = dfSub[col]
+        # Put the sorted rows back by position, under the table's own row
+        # labels. Matching by label would undo the sort, and after rows were
+        # removed (labels 0, 2, 3...) it filled rows with empty cells.
+        dfSub.index = df.index
         df[colnames] = dfSub
         self.redraw()
         return
