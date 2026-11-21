@@ -860,6 +860,10 @@ class MTable(Table):
                 "(only typing into cells works). Close the filter first.",
                 parent=self.parentframe)
             raise FilteredEditBlocked()
+        # The table is about to change (rows sorted, inserted, deleted...):
+        # an open cell editor would keep its old text and row position and
+        # could write that text into another row on Enter.
+        self._close_editor()
         self._push_undo(("df", self.model.df.copy()))
         return
 
