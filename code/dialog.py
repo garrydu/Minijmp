@@ -6,6 +6,7 @@ from tkinter import ttk
 import tkinter as tk
 import numpy as np
 from prettytable import PrettyTable as PT
+import textwrap
 #  import pandas as pd
 ############### Own Modules ############
 from utilities import is_void, get_number
@@ -216,12 +217,21 @@ class Dialogs(BaseDialog):
         """ Do nothing, can be updated """
         return
 
+    ERROR_WIDTH = 60  # characters per line inside the ERROR box
+
     def error(self, msg=None):
         if msg is None:
             return
+        # Wrap long messages so the box fits in the output window; keep the
+        # message's own line breaks.
+        lines = []
+        for line in str(msg).splitlines() or [""]:
+            lines += textwrap.wrap(line, self.ERROR_WIDTH) or [""]
         t = PT()
         t.field_names = ["ERROR"]
-        t.add_row([msg])
+        t.add_row(["\n".join(lines)])
+        if len(lines) > 1:
+            t.align["ERROR"] = "l"  # wrapped text reads better left-aligned
         self.app.print("\n" + str(t))
         return
 
