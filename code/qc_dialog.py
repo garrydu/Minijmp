@@ -1,3 +1,4 @@
+from collections import Counter
 from tkinter import ttk
 import tkinter as tk
 from tkinter import TOP, LEFT, X, BOTH
@@ -206,6 +207,25 @@ class GRRDialog(Dialogs):
                 r[2].append(k)
         #  print(r)
 
+        if len(set(r[1])) < 2:
+            self.error(msg="At least 2 different parts are needed.")
+            return
+        if has_op and len(set(r[2])) < 2:
+            # One operator: no reproducibility to estimate. Same analysis as
+            # with the Operator column left empty.
+            has_op = False
+            self.app.print("\nNote: only one operator (%s) was found, so "
+                           "reproducibility is not estimated." % r[2][0])
+        trials = Counter(zip(r[1], r[2])) if has_op else Counter(r[1])
+        if max(trials.values()) < 2:
+            self.error(msg="Each part needs at least 2 measurements per "
+                       "operator to estimate repeatability.")
+            return
+        if "XBAR" in self.mvar.get().upper() and min(trials.values()) < 2:
+            self.error(msg="Xbar/R needs at least 2 measurements of every "
+                       "part by every operator. Use an ANOVA method instead.")
+            return
+
         hist_std = get_number(self.hist_std)
         if hist_std is not None:
             hist_std = hist_std if hist_std >= 0 else None
@@ -214,6 +234,22 @@ class GRRDialog(Dialogs):
             spec_gap = spec_gap if spec_gap >= 0 else None
         #  use_hist = ("hist" in self.hist_std_use.get())
 
+        try:
+            self._run_grr(r, has_op, hist_std, spec_gap, alpha)
+        except ValueError as e:
+            self.error(msg=str(e))
+            return
+
+        pf = self.app.showPlotViewer()
+        pf.ax = pf.fig.add_subplot(111)
+        grr_plot(
+            y=r[0], part=r[1],
+            op=r[2] if has_op else None,
+            ax=pf.ax,
+            ylabel=self.ylabel.get() if self.ylabel.get() != "" else self.xvar.get())
+        return
+
+    def _run_grr(self, r, has_op, hist_std, spec_gap, alpha):
         grr_master(
             y=r[0], part=r[1],
             op=r[2] if has_op else None,
@@ -225,15 +261,6 @@ class GRRDialog(Dialogs):
             print_out=True,
             alpha=alpha,
             print_port=self.app.print)
-
-        pf = self.app.showPlotViewer()
-        pf.ax = pf.fig.add_subplot(111)
-        grr_plot(
-            y=r[0], part=r[1],
-            op=r[2] if has_op else None,
-            ax=pf.ax,
-            ylabel=self.ylabel.get() if self.ylabel.get() != "" else self.xvar.get())
-        return
 
 
 class CpkDialog(Dialogs):
