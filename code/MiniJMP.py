@@ -142,13 +142,7 @@ class Minijmp(Minijmp_pre):
             '08Table to Text': {'cmd': lambda: self._call('showasText')},
             '09Table Info': {'cmd': lambda: self._call('showInfo')},
             '10sep': '',
-            '11Transform Values': {'cmd': lambda: self._call('transform')},
             '12Group-Aggregate': {'cmd': lambda: self._call('aggregate')},
-            '13Cross Tabulation': {'cmd': lambda: self._call('crosstab')},
-            '14Merge/Concat Tables': {'cmd': lambda: self._call('doCombine')},
-            '15Pivot Table': {'cmd': lambda: self._call('pivot')},
-            '16Melt Table': {'cmd': lambda: self._call('melt')},
-            '17Time Series Resampling': {'cmd': lambda: self._call('resample')}
         }
         self.table_menu = self.createPulldown(self.menu, self.table_menu)
         self.menu.add_cascade(label='Tools', menu=self.table_menu['var'])
