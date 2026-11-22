@@ -620,7 +620,14 @@ class MTable(Table):
         #  if (df.index.name is None or df.index.names[0] is None) and ask == True:
         #      drop = messagebox.askyesno("Reset Index", "Drop the index?",
         #                                parent=self.parentframe)
-        self.model.df.reset_index(drop=drop, inplace=True)
+        # Renumber only plain row numbers. Row labels that carry data (the
+        # groups of a Value Counts or Group-Aggregate sub-table: named, text
+        # or several levels) stay with their rows.
+        idx = self.model.df.index
+        if not (isinstance(idx, pd.MultiIndex) or
+                any(n is not None for n in idx.names) or
+                not pd.api.types.is_integer_dtype(idx.dtype)):
+            self.model.df.reset_index(drop=drop, inplace=True)
         self.update_rowcolors()
         # self.set_rowcolors_index()
         self.redraw()
