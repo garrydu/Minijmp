@@ -183,44 +183,63 @@ class MTable(Table):
             parent=self.parentframe)
         if d.result is None:
             return
-        else:
-            low = d.results[0]
-            high = d.results[1]
-            add_random = d.results[2]
-            random = d.results[3]
-            dist = d.results[4]
-            param1 = float(d.results[5])
-            param2 = float(d.results[6])
+        low, high, add_random, random, dist, param1, param2 = d.results
+        use_dist = bool(random) or bool(add_random)
+        need_range = (not random) or (
+            use_dist and dist in ('uniform', 'random integer', 'logistic'))
+        need_params = use_dist and dist in ('normal', 'gamma')
+
+        def number(label, text):
+            """The field as a number, or None after telling the user."""
+            try:
+                return float(str(text).strip())
+            except ValueError:
+                messagebox.showwarning(
+                    "Fill With Data", "'%s' must be a number (it is '%s')."
+                    "\n\nThe column was not changed." % (label, text),
+                    parent=self.parentframe)
+                return None
+
+        if need_range:
+            low = number('Linear Low', low)
+            high = number('Linear High', high) if low is not None else None
+            if low is None or high is None:
+                return
+        if need_params:
+            param1 = number('Mean', param1)
+            param2 = number('Std', param2) if param1 is not None else None
+            if param1 is None or param2 is None:
+                return
 
         df = self.model.df
-        self.storeCurrent()
-        if low != '' and high != '':
-            try:
-                low = float(low)
-                high = float(high)
-            except BaseException:
-                #  logging.error("Exception occurred", exc_info=True)
-                return
-        #  if random:
-        if dist == 'normal':
-            data = np.random.normal(param1, param2, len(df))
-        elif dist == 'gamma':
-            data = np.random.gamma(param1, param2, len(df))
-        elif dist == 'uniform':
-            data = np.random.uniform(low, high, len(df))
-        elif dist == 'random integer':
-            data = np.random.randint(low, high, len(df))
-        elif dist == 'logistic':
-            data = np.random.logistic(low, high, len(df))
+        n = len(df)
+        if n == 0 or len(df.columns) == 0:
+            return
+        try:
+            if use_dist:
+                if dist == 'normal':
+                    data = np.random.normal(param1, param2, n)
+                elif dist == 'gamma':
+                    data = np.random.gamma(param1, param2, n)
+                elif dist == 'uniform':
+                    data = np.random.uniform(low, high, n)
+                elif dist == 'random integer':
+                    data = np.random.randint(int(low), int(high), n)
+                else:  # logistic
+                    data = np.random.logistic(low, high, n)
+        except ValueError as e:
+            messagebox.showwarning(
+                "Fill With Data", "Cannot draw %s numbers with these "
+                "settings: %s\n\nThe column was not changed." % (dist, e),
+                parent=self.parentframe)
+            return
         if not random:
-            step = (high - low) / (len(df) - 1)
-            high += step / 10
-            if add_random:
-                data += np.arange(low, high, step)
-            else:
-                data = pd.Series(np.arange(low, high, step))
-        col = df.columns[self.currentcol]
-        df[col] = data
+            # n evenly spaced values from Low to High (just Low for 1 row)
+            linear = np.linspace(low, high, n) if n > 1 else np.array([low])
+            data = data + linear if add_random else linear
+        self.storeCurrent()
+        # By position: the table's row labels may have gaps (rows removed)
+        df.isetitem(self.currentcol, np.asarray(data))
         self.redraw()
         self.tableChanged()
         return
