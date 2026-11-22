@@ -118,7 +118,6 @@ class Minijmp(Minijmp_pre):
         self.data_menu = {
             '01Create Categorical': {'cmd': lambda: self._call('createCategorical')},
             '02Apply Function': {'cmd': lambda: self._call('applyColumnFunction')},
-            '03Resample/Transform': {'cmd': lambda: self._call('applyTransformFunction')},
             '04Value Counts': {'cmd': lambda: self._call('valueCounts')},
             '05String Operation': {'cmd': lambda: self._call('applyStringMethod')},
             '06Date/Time Conversion': {'cmd': lambda: self._call('convertDates')},
