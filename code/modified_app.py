@@ -1,4 +1,4 @@
-from tkinter import Toplevel, Label, CENTER, PhotoImage, LEFT
+from tkinter import Toplevel, Label, CENTER, LEFT
 import tkinter as tk
 import pandas as pd
 import matplotlib
@@ -7,27 +7,12 @@ import statsmodels
 import prettytable
 import seaborn
 import platform
+from PIL import Image, ImageTk
 ##############
 from pandastable_local.app import DataExplore
 from pandastable_local.dialogs import getParentGeometry
 #### Own Modules ####
 from help_link import help_link, help_window
-
-
-def get_tkver():
-    # Create a root window
-    root = tk.Tk()
-
-    # Get the Tcl/Tk version
-    tcl_version = root.tk.call("info", "patchlevel")
-    tk_version = root.tk.call("info", "patchlevel")
-
-    print(f"Tcl version: {tcl_version}")
-    print(f"Tk version: {tk_version}")
-
-    # Destroy the root window
-    root.destroy()
-    return tk_version
 
 
 class Minijmp_pre(DataExplore):
@@ -55,7 +40,9 @@ class Minijmp_pre(DataExplore):
         abwin.grab_set()
         abwin.resizable(width=False, height=False)
         abwin.configure(background=self.bg)
-        logo = PhotoImage(file="icon.png")
+        # Through PIL, like the main window icon: Tk 8.5 (Python 3.9 on
+        # macOS) cannot read PNG files itself.
+        logo = ImageTk.PhotoImage(Image.open("icon.png"))
         label = Label(abwin, image=logo, anchor=CENTER)
         label.image = logo
         label.grid(row=0, column=0, sticky='ew', padx=4, pady=4)
@@ -66,7 +53,9 @@ class Minijmp_pre(DataExplore):
         smver = statsmodels.__version__
         ptver = prettytable.__version__
         sbver = seaborn.__version__
-        tkver = get_tkver()
+        # The running Tk (a second tk.Tk() just to read it is risky on
+        # macOS with Tk 9, and printed the version to the terminal).
+        tkver = abwin.tk.call("info", "patchlevel")
 
         text = 'Minijmp\n'\
             + 'version 0.1\n'\
