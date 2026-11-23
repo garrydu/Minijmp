@@ -99,7 +99,6 @@ class txt_viewer(plot_viewer):
         return
 
     def close(self):
-        print('txt win close')
         try:
             self.table.tOut = None
         except BaseException:

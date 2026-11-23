@@ -34,9 +34,7 @@ if not os.path.exists(config_path):
 
 class Table(Table_orig):
     def init_reserved(self):
-        print("loading_path", os.getcwd())
         self.currentdir = os.path.join(parent_path, 'sample_data')
-        print("current dir", self.currentdir)
         self.logfile = logfile
         return
 

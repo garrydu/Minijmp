@@ -42,7 +42,6 @@ from . import util, plotting, dialogs
 #  homepath = os.path.join(os.path.expanduser('~'))
 parent_dir = os.path.dirname(os.getcwd())
 configpath = os.path.join(parent_dir, 'user_config')
-print("config path", configpath)
 if not os.path.exists(configpath):
     try:
         os.makedirs(configpath, exist_ok=True)
@@ -83,7 +82,6 @@ def write_config(conffile='default.conf', defaults={}):
     if not os.path.exists(conffile):
         cp = create_config_parser_from_dict(defaults)
         cp.write(open(conffile, 'w'))
-        print('wrote config file %s' % conffile)
     return conffile
 
 

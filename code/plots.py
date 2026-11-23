@@ -45,7 +45,6 @@ class plot_viewer(PlotViewer):
         # frame for figure
         self.plotfr = Frame(self.m)
         # add it to the panedwindow
-        print(self.figsize)
         self.fig, self.canvas = addFigure(
             self.plotfr, figure=Figure(
                 figsize=self.figsize, dpi=100, facecolor='white'))
@@ -93,7 +92,6 @@ class plot_viewer(PlotViewer):
 
     def close(self):
         """Close the window"""
-        print('plot close')
         try:
             self.table.pf = None
             self.animateopts.stop()

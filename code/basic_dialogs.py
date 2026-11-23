@@ -147,7 +147,6 @@ class DescribeDialog(Dialogs):
         x = number_list(self.df[self.xvar.get()],
                         col_name=self.xvar.get(),
                         print_out=True, print_port=self.app.print)
-        print(x)
         pct = self.pct.get()
         try:
             pct = [float(i) for i in pct.split(",") if 0 <= float(i) <= 100]

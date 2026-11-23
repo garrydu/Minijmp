@@ -704,7 +704,6 @@ class PlotViewer(Frame):
             if u == None or b>u:
                 u=b
         lims = (l, u)
-        print (lims)
         for a in self.fig.axes:
             if axis=='y':
                 a.set_ylim(lims)
@@ -914,7 +913,6 @@ class PlotViewer(Frame):
         elif formatter == 'sci notation':
             ax.xaxis.set_major_formatter(mticker.LogFormatterSciNotation())
         if dateformat != '':
-            print (x.dtype)
             import matplotlib.dates as mdates
             ax.xaxis.set_major_formatter(mdates.DateFormatter(dateformat))
         return
@@ -1853,7 +1851,6 @@ class AnnotationOptions(TkOptions):
         an._id = key
         if key not in self.textboxes:
             self.textboxes[key] = kwds
-            print(kwds)
         #canvas.show()
         canvas.draw()
         return

@@ -442,7 +442,6 @@ class MTable(Table):
 
         row = self.get_row_clicked(event)
         col = self.get_col_clicked(event)
-        print(row, col, self.currentrow, self.currentcol)
         self.drawCellEntry(self.currentrow, self.currentcol)
         #  self.xview_scroll(-1, "unit")
         return

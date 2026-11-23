@@ -331,7 +331,6 @@ class Table(Canvas):
         self.bind("<Control-z>", self.undo)
         self.bind("<Control-a>", self.selectAll)
         self.bind("<Control-f>", self.findText)
-        self.bind("<Control-c>", self.copy)
 
         self.bind("<Right>", self.handle_arrow_keys)
         self.bind("<Left>", self.handle_arrow_keys)
@@ -937,7 +936,6 @@ class Table(Canvas):
         else:
             colnames = list(df.columns[columnIndex])
             try:
-                print(colnames, ascending)
                 new = sort_mixed(df, colnames, ascending)
             except Exception as e:
                 print('could not sort')
@@ -2859,7 +2857,6 @@ class Table(Canvas):
 
         self.storeCurrent()
 
-        print(self.multiplerowlist, self.multiplecollist)
 
         try:
             df = pd.read_clipboard(sep=',', on_bad_lines='skip')

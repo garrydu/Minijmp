@@ -94,7 +94,7 @@ def open_palette_selector(callback):
 
 
 def on_palette_selected(palette_name):
-    print("Selected palette:", palette_name)
+    pass
 
 
 def main():

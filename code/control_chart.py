@@ -19,7 +19,6 @@ def _finite(values):
 def x_mR(x, mr, k=3, sigma=None, mean=None):  # , print_out=True, xLabels=None,max_xlabels=25):
 
     # Define list variable for moving ranges
-    print("mr", mr)
     MR = [np.nan] * (mr - 1)
     for i in range(mr - 1, len(x)):
         l = x[i - mr + 1:i + 1]

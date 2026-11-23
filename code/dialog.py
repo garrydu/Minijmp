@@ -82,7 +82,6 @@ class Dialogs(BaseDialog):
         self.createWidgets(m)
         self.buttonsFrame()
         apply_dialog_theme(self.main)
-        print("Gen new dialog", self.title)
         return
 
     def add_window_help(self, m):

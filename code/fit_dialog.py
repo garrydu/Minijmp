@@ -107,7 +107,6 @@ class LinearFitDialog(Dialogs):
         ylabel = self.yvar.get() if self.ylabel is None else self.ylabel
         #  xlabel = self.xlabel if self.xlabel != "" or self.xlabel is not None else self.xvar.get()
         #  ylabel = self.ylabel if self.ylabel != "" or self.ylabel is not None else self.yvar.get()
-        print("xlabel", xlabel, "y", ylabel)
 
         fit_plot(
             x,
@@ -232,7 +231,6 @@ class CorrelationDialog(LinearFitDialog):
         ylabel = self.yvar.get() if self.ylabel is None else self.ylabel
         #  xlabel = self.xlabel if self.xlabel != "" or self.xlabel is not None else self.xvar.get()
         #  ylabel = self.ylabel if self.ylabel != "" or self.ylabel is not None else self.yvar.get()
-        print("xlabel", xlabel, "y", ylabel)
 
         #  cor = self.cor.get()
         print_out = False
