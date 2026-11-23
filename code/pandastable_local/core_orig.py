@@ -1485,9 +1485,16 @@ class Table(Canvas):
 
         df = self.model.df
         cols = [''] + list(df.columns)
-        fillopts = ['fill scalar', '', 'ffill', 'bfill', 'interpolate']
+        # Plain-language names for the fill methods (pandas names in
+        # brackets). The first one is the default.
+        fills = {
+            'no fill': '',
+            'fill with a value': 'value',
+            'copy value from above (ffill)': 'ffill',
+            'copy value from below (bfill)': 'bfill',
+            'straight line between neighbours (interpolate)': 'interpolate'}
         d = MultipleValDialog(title='Clean Data',
-                              initialvalues=(fillopts,
+                              initialvalues=(list(fills),
                                              '',
                                              '10',
                                              0,
@@ -1521,10 +1528,25 @@ class Table(Canvas):
                               parent=self.parentframe)
         if d.result is None:
             return
-        self.storeCurrent()
-        method = d.results[0]
-        symbol = d.results[1]
-        limit = int(d.results[2])
+        method = fills.get(d.results[0], d.results[0])
+        symbol = str(d.results[1]).strip()
+
+        def whole_number(label, text):
+            try:
+                return int(str(text).strip())
+            except ValueError:
+                messagebox.showwarning(
+                    "Clean Data", "'%s' must be a whole number (it is '%s')."
+                    "\n\nThe table was not changed." % (label, text),
+                    parent=self.parentframe)
+                return None
+
+        limit = whole_number('Limit gaps', d.results[2])
+        if limit is None:
+            return
+        rounddecimals = whole_number('Round numbers', d.results[9])
+        if rounddecimals is None:
+            return
         dropcols = d.results[3]
         droprows = d.results[4]
         how = d.results[5]
@@ -1535,21 +1557,37 @@ class Table(Canvas):
             subset = [subset]
         dropdups = d.results[7]
         dropdupcols = d.results[8]
-        rounddecimals = int(d.results[9])
 
         if dropcols == 1:
             df = df.dropna(axis=1, how=how)
         if droprows == 1:
             df = df.dropna(axis=0, how=how, subset=subset)
-            print(len(df))
-        if method == '':
-            pass
-        elif method == 'fill scalar':
-            df = df.fillna(symbol)
+        df = df.copy()
+        numbers = [c for c in range(df.shape[1])
+                   if pd.api.types.is_numeric_dtype(df.iloc[:, c])]
+        if method == 'value' and symbol != '':
+            # A number fills number columns (as a number) and text columns;
+            # text fills only text columns, so number columns stay numbers.
+            try:
+                value = float(symbol)
+                if value.is_integer():
+                    value = int(value)
+            except ValueError:
+                value = None
+            for c in range(df.shape[1]):
+                if c in numbers:
+                    if value is not None:
+                        df.isetitem(c, df.iloc[:, c].fillna(value))
+                elif df.iloc[:, c].dtype == object:
+                    df.isetitem(c, df.iloc[:, c].where(
+                        df.iloc[:, c].notna(), symbol))
+        elif method == 'ffill':
+            df = df.ffill(limit=limit if limit > 0 else None)
+        elif method == 'bfill':
+            df = df.bfill(limit=limit if limit > 0 else None)
         elif method == 'interpolate':
-            df = df.interpolate()
-        else:
-            df = df.fillna(method=method, limit=limit)
+            for c in numbers:
+                df.isetitem(c, df.iloc[:, c].interpolate())
         if dropdups == 1:
             df = df.drop_duplicates()
         if dropdupcols == 1:
@@ -1562,8 +1600,9 @@ class Table(Canvas):
         n = messagebox.askyesno(
             "Clean Data?", "New table has %s rows and %s columns. Proceed?" %
             (r, c), parent=self.parentframe)
-        if n is None:
+        if not n:
             return
+        self.storeCurrent()
         self.model.df = df
         self.redraw()
         return
