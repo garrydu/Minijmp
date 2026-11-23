@@ -1,3 +1,4 @@
+import io
 import pandas as pd
 from tkinter import END, StringVar, Entry, messagebox, ttk
 import numpy as np
@@ -416,6 +417,15 @@ class MTable(Table):
         #  self.xview_scroll(-1, "unit")
         return
 
+    def doBindings(self):
+        """pandastable binds Shift-click to the right-click menu on macOS,
+        and MiniJMP has no right-click menu, so Shift-click did nothing.
+        Make it select from the current cell to the clicked cell, as on
+        other systems."""
+        super().doBindings()
+        self.bind('<Shift-Button-1>', self.handle_left_shift_click)
+        return
+
     def handle_left_release(self, event):
         """Mouse button released. The original also put a pick-only
         drop-down over category cells here, on every click; it covered the
@@ -436,19 +446,32 @@ class MTable(Table):
         #  self.xview_scroll(-1, "unit")
         return
 
+    @staticmethod
+    def _read_clipboard(header=None):
+        """The clipboard text as a table, or None if it cannot be read.
+        Copied cells (from MiniJMP or Excel) are tab-separated; other text
+        is read as comma-separated. pandas only switches to tabs by itself
+        when at least 2 rows were copied, so one copied row ended up in a
+        single cell."""
+        try:
+            from pandas.io.clipboard import clipboard_get
+            text = clipboard_get()
+            if not text or not text.strip():
+                return None
+            sep = '\t' if '\t' in text else ','
+            return pd.read_csv(io.StringIO(text), sep=sep, header=header,
+                               on_bad_lines='skip')
+        except Exception:
+            print("Can't paste.")
+            return None
+
     def paste(self, event=None):
         """Paste a new table from the clipboard"""
 
+        df = self._read_clipboard(header=None)
+        if df is None or len(df) == 0:
+            return
         self.storeCurrent()
-        try:
-            df = pd.read_clipboard(sep=',', on_bad_lines='skip', header=None)
-        except BaseException:
-            #  messagebox.showwarning("Could not read data", e,
-            #                          parent=self.parentframe)
-            print("Can't paste.")
-            return
-        if len(df) == 0:
-            return
 
         try:
             ins_y = min(self.multiplerowlist)
@@ -466,14 +489,10 @@ class MTable(Table):
     def paste_header(self, event=None):
         """Paste a new table from the clipboard"""
 
+        df = self._read_clipboard(header=0)
+        if df is None or len(df) == 0:
+            return
         self.storeCurrent()
-        try:
-            df = pd.read_clipboard(sep=',', on_bad_lines='skip')
-        except BaseException:
-            print("Can't paste.")
-            return
-        if len(df) == 0:
-            return
 
         try:
             ins_x = min(self.multiplecollist)
