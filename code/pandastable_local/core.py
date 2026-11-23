@@ -24,7 +24,8 @@ themes = {
         'rowselectedcolor': '#E4DED4',
         'colselectedcolor': '#e4e3e4'}}
 
-loading_path = os.getcwd()
+# The code folder (one level above this file), wherever the program was started from
+loading_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 parent_path = os.path.dirname(loading_path)
 config_path = os.path.join(parent_path, 'log')
 logfile = os.path.join(config_path, 'error.log')

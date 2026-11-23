@@ -40,7 +40,9 @@ except BaseException:
 from . import util, plotting, dialogs
 
 #  homepath = os.path.join(os.path.expanduser('~'))
-parent_dir = os.path.dirname(os.getcwd())
+# The project folder (two levels above this file: Minijmp/code/pandastable_local),
+# wherever the program was started from
+parent_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 configpath = os.path.join(parent_dir, 'user_config')
 if not os.path.exists(configpath):
     try:

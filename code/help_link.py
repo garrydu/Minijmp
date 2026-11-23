@@ -1,6 +1,8 @@
 import json
+import os
 
-HELP_JSON = './help.json'
+# Next to this file, wherever the program was started from
+HELP_JSON = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'help.json')
 DEFAULT_LINK = 'https://minijmp.readthedocs.io/'
 
 

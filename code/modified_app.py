@@ -7,6 +7,7 @@ import statsmodels
 import prettytable
 import seaborn
 import platform
+import os
 from PIL import Image, ImageTk
 ##############
 from pandastable_local.app import DataExplore
@@ -42,7 +43,8 @@ class Minijmp_pre(DataExplore):
         abwin.configure(background=self.bg)
         # Through PIL, like the main window icon: Tk 8.5 (Python 3.9 on
         # macOS) cannot read PNG files itself.
-        logo = ImageTk.PhotoImage(Image.open("icon.png"))
+        logo = ImageTk.PhotoImage(Image.open(os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "icon.png")))
         label = Label(abwin, image=logo, anchor=CENTER)
         label.image = logo
         label.grid(row=0, column=0, sticky='ew', padx=4, pady=4)

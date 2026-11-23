@@ -676,7 +676,7 @@ class Minijmp(Minijmp_pre):
 def main():
     # Create the main window
     root = Tk()
-    img = Image.open("icon.png")
+    img = Image.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "icon.png"))
     icon = ImageTk.PhotoImage(img)
     #  icon = PhotoImage(file="icon.png")
     root.iconphoto(True, icon)
