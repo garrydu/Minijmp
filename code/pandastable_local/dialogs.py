@@ -1385,8 +1385,8 @@ class FindReplaceDialog(Frame):
         self.coords = []
         for r,row in found.iterrows():
             j=0
-            for col,val in row.iteritems():
-                if val is True:
+            for col,val in row.items():  # iteritems was removed in pandas 2
+                if val:  # numpy True is not "is True"
                     #print (r,col,val, i, j)
                     self.coords.append((i,j))
                 j+=1
