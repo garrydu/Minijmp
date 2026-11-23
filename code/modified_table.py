@@ -60,6 +60,7 @@ class MTable(Table):
                                                                ("All files", "*.*")])
         if filename:
             self.model.save(filename)
+            self.rememberFolder(filename)
         return
 
     def row1ToHeader(self):

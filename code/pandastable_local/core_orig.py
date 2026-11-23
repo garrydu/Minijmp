@@ -4021,6 +4021,14 @@ class Table(Canvas):
             self.filename=None
         return
 
+    def rememberFolder(self, filename):
+        """The next Open/Save/Import/Export dialog starts in the folder of
+        the file just opened or saved (all File dialogs share it)."""
+        folder = os.path.dirname(os.path.abspath(filename))
+        self.currentdir = folder
+        self.importpath = folder
+        return
+
     def load(self, filename=None):
         """load from a file"""
         if filename is None:
@@ -4037,7 +4045,7 @@ class Table(Canvas):
             model.load(filename, filetype)
             self.updateModel(model)
             self.filename = filename
-            self.currentdir = os.path.basename(filename)
+            self.rememberFolder(filename)
             self.adjustColumnWidths()
             self.redraw()
             # prog_bar.pb_stop()
@@ -4053,7 +4061,7 @@ class Table(Canvas):
         if filename:
             self.model.save(filename)
             self.filename = filename
-            self.currentdir = os.path.basename(filename)
+            self.rememberFolder(filename)
         return
 
     def save(self):
@@ -4088,7 +4096,7 @@ class Table(Canvas):
         model = TableModel(dataframe=df)
         self.updateModel(model)
         self.redraw()
-        self.importpath = os.path.dirname(filename)
+        self.rememberFolder(filename)
         self.filename=None
         return
 
@@ -4141,6 +4149,7 @@ class Table(Canvas):
         self.filename=None
         self.updateModel(model)
         self.redraw()
+        self.rememberFolder(filename)
         return
 
     def doExport(self, filename=None):
