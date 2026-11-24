@@ -197,7 +197,9 @@ def linear_fit(x, y, print_out=True, print_port=print):
             t.field_names = ["Item", "DF", "Sum of Sq.", "Mean Sq."]
             t.add_row(["Lack of fit", "%d" % DFLF, "%.3f" % SSLF, "%.3f" % MSLF])
             t.add_row(["Pure Error", "%d" % DFPE, "%.3f" % SSPE, "%.3f" % MSPE])
-            t.add_row(["Total", "%d" % (n - 1), "%.3f" % SST, " "])
+            # Lack of fit + pure error = the Error line of the ANOVA table
+            # (JMP: "Total Error"; Minitab splits its Error line the same way)
+            t.add_row(["Total Error", "%d" % (n - 2), "%.3f" % SSE, "%.3f" % MSE])
             print(str(t))
             print(
                 f"F Ratio {F_lack:.3f}\tProb > F {p_lack:.3f}\tMax R Square {max_r_sq:.3f}")

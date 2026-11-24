@@ -167,20 +167,21 @@ Lack of Fit
 .. code-block:: none
    
         Lack of Fit
-        +-------------+-----+-------------+-----------+
-        |     Item    |  DF |  Sum of Sq. |  Mean Sq. |
-        +-------------+-----+-------------+-----------+
-        | Lack of fit |  23 |  263096.398 | 11438.974 |
-        |  Pure Error |  78 |  453623.680 |  5815.688 |
-        |    Total    | 102 | 1619723.301 |           |
-        +-------------+-----+-------------+-----------+
+        +-------------+-----+------------+-----------+
+        |     Item    |  DF | Sum of Sq. |  Mean Sq. |
+        +-------------+-----+------------+-----------+
+        | Lack of fit |  23 | 263096.398 | 11438.974 |
+        |  Pure Error |  78 | 453623.680 |  5815.688 |
+        | Total Error | 101 | 716720.078 |  7096.238 |
+        +-------------+-----+------------+-----------+
         F Ratio 1.967	Prob > F 0.015	Max R Square 0.720
-        p value is the probability of the true relationship is linear.
+        H0: The model correctly specified the relationship.
 
 Lack of Fit (LOF) test checks if a linear model is adequate by comparing two types of variation:
 
 - Pure Error: This represents the variation between repeated y-values at the same x-value, reflecting natural randomness.
 - Lack of Fit: This indicates additional variation that arises when data is forced into a linear shape.
+- Total Error: The Error line of the Analysis of Variances table. Lack of Fit and Pure Error add up to it, both in degrees of freedom and in sum of squares. JMP shows the same "Total Error" row, and Minitab splits its Error line into the same two parts.
 
 If the LOF test is significant (i.e., it has a small p-value, Prob > F), it suggests that a linear model may not be appropriate, implying that the true relationship could be curved or more complex. Essentially, it checks whether the data's deviation from the line is more than what random noise would cause.
 
@@ -196,7 +197,7 @@ The quoted result above was using Top Speed as the predictor and Range as the Re
         +-------------+-----+------------+----------+
         | Lack of fit |  48 | 45627.855  | 950.580  |
         |  Pure Error |  53 | 40064.967  | 755.943  |
-        |    Total    | 102 | 193658.117 |          |
+        | Total Error | 101 | 85692.822  | 848.444  |
         +-------------+-----+------------+----------+
         F Ratio 1.257	Prob > F 0.208	Max R Square 0.793
 
