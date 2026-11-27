@@ -169,3 +169,29 @@ Interpretation:
   - H1: Data does not follow the specified distribution
   - If p < α (significance level), reject the null hypothesis.
   - If p ≥ α, fail to reject the null hypothesis
+
+How the p-value is calculated
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The parameters of each distribution are estimated from the data, so the p-value of the Anderson-Darling test depends on the distribution. MiniJMP follows Minitab (Individual Distribution Identification), which uses the tables of D'Agostino and Stephens (1986), *Goodness-of-Fit Techniques*:
+
+.. list-table::
+   :header-rows: 1
+   :class: tight-table
+
+   * - Distribution
+     - p-value
+   * - Normal
+     - Normal-distribution formula on A²(1 + 0.75/n + 2.25/n²)
+   * - Lognormal
+     - The same normal test applied to ln(x)
+   * - Exponential
+     - Closed-form formula on A²(1 + 0.6/n); p below 0.003 is shown as "<0.003"
+   * - Weibull
+     - Extreme-value table on A²(1 + 0.2/√n); ">0.250" or "<0.010" outside the table
+   * - Gamma
+     - Table that depends on the fitted shape; ">0.250" or "<0.005" outside the table
+   * - Student's t
+     - No table exists: simulated from 100 samples of the fitted distribution, each refitted (as JMP does for all distributions), marked "(simulated)". A fixed seed gives the same p-value every run.
+
+Inside a table the p-value is interpolated linearly. With these rules MiniJMP reproduces Minitab's p-values (for example Exponential 0.883, Gamma 0.071 and 0.135, Lognormal 0.085 and 0.345, Weibull 0.178 vs 0.179 from rounding of A²). JMP simulates the p-value for every distribution, so its p-values change slightly from run to run and can differ a little from MiniJMP.
