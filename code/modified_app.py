@@ -89,8 +89,12 @@ License along with this program. If not, write to
             + 'PrettyTable v%s, Seaborn v%s\n' % (ptver, sbver)\
             + """
 Calibration:
-All stats calucaltion give either same results to JMP 17, Minitab
-20, or both. (Correct, they do not always agree with each other.)
+Every statistic gives the same result as JMP 17, Minitab 20, or
+both (they do not always agree with each other). Where they differ,
+the help page of each function says which one MiniJMP follows.
+For example, Fit Distributions: normal and exponential estimates
+as both, likelihood measures as JMP, Anderson-Darling p-values
+as Minitab.
 """
 
         # for line in text:
