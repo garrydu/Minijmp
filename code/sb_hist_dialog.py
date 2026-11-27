@@ -99,7 +99,9 @@ class singleHistoDialog(SBDialog):
             if len(res) > 0:
                 rv = res[0][2]['rv']
             else:
-                self.error("Can't perform fit with the dist..")
+                # The reason was printed above ("Not fitted: ...")
+                self.error("No %s fit for this column, so the histogram is "
+                           "drawn without the fitted curve." % self.dist.get())
                 #  fit_dist = False
         cols = [xvar]
         self.make_working_df(cols=cols)
