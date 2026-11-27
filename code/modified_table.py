@@ -226,7 +226,8 @@ class MTable(Table):
                 elif dist == 'uniform':
                     data = np.random.uniform(low, high, n)
                 elif dist == 'random integer':
-                    data = np.random.randint(int(low), int(high), n)
+                    # Low to High inclusive, as in JMP and Minitab
+                    data = np.random.randint(int(low), int(high) + 1, n)
                 else:  # logistic
                     data = np.random.logistic(low, high, n)
         except ValueError as e:

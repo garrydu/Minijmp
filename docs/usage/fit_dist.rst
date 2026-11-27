@@ -17,7 +17,7 @@ Choose Stats > Fit Distributions.
 A fitted distribution is a theoretical distribution calculated using parameter estimates derived from a sample you provide. This dialog helps identify the most suitable distribution for the sample. For plotting, use Plots > Histogram & Dist. Fit, although it cannot compare across distributions.
 
 - **Data Col. Select:** Select the sampled dataset, i.e. a column of data. 
-- **Models:** Select the distributions to test. Note that some distributions require all input values to be positive or non-negative.
+- **Models:** Select the distributions to test. Note that some distributions require all input values to be positive or non-negative. Gamma, Lognormal and Weibull need all values > 0, and Exponential needs all values ≥ 0. A distribution the data do not allow is not fitted, and the output says why (for example "Not fitted: Gamma needs all values > 0. The data contain 2 value(s) <= 0"). Minitab also skips these, with a note. With values of exactly 0 the Exponential fit is still shown (its estimate is the same as JMP's), but the Anderson-Darling test is shown as N/A, because the test is not defined for 0.
 
 The fitting process uses SciPy, providing results very close to JMP 17, accurate to 3 to 4 significant digits. The output format and parameter selection follow JMP conventions. The output does not include confidence intervals (CI) and standard errors.
 

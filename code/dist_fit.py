@@ -46,10 +46,14 @@ def print_table(fit_name, para_names, paras, abl, a2, p, print_port=print):
     print(str(t))
     t = PT()
     t.field_names = [' ', 'A-sq', 'Approx. p-value']
-    t.add_row(["Anderson-Darling", "%.2f" % a2,
+    t.add_row(["Anderson-Darling", a2 if isinstance(a2, str) else "%.2f" % a2,
                p if isinstance(p, str) else "%.3f" % p])
     print(str(t))
-    print("H0: The data is from the distribution. Small p-value rejects H0.")
+    if a2 == "N/A":
+        print("The Anderson-Darling test needs all values > 0; the data "
+              "contain 0, so it is not calculated.")
+    else:
+        print("H0: The data is from the distribution. Small p-value rejects H0.")
     return
 
 
@@ -181,6 +185,9 @@ def goodness_of_fit(rv, data, dist="Normal"):
         # The normal test on ln(x), as Minitab does
         res = norm_test(np.log(np.asarray(data, dtype=float)), print_out=False)
         return res['AD s'], res['AD p']
+    if dist == "Exponential" and min(data) <= 0:
+        # log F(0) = log 0: the test is not defined for a value of exactly 0
+        return "N/A", "N/A"
     a2 = AD(rv, data)
     if dist == "Exponential":
         p = expon_p(a2 * (1 + 0.6 / n))
@@ -335,19 +342,31 @@ def compare_dist(
     names = ["Normal", "Student's t", "Gamma", "Lognormal", "Exponential",
              "Weibull"]
     aiccs, res = [], []
+    # Values a distribution cannot have: these fits are not attempted.
+    n_zero_neg = sum(1 for v in data if v <= 0)
+    n_neg = sum(1 for v in data if v < 0)
     for name, func in zip(names, funcs):
-        try:
-            if name not in selected:
+        if name not in selected:
+            continue
+        reason = None
+        if name in ("Gamma", "Lognormal", "Weibull") and n_zero_neg:
+            reason = ("%s needs all values > 0. The data contain %d value(s) "
+                      "<= 0 (smallest %g)." % (name, n_zero_neg, min(data)))
+        elif name == "Exponential" and n_neg:
+            reason = ("Exponential needs all values >= 0. The data contain %d "
+                      "negative value(s) (smallest %g)." % (n_neg, min(data)))
+        if reason is None:
+            try:
+                r = func(data, print_out=print_out, print_port=print_port)
+                res.append([name, r["ABL"], r])
+                aiccs.append(r["ABL"][1])
                 continue
-            r = func(data, print_out=print_out, print_port=print_port)
-            res.append([name, r["ABL"], r])
-            aiccs.append(r["ABL"][1])
-        except BaseException:
-            if print_out:
-                print = print_port
-                print("---- " + name + " ----")
-                print("Error: Check input values.")
-            pass
+            except Exception as e:
+                reason = "The fit failed (%s)." % e
+        if print_out:
+            print = print_port
+            print("\n---- " + name + " ----")
+            print("Not fitted: " + reason)
     delta_AICc = [i - min(aiccs) for i in aiccs]
     rel_likelihood = [exp(-.5 * i) for i in delta_AICc]
     AICc_weight = [i / sum(rel_likelihood) for i in rel_likelihood]

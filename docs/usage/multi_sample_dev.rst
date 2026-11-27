@@ -69,6 +69,7 @@ O'Brien's test is a robust method for testing homogeneity of variances:
 1. It transforms the original data using a weighted average of the squared deviation from the group mean and the group variance.
 2. The test statistic is then calculated using either a one-way ANOVA F-test on the transformed data.
 3. O'Brien's test with r=0.5 is recommended for general use due to its balance between robustness and power.
+4. The transformation divides by (n − 2), so a sample with fewer than 3 values cannot be used. Such samples are left out of O'Brien's test only, and the output names them, for example ``p = 0.036 (left out, fewer than 3 values: C)``. This is the same as JMP. If fewer than 2 samples have 3 or more values, O'Brien's p-value is shown as N/A.
 
 Levene's test is widely used for assessing equality of variances:
 
