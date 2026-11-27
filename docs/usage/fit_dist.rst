@@ -1,4 +1,11 @@
+.. raw:: html
 
+   <style>
+      .tight-table td {
+             white-space: normal !important;
+                       }
+                          </style>
+                          
 Fit Distributions
 -----------------
 
@@ -194,7 +201,7 @@ The parameters of each distribution are estimated from the data, so the p-value 
    * - Student's t
      - No table exists: simulated from 100 samples of the fitted distribution, each refitted (as JMP does for all distributions), marked "(simulated)". A fixed seed gives the same p-value every run.
 
-Inside a table the p-value is interpolated linearly. With these rules MiniJMP reproduces Minitab's p-values (for example Exponential 0.883, Gamma 0.071 and 0.135, Lognormal 0.085 and 0.345, Weibull 0.178 vs 0.179 from rounding of A²). JMP simulates the p-value for every distribution, so its p-values change slightly from run to run and can differ a little from MiniJMP.
+Inside a table the p-value is interpolated linearly. With these rules MiniJMP reproduces Minitab's p-values. JMP simulates the p-value for every distribution, so its p-values change slightly from run to run and can differ a little from MiniJMP.
 
 Which software each part matches
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -213,22 +220,19 @@ JMP and Minitab do not report the same things, and they do not always calculate 
      - sigma is the sample standard deviation (divides by n − 1)
    * - Exponential: Scale sigma
      - JMP and Minitab
-     - The mean of the data (Minitab shows the same, e.g. 1.94288)
+     - 
    * - Gamma and Weibull parameters
-     - JMP 17
+     - JMP 19
      - Maximum likelihood with the threshold fixed at 0
    * - Lognormal parameters
-     - Maximum likelihood
-     - sigma divides by n. Minitab shows its scale with n − 1 ("adjusted ML"), so Minitab's value is slightly larger (0.442 vs 0.438 for one 50-value sample)
+     - JMP 19
+     - sigma divides by n. Minitab shows its scale with n − 1 ("adjusted ML"), so Minitab's value is slightly larger.
    * - Student's t parameters
-     - Maximum likelihood
-     - Minitab has no Student's t fit
+     - JMP 19
+     - Minitab has no Student's t fit. JMP uses the same maximum likelihood method. JMP's optimizer and SciPy's stop at different points in the likelihood surface, so the DF differ.
    * - -2*LogLikelihood, AICc, BIC
-     - JMP
+     - JMP 19
      - Minitab's Individual Distribution Identification does not report them
-   * - Compare Distributions table (AICc, AICc Weight, BIC, -2*LogLikelihood)
-     - JMP
-     - Same columns as JMP's comparison of fitted distributions
    * - Anderson-Darling A-sq and p-value
      - Minitab
      - See "How the p-value is calculated" above. JMP shows the same A-sq but simulates its p-value
