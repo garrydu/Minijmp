@@ -13,7 +13,8 @@ from pandastable_local.dialogs import MultipleValDialog, filedialog
 #  from modified_header import MColumnHeader as ColumnHeader
 #  from modified_header import RowHeader
 from df_combine import df_combine
-from utilities import grouping_by_labels, verifyNewColName, filter_voids, is_void
+from utilities import (grouping_by_labels, verifyNewColName, filter_voids,
+                       is_void, defaultNewColName)
 from dialog import findRepDialog
 import tkinter
 
@@ -606,8 +607,9 @@ class MTable(Table):
 
         if newname is None:
             coltypes = ['object', 'float64']
+            default_name = defaultNewColName(self.model.df.columns)
             d = MultipleValDialog(title='New Column',
-                                  initialvalues=(coltypes, ''),
+                                  initialvalues=(coltypes, default_name),
                                   labels=('Column Type', 'Name'),
                                   types=('combobox', 'string'),
                                   parent=self.parentframe)
@@ -615,7 +617,7 @@ class MTable(Table):
                 return
             else:
                 dtype = d.results[0]
-                newname = d.results[1]
+                newname = d.results[1].strip() or default_name
         else:
             dtype = 'object'
 

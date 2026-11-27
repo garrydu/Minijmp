@@ -571,6 +571,27 @@ def verifyNewColName(newName, cols):
     return res
 
 
+def colLetters(n):
+    """Excel-style letters for column number n (1-based), in lower case
+    like the a-e columns of a new table: 1 -> a, 26 -> z, 27 -> aa."""
+    s = ""
+    while n > 0:
+        n, r = divmod(n - 1, 26)
+        s = chr(ord('a') + r) + s
+    return s
+
+
+def defaultNewColName(cols):
+    """Default name for a new column: the Excel-style letters of its
+    position (6th column -> f), moving on to the next letters until no
+    column has that name."""
+    names = set(str(c) for c in cols)
+    n = len(names) + 1
+    while colLetters(n) in names:
+        n += 1
+    return colLetters(n)
+
+
 if __name__ == "__main__":
     pearson_correlation([1, 2, 3], [2, 3, 1])
     print(count_2factors(["F", "M", "F", "F", "M", "M"],
