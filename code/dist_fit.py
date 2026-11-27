@@ -38,7 +38,7 @@ def print_table(fit_name, para_names, paras, abl, a2, p, print_port=print):
     t = PT()
     t.field_names = ['Parameter', 'Estimate']
     for i, j in zip(para_names, paras):
-        t.add_row([i, "%.3f" % j])
+        t.add_row([i, j if isinstance(j, str) else "%.3f" % j])
     print(str(t))
     t = PT()
     t.field_names = ['Measures', '-2*LogLikelihood', 'AICc', 'BIC']
@@ -226,9 +226,13 @@ def fit_t(data, print_out=True, print_port=print):
     abl = ABL(rv, data, 3)
     a2, p = goodness_of_fit(rv, data, "Student's t")
     if print_out:
-        print_table("Stundent's t",
+        print_table("Student's t",
                     ("Location mu", "Scale sigma", "DF"),
-                    (u, s, df), abl, a2, p, print_port=print_port)
+                    # Beyond DF 1000 the likelihood hardly changes, so the
+                    # estimate is wherever the optimizer stops (JMP stops
+                    # elsewhere): the fit is in effect a normal distribution.
+                    (u, s, df if df <= 1000 else ">1000 (≈ normal)"),
+                    abl, a2, p, print_port=print_port)
     return {"fits": (u, s, df), "ABL": abl, "rv": rv}
 
     ##### The minimum fitting gives similar but not same results #####
