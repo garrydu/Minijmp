@@ -229,7 +229,7 @@ JMP and Minitab do not report the same things, and they do not always calculate 
      - sigma divides by n. Minitab shows its scale with n − 1 ("adjusted ML"), so Minitab's value is slightly larger.
    * - Student's t parameters
      - JMP 19
-     - Minitab has no Student's t fit. JMP uses the same maximum likelihood method. JMP's optimizer and SciPy's stop at different points in the likelihood surface, so the DF differ.
+     - Minitab has no Student's t fit. JMP uses the same maximum likelihood method. JMP's optimizer and SciPy's stop at different points in the likelihood surface, so the DF differ. When the data are close to normal, DF goes towards infinity (e.g. 61945 in JMP vs 1.8e9 in SciPy, with the same -2*LogLikelihood), and MiniJMP shows it as ">1000 (≈ normal)".
    * - -2*LogLikelihood, AICc, BIC
      - JMP 19
      - Minitab's Individual Distribution Identification does not report them
