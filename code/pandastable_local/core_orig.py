@@ -310,7 +310,7 @@ class Table(Canvas):
 
         self.bind("<Button-1>", self.handle_left_click)
         self.bind("<Double-Button-1>", self.handle_double_click)
-        self.bind("<Control-Button-1>", self.handle_left_ctrl_click)
+        util.bind_modifier(self, "Button-1", self.handle_left_ctrl_click)
         self.bind("<Shift-Button-1>", self.handle_left_shift_click)
 
         self.bind("<ButtonRelease-1>", self.handle_left_release)
@@ -324,13 +324,14 @@ class Table(Canvas):
         self.bind('<B1-Motion>', self.handle_mouse_drag)
         #self.bind('<Motion>', self.handle_motion)
 
-        self.bind("<Control-c>", self.copy)
+        # Command on macOS, Control on Windows and Linux
+        util.bind_modifier(self, "c", self.copy)
         #self.bind("<Control-x>", self.deleteRow)
         self.bind("<Delete>", self.clearData)
-        self.bind("<Control-v>", self.paste)
-        self.bind("<Control-z>", self.undo)
-        self.bind("<Control-a>", self.selectAll)
-        self.bind("<Control-f>", self.findText)
+        util.bind_modifier(self, "v", self.paste)
+        util.bind_modifier(self, "z", self.undo)
+        util.bind_modifier(self, "a", self.selectAll)
+        util.bind_modifier(self, "f", self.findText)
 
         self.bind("<Right>", self.handle_arrow_keys)
         self.bind("<Left>", self.handle_arrow_keys)

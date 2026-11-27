@@ -7,7 +7,7 @@ Choose Stats > Describe MultiVar. This function calculates a statistical summary
 .. image:: images/multides1.png
    :align: center
 
-- **Data column:** You can select one or multiple column names by left-clicking to toggle selection. Use CTRL and SHIFT to select multiple columns.
+- **Data column:** You can select one or multiple column names by left-clicking to toggle selection. Use CTRL (⌘ on macOS) and SHIFT to select multiple columns.
 
 - **Statistics**: Toggle each statistical item to include it in the output.
 

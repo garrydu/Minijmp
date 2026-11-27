@@ -16,7 +16,7 @@ Choose Stats> Multi Sample SD Test
    :align: center
 
 
-- **Variables:** Select multiple variables with your mouse, using SHIFT-Click to select a range, and CTRL-Click to toggle a single selection. The columns selected must have continuous data. Categorical data will be ignored. The columns do not have to have same count of observations.
+- **Variables:** Select multiple variables with your mouse, using SHIFT-Click to select a range, and CTRL-Click (⌘-Click on macOS) to toggle a single selection. The columns selected must have continuous data. Categorical data will be ignored. The columns do not have to have same count of observations.
 - **Alpha:** Set the confidence interval range to be calculated as (1-alpha)100%. For example, when alpha is set to 0.05, a 95% confidence interval will be displayed.
 
 Use the test for equal variances to determine whether the variances or the standard deviations of two or more groups differ. For example, a lumber distributor wants to compare the variation of beam lengths that are cut by three sawmills. If any sawmill produces beams that have significantly more variation, the distributor may stop selling lumber from that sawmill.

@@ -10,6 +10,7 @@ import textwrap
 #  import pandas as pd
 ############### Own Modules ############
 from utilities import is_void, get_number
+from pandastable_local import util
 
 
 class findRepDialog(FindReplaceDialog):
@@ -248,6 +249,7 @@ class superEasyListbox(EasyListbox):
                          width=width, height=height,
                          yscrollcommand=yscrollcommand,
                          selectmode=EXTENDED, exportselection=0)
+        util.listbox_command_click(self)  # Cmd-click to toggle on macOS
         self.bind("<<ListboxSelect>>", self.triggerListItemSelected)
         try:
             style = dialog_style(self.winfo_toplevel())

@@ -153,6 +153,35 @@ def checkOS():
         return 'windows'
 
 
+def modifier_keys():
+    """Modifier keys for shortcuts (copy, paste, ...) and for click to add
+    to a selection: Command on macOS, Control on Windows and Linux.
+    macOS keeps Control as well, so old habits still work."""
+
+    if checkOS() == 'darwin':
+        return ('Command', 'Control')
+    return ('Control',)
+
+
+def bind_modifier(widget, detail, func):
+    """Bind <Mod-detail> on widget for each modifier key of this system,
+    e.g. detail 'c' or 'Button-1'."""
+
+    for mod in modifier_keys():
+        widget.bind('<%s-%s>' % (mod, detail), func)
+
+
+def listbox_command_click(widget):
+    """Tk's Listbox toggles an item with Control-click only, even on macOS.
+    Give every Listbox the same toggle on Command-click there."""
+
+    if checkOS() != 'darwin':
+        return
+    script = widget.bind_class('Listbox', '<Control-Button-1>')
+    if script:
+        widget.bind_class('Listbox', '<Command-Button-1>', script)
+
+
 def trace_write(var, callback):
     """Register a write trace on a tkinter Variable (Python 3.8+ and legacy)."""
 

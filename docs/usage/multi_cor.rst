@@ -6,7 +6,7 @@ Choose Stats>Correlation Matrix
 .. image:: images/multi_cor1.png
    :align: center
 
-- **Variables:** Select multiple variables with your mouse, using SHIFT-Click to select a range, and CTRL-Click to toggle a single selection. The selected columns must contain continuous data. Categorical data will be ignored, and only rows with numerical values in all selected columns will be used.
+- **Variables:** Select multiple variables with your mouse, using SHIFT-Click to select a range, and CTRL-Click (⌘-Click on macOS) to toggle a single selection. The selected columns must contain continuous data. Categorical data will be ignored, and only rows with numerical values in all selected columns will be used.
 
 - **Correlation Select:**  There are two main types of correlation analyses: parametric (like Pearson's correlation) and nonparametric (such as Spearman's and Kendall's correlations). While their differences will be discussed, it is recommended to select Pearson's Correlation by default if unsure. Multiple correlation algorithms can be selected simultaneously.
 

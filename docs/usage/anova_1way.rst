@@ -8,7 +8,7 @@ Choose Stats > One-Way ANOVA
    :align: center
 
 - **Stacked Data:** Select a column conatining categorical factors for `Group Column` and a column that contains continuous responses for `Data Column`. Both need be selected.
-- **Data in separated columns:** Select multiple columns with your mouse, using SHIFT-Click to select a range, and CTRL-Click to toggle a single selection. The selected columns must contain continuous data. Categorical data will be ignored. The columns do not need to have the same number of observations.
+- **Data in separated columns:** Select multiple columns with your mouse, using SHIFT-Click to select a range, and CTRL-Click (⌘-Click on macOS) to toggle a single selection. The selected columns must contain continuous data. Categorical data will be ignored. The columns do not need to have the same number of observations.
 - **Alpha:** Set the range for confidence intervals to be calculated as (1-alpha)100%. When alpha is set to 0.05, a 95% confidence interval will be displayed. The alpha value is also used in the mean comparison method to determine if two population means are different.
 - **Mean Comparison:** Select this option to identify groups that are significantly different in mean.
 - **Interval Plot Setting:** A plot of means and their confidence intervals will be drawn by default.

@@ -6,6 +6,7 @@ import numpy as np
 ############ pandastable #############
 from pandastable_local.core import Table
 from pandastable_local.core_orig import sort_mixed
+from pandastable_local import util
 from pandastable_local.data import TableModel
 from pandastable_local.dialogs import MultipleValDialog, filedialog
 ############## Own Module ###############
@@ -366,8 +367,9 @@ class MTable(Table):
                 col))
         self.cellentry.bind("<FocusIn>", select_all)
         # After Return the editor moves on and keeps the focus, so Ctrl-Z
-        # (bound on the table) would not reach undo without this.
-        self.cellentry.bind("<Control-z>", self._undo_key)
+        # (Cmd-Z on macOS, bound on the table) would not reach undo
+        # without this.
+        util.bind_modifier(self.cellentry, "z", self._undo_key)
         self.cellentry.bind("<Tab>",
                             lambda x: self.handleCellEntry(
                                 row,
