@@ -21,7 +21,7 @@ To perform the study choose Quality > Process Capability with Subgroups
 - **Spec Limits**: To perform the analysis, you must specify a lower (LSL) and upper (USL) specification limit to define your process requirements. Target of the process can also be specified. When leaving the Target value zero, the software will use the mean of LSL and USL as the target. 
 - **Subgroup**: Set the method to categorize the measurement data into Subgroups.
 
-  - **Option 1: Use Subgroup Size**: Select **Use Subgroup Size** in **Option**, and set the size of each group in **Subgroup Size**. In this case each sub group has to have the same number of sample points. Each sub group will be extracted from the pool sequentially.
+  - **Option 1: Use Subgroup Size**: Select **Use Subgroup Size** in **Option**, and set the size of each group in **Subgroup Size**. In this case each sub group has to have the same number of sample points. Each sub group will be extracted from the pool sequentially: rows 1 to n form the first subgroup, rows n+1 to 2n the second, and so on. A blank or text cell keeps its place in its subgroup and is then left out, so that subgroup has fewer points (the same as Minitab's capability analysis and MiniJMP's control charts). Blank rows below the end of a shorter column are ignored.
   - **Option 2: Use Subgroup ID**: In this case, there shall be a column containing the categorical data for the measurement data points. Select **Use Subgroup ID Col.** in **Option**, and select the column in **ID Col.**. The setting in **Subgroup Size** will be ignored in this case, and vise versa. 
 
 - **Within Subgroup Variation**: Select the **Method** to estimate the within Subgroup sigma.

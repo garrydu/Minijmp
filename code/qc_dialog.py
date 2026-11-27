@@ -477,13 +477,21 @@ class CpkSubDialog(Dialogs):
                 len(y_r))
             data = grouping_by_labels(y_r, id_r)
         elif "ize" in m:
-            y = number_list(self.df[self.xvar.get()])
             size = int(self.subsize.get())
             if size < 2:
                 self.error("Subgroup size input error.")
                 return
-            data = [y[i:i + size] for i in range(0, len(y), size)]
-            if len(y) % size > 0:
+            # Split by row first, so a blank or text cell keeps its place in
+            # its subgroup, then use only the valid numbers of each subgroup
+            # (as Minitab's capability analysis and MiniJMP's control charts
+            # do). Blank rows below the end of a shorter column are ignored.
+            col = list(self.df[self.xvar.get()])
+            while col and is_void(col[-1]):
+                col.pop()
+            data = [number_list(col[i:i + size])
+                    for i in range(0, len(col), size)]
+            data = [g for g in data if g]
+            if len(set(len(g) for g in data)) > 1:
                 self.app.print("WARNING: Unbalanced subgrouping.")
         else:
             data = number_list(self.df[self.xvar.get()])
