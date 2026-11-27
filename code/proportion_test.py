@@ -2,7 +2,7 @@ from scipy.stats import norm, binom, hypergeom
 from scipy.stats import f as f_dist
 #  from functools import lru_cache
 from prettytable import PrettyTable as PT
-#  import numpy as np
+import numpy as np
 ####### Own Modules ########
 from binomial import binomial
 from chi_sq import chi_square
@@ -24,10 +24,13 @@ def prop_2sample(n1=None, n2=None, e1=None,
     SE_pooled = (p0 * (1 - p0) * (1 / n1 + 1 / n2))**.5
     SE_sep = (p1 * (1 - p1) / n1 + p2 * (1 - p2) / n2)**.5
     pd = p1 - p2
-    CI = (pd + norm.ppf(alpha / 2) * SE_sep,
-          pd + norm.ppf(1 - alpha / 2) * SE_sep)
-    CI2 = (pd + norm.ppf(alpha) * SE_sep,
-           pd + norm.ppf(1 - alpha) * SE_sep)
+    if SE_sep > 0:
+        CI = (pd + norm.ppf(alpha / 2) * SE_sep,
+              pd + norm.ppf(1 - alpha / 2) * SE_sep)
+        CI2 = (pd + norm.ppf(alpha) * SE_sep,
+               pd + norm.ppf(1 - alpha) * SE_sep)
+    else:  # zero width: not available, as in Minitab (*, *)
+        CI = CI2 = (float('nan'), float('nan'))
     pct = "%.2f%%" % (100 - 100 * alpha)
     # A standard error of 0 (each sample proportion is 0 or 1) makes the
     # normal approximation undefined; report it as not available (NaN)
@@ -52,20 +55,13 @@ def prop_2sample(n1=None, n2=None, e1=None,
     pl_f = rv.cdf(e1)
     pu_f = 1 - rv.cdf(e1 - 1)  # Minitab: 1 - F(x1 - 1); equals 1 when e1 == 0
 
-    mode = int((n1 + 1) * (e1 + e2 + 1) / (n1 + n2 + 2))
-
-    if e1 == mode:
-        p_f = 1
-    elif e1 < mode:
-        y = mode
-        while rv.pmf(y) >= rv.pmf(e1):
-            y += 1
-        p_f = rv.cdf(e1) + 1 - rv.cdf(y - 1)
-    else:
-        y = mode
-        while rv.pmf(y) >= rv.pmf(e1):
-            y -= 1
-        p_f = 1 - rv.cdf(e1 - 1) + rv.cdf(y)
+    # Two-sided: add every possible table that is no more likely than the
+    # observed one. Tables exactly as likely (e.g. 3/10 vs 7/10 and its
+    # mirror) count too; the small tolerance absorbs rounding. Matches
+    # Minitab (3/10 vs 7/10 gives 0.179) and SciPy's fisher_exact.
+    k = np.arange(max(0, e1 + e2 - n2), min(n1, e1 + e2) + 1)
+    pmf = rv.pmf(k)
+    p_f = min(1.0, float(pmf[pmf <= rv.pmf(e1) * (1 + 1e-7)].sum()))
 
     if print_out:
         print = print_port
@@ -76,12 +72,13 @@ def prop_2sample(n1=None, n2=None, e1=None,
         t.add_row(["2", n2, e2, "%.3f" % p2])
         print(str(t))
         print("\np1 - p2 = %.3f" % pd)
-        print(pct + " CI of difference (%.3f, %.3f)" % CI)
-        print(pct + " Upper bound for difference %.3f" % CI2[1])
-        print(pct + " Lower bound for difference %.3f" % CI2[0])
-        print("\nH0: p1 == p2")
         def f3(v):
             return "N/A" if v != v else "%.3f" % v  # v != v only for NaN
+
+        print(pct + " CI of difference (%s, %s)" % (f3(CI[0]), f3(CI[1])))
+        print(pct + " Upper bound for difference %s" % f3(CI2[1]))
+        print(pct + " Lower bound for difference %s" % f3(CI2[0]))
+        print("\nH0: p1 == p2")
 
         t = PT()
         t.field_names = ["p-value", "Z", "p1 != p2", "p1 < p2", "p1 > p2"]
